@@ -154,27 +154,22 @@ public class DBFacade extends SQLiteOpenHelper {
 
 	}
 
-	public long insertProductDay(ProductStock prod, SQLiteDatabase sql) {
-		try {
-			ContentValues values = new ContentValues();
-
-			values.put(ProductStock.PRODUCT_ID, prod.getIdProduct());
-			values.put(ProductStock.QUANTITY, prod.getQuantity());
-			values.put(ProductStock.CLIENT_ID, prod.getIdClient());
-			values.put(ProductStock.UNIT_PRICE, prod.getUnitPrice());
-			values.put(ProductStock.IS_PAID, prod.isPaid());
-			values.put(ProductStock.DATE, prod.getDate());
-			if (prod.getId() != 0) {
-				values.put(ProductStock.ID, prod.getId());
-				return sql.update(ProductStock.TABLE_NAME, values,
-						ProductStock.ID + " = " + prod.getId(), null);
-			} else {
-				return sql.insert(ProductStock.TABLE_NAME, null, values);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			return -1;
+	public long insertProductStock(ProductStock prod, SQLiteDatabase sql) throws Exception{
+		ContentValues values = new ContentValues();
+		values.put(ProductStock.PRODUCT_ID, prod.getIdProduct());
+		values.put(ProductStock.QUANTITY, prod.getQuantity());
+		values.put(ProductStock.CLIENT_ID, prod.getIdClient());
+		values.put(ProductStock.UNIT_PRICE, prod.getUnitPrice());
+		values.put(ProductStock.IS_PAID, prod.isPaid());
+		values.put(ProductStock.DATE, prod.getDate());
+		if (prod.getId() != 0) {
+			values.put(ProductStock.ID, prod.getId());
+			return sql.update(ProductStock.TABLE_NAME, values, ProductStock.ID
+					+ " = " + prod.getId(), null);
+		} else {
+			return sql.insert(ProductStock.TABLE_NAME, null, values);
 		}
+
 	}
 
 	public int removeProductDay(ProductStock prod) {

@@ -342,8 +342,8 @@ public class AddSale extends Activity implements TextWatcher {
 			startActivityForResult(new Intent(AddSale.this, AddClient.class), 1);
 			return true;
 
-		case R.id.new_product:
-			startActivityForResult(new Intent(AddSale.this, AddProduct.class),
+		case R.id.new_product_day:
+			startActivityForResult(new Intent(AddSale.this, ListProductStock.class),
 					1);
 			return true;
 		}
@@ -365,7 +365,6 @@ public class AddSale extends Activity implements TextWatcher {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
 		setupAutoCompleteClient();
 		super.onActivityResult(requestCode, resultCode, data);
 	}

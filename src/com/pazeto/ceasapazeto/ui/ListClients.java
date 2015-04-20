@@ -8,10 +8,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.Button;
 import android.widget.ListView;
 
 import com.pazeto.ceasapazeto.R;
@@ -23,7 +21,6 @@ public class ListClients extends Activity {
 	private static final String TAG = "listClients";
 	protected static final int LIST_CLIENTS = 2;
 	ListView clientListView;
-	Button newClient;
 	DBFacade db;
 	CustomCursorAdapter customAdapter;
 
@@ -34,7 +31,6 @@ public class ListClients extends Activity {
 		setContentView(R.layout.client_list);
 		db = new DBFacade(this);
 
-		newClient = (Button) findViewById(R.id.bt_add_client);
 		clientListView = (ListView) findViewById(R.id.listview_clients);
 
 		clientListView.setOnItemClickListener(new OnItemClickListener() {
@@ -45,15 +41,6 @@ public class ListClients extends Activity {
 			}
 		});
 
-		newClient.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				startActivityForResult(new Intent(ListClients.this,
-						AddClient.class), 1);
-
-			}
-		});
 		listClients();
 
 	}
@@ -77,12 +64,6 @@ public class ListClients extends Activity {
 			listClients();
 		}
 
-	}
-
-	@Override
-	public void onBackPressed() {
-		// TODO Auto-generated method stub
-		super.onBackPressed();
 	}
 
 	@Override

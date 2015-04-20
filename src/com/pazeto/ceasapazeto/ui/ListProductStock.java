@@ -53,7 +53,7 @@ public class ListProductStock extends Activity {
 		db = new DBFacade(this);
 		sql = db.getWritableDatabase();
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		final Calendar c = Calendar.getInstance();
+		Calendar c = Calendar.getInstance();
 		year = c.get(Calendar.YEAR);
 		month = c.get(Calendar.MONTH);
 		day = c.get(Calendar.DAY_OF_MONTH);
@@ -180,34 +180,42 @@ public class ListProductStock extends Activity {
 		}
 	};
 
-	private void saveProductsDay() {
-		// if (adapter.isFormatedEdit()) {
-		int savedIds = 0;
-		System.out.println("ITEMS: " + adapter.getCount());
-		for (int i = 0; i < adapter.getCount(); i++) {
-			ProductStock prodDay = adapter.getItem(i);
+	private boolean saveStockProducts() {
+		try {
+			int savedIds = 0;
+			System.out.println("ITEMS: " + adapter.getCount());
+			for (int i = 0; i < adapter.getCount(); i++) {
+				ProductStock prodDay = adapter.getItem(i);
 
-			System.out.println("ID: " + prodDay.getId() + " Quant.: "
-					+ prodDay.getQuantity() + " Prod id: "
-					+ prodDay.getIdProduct() + " Date: " + prodDay.getDate());
+				System.out.println("ID: " + prodDay.getId() + " Quant.: "
+						+ prodDay.getQuantity() + " Prod id: "
+						+ prodDay.getIdProduct() + " Date: "
+						+ prodDay.getDate());
 
-			long id = db.insertProductDay(prodDay, sql);
-			if (id != -1) {
-				System.out.println("salvou com id: " + id);
-				adapter.getItem(i).setId(id);
-				savedIds++;
+				long id;
+				id = db.insertProductStock(prodDay, sql);
+				if (id != -1) {
+					System.out.println("salvou com id: " + id);
+					adapter.getItem(i).setId(id);
+					savedIds++;
+				}
 			}
+			Toast.makeText(getApplicationContext(),
+					"Salvou " + savedIds + " Item(s).", Toast.LENGTH_SHORT)
+					.show();
+			return true;
+		} catch (Exception e) {
+			Toast.makeText(getApplicationContext(), "Erro ao salvar itens",
+					Toast.LENGTH_SHORT).show();
+			e.printStackTrace();
+			return false;
 		}
-		Toast.makeText(getApplicationContext(),
-				"Salvou " + savedIds + " Item(s).", Toast.LENGTH_SHORT).show();
-		// }
 	}
 
 	@Override
 	public void onBackPressed() {
-		// if (adapter.isFormatedEdit()) {
+		saveListener.save();
 		super.onBackPressed();
-		// }
 	}
 
 	@Override
@@ -232,6 +240,9 @@ public class ListProductStock extends Activity {
 		case R.id.new_product:
 			startActivityForResult(new Intent(ListProductStock.this,
 					AddProduct.class), 1);
+			return true;
+		case R.id.save:
+			saveListener.save();
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -261,13 +272,13 @@ public class ListProductStock extends Activity {
 	saveStock saveListener = new saveStock() {
 
 		@Override
-		public void save() {
-			saveProductsDay();
+		public boolean save() {
+			return saveStockProducts();
 
 		}
 	};
 
 	public interface saveStock {
-		public void save();
+		public boolean save();
 	}
 }
