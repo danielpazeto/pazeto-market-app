@@ -1,0 +1,14 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/new_client"
+        android:icon="@drawable/new_client"
+        android:showAsAction="always"
+        android:title="@string/new_client"/>
+    <item
+        android:id="@+id/new_product"
+        android:icon="@drawable/new_product"
+        android:showAsAction="always"
+        android:title="@string/new_product"/>
+
+</menu>
