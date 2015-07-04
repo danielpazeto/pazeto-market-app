@@ -40,7 +40,7 @@ public class ListProductStock extends Activity {
 	private String date;
 	private ProductStockListAdapter adapter;
 	DBFacade db;
-	Cursor cursorProductsDay;
+	// Cursor cursorProductsDay;
 	CalendarView calendar;
 	private long unixDate;
 	boolean saved = true;
@@ -50,9 +50,9 @@ public class ListProductStock extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.productday_list_view);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		db = new DBFacade(this);
 		sql = db.getWritableDatabase();
-		getActionBar().setDisplayHomeAsUpEnabled(true);
 		Calendar c = Calendar.getInstance();
 		year = c.get(Calendar.YEAR);
 		month = c.get(Calendar.MONTH);
@@ -77,21 +77,9 @@ public class ListProductStock extends Activity {
 		setupAddProductDayButton();
 	}
 
-	/**
-	 * Remove o produto do esqtoque
-	 * 
-	 * @param v
-	 */
-	public void removeProductDayOnClickHandler(View v) {
-		ProductStock itemToRemove = (ProductStock) v.getTag();
-		adapter.remove(itemToRemove);
-
-	}
-
 	private void setupListViewAdapter(ArrayList<ProductStock> items) {
-
 		adapter = new ProductStockListAdapter(this,
-				R.layout.add_productday_list_item, items);
+				R.layout.add_productday_list_item, items, db);
 		ListView productDaysListView = (ListView) findViewById(R.id.ProductDay_ListView);
 		productDaysListView.setAdapter(adapter);
 		adapter.setSaveListener(saveListener);
@@ -111,26 +99,28 @@ public class ListProductStock extends Activity {
 	}
 
 	private void loadProductDayPerDate(long date) {
-		cursorProductsDay = db.listProductsDayPerDate(date, sql);
+		Cursor cursorProductsDay = db.listStockProductsInDate(date, sql);
 		ArrayList<ProductStock> prodsPerDate = new ArrayList<ProductStock>();
 		while (cursorProductsDay.moveToNext()) {
-			long idProd = cursorProductsDay.getInt(cursorProductsDay
-					.getColumnIndex(ProductStock.PRODUCT_ID));
-			long idClient = cursorProductsDay.getInt(cursorProductsDay
-					.getColumnIndex(ProductStock.CLIENT_ID));
-			long id = cursorProductsDay.getInt(cursorProductsDay
-					.getColumnIndex(ProductStock.ID));
-			long dateProd = cursorProductsDay.getLong(cursorProductsDay
-					.getColumnIndex(ProductStock.DATE));
-			double quantity = cursorProductsDay.getInt(cursorProductsDay
-					.getColumnIndex(ProductStock.QUANTITY));
-			double unitPrice = cursorProductsDay.getInt(cursorProductsDay
-					.getColumnIndex(ProductStock.UNIT_PRICE));
-			ProductStock prodDay = new ProductStock(id, idProd, quantity,
-					idClient, unitPrice, dateProd);
-			prodsPerDate.add(prodDay);
+//			long idProd = cursorProductsDay.getInt(cursorProductsDay
+//					.getColumnIndex(ProductStock.PRODUCT_ID));
+//			long idClient = cursorProductsDay.getInt(cursorProductsDay
+//					.getColumnIndex(ProductStock.CLIENT_ID));
+//			long id = cursorProductsDay.getInt(cursorProductsDay
+//					.getColumnIndex(ProductStock.ID));
+//			long dateProd = cursorProductsDay.getLong(cursorProductsDay
+//					.getColumnIndex(ProductStock.DATE));
+//			double quantity = cursorProductsDay.getInt(cursorProductsDay
+//					.getColumnIndex(ProductStock.QUANTITY));
+//			double unitPrice = cursorProductsDay.getDouble(cursorProductsDay
+//					.getColumnIndex(ProductStock.UNIT_PRICE));
+			prodsPerDate.add(new ProductStock(cursorProductsDay));
+		}
+		if (cursorProductsDay != null) {
+			cursorProductsDay.close();
 		}
 		setupListViewAdapter(prodsPerDate);
+
 	}
 
 	@Override
@@ -190,15 +180,16 @@ public class ListProductStock extends Activity {
 				System.out.println("ID: " + prodDay.getId() + " Quant.: "
 						+ prodDay.getQuantity() + " Prod id: "
 						+ prodDay.getIdProduct() + " Date: "
-						+ prodDay.getDate());
+						+ prodDay.getDate() + " e valor : "
+						+ prodDay.getUnitPrice());
 
 				long id;
 				id = db.insertProductStock(prodDay, sql);
-				if (id != -1) {
-					System.out.println("salvou com id: " + id);
+				if (id != -1 && id > 0) {
+					System.out.println("salvou com novo id: " + id);
 					adapter.getItem(i).setId(id);
-					savedIds++;
 				}
+				savedIds++;
 			}
 			Toast.makeText(getApplicationContext(),
 					"Salvou " + savedIds + " Item(s).", Toast.LENGTH_SHORT)
@@ -228,10 +219,14 @@ public class ListProductStock extends Activity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case R.id.save_stock:
+			System.out.println("AWUEHIAWHUUEHIEHUAUE");
+			saveListener.save();
+			return true;
 		case android.R.id.home:
+			saveListener.save();
 			this.finish();
 			return true;
-
 		case R.id.new_client:
 			startActivityForResult(new Intent(ListProductStock.this,
 					AddClient.class), 1);
@@ -241,9 +236,7 @@ public class ListProductStock extends Activity {
 			startActivityForResult(new Intent(ListProductStock.this,
 					AddProduct.class), 1);
 			return true;
-		case R.id.save:
-			saveListener.save();
-			return true;
+
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -256,7 +249,6 @@ public class ListProductStock extends Activity {
 		if (db != null) {
 			db.close();
 		}
-
 		super.onDestroy();
 	}
 

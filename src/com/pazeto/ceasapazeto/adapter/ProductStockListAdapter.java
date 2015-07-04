@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -34,7 +35,6 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 	private Context context;
 	DBFacade db;
 	int j, k;
-	Cursor products;
 	String[] myListProducts;
 	HashMap<Long, String> hmProducts;
 	Cursor clients;
@@ -53,14 +53,12 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 	// }
 
 	public ProductStockListAdapter(Context context, int layoutResourceId,
-			List<ProductStock> items) {
-
+			List<ProductStock> items, DBFacade db) {
 		super(context, layoutResourceId, items);
-
 		this.layoutResourceId = layoutResourceId;
 		this.context = context;
 		this.items = items;
-		db = new DBFacade(getContext());
+		this.db = db;
 		// carrega lista de produtos
 		refreshProductAndClientList();
 	}
@@ -69,15 +67,17 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 	 * Atualiza a lista de produtos que sera mostrada no autocomplete
 	 */
 	public void refreshProductAndClientList() {
-		products = db.listProducts();
+		Cursor cursorProducts = db.listProducts();
 		hmProducts = new HashMap<Long, String>();
 		j = 0;
-		myListProducts = new String[products.getCount()];
-		while (products.moveToNext()) {
-			long idProd = products.getInt(products.getColumnIndex(Product.ID));
-			StringBuilder name = new StringBuilder(products.getString(products
-					.getColumnIndex(Product.NAME))).append(" ").append(
-					products.getString(products
+		myListProducts = new String[cursorProducts.getCount()];
+		while (cursorProducts.moveToNext()) {
+			long idProd = cursorProducts.getInt(cursorProducts
+					.getColumnIndex(Product.ID));
+			StringBuilder name = new StringBuilder(
+					cursorProducts.getString(cursorProducts
+							.getColumnIndex(Product.NAME))).append(" ").append(
+					cursorProducts.getString(cursorProducts
 							.getColumnIndex(Product.DESCRIPTION)));
 			myListProducts[j] = name.toString();
 			hmProducts.put(idProd, name.toString());
@@ -103,24 +103,38 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 		if (mAdapterProd != null) {
 			mAdapterProd.notifyDataSetChanged();
 		}
+		if (cursorProducts != null) {
+			cursorProducts.close();
+		}
 		this.notifyDataSetChanged();
 	}
 
 	ArrayAdapter<String> mAdapterClient;
 	ArrayAdapter<String> mAdapterProd;
 
+	private OnClickListener listenerRemoveProductStock = new OnClickListener() {
+
+		@Override
+		public void onClick(View v) {
+			ProductStock itemToRemove = (ProductStock) v.getTag();
+			ProductStockListAdapter.this.remove(itemToRemove);
+		}
+	};
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
-		ProductDayHolder holder = null;
+		StockProductHolder holder = null;
 		LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 		row = inflater.inflate(layoutResourceId, parent, false);
 
-		holder = new ProductDayHolder();
-		holder.productDay = items.get(position);
-		holder.removeProductDayButton = (ImageButton) row
+		holder = new StockProductHolder();
+		holder.stockProduct = items.get(position);
+		holder.btnRemoveStockProduct = (ImageButton) row
 				.findViewById(R.id.ProductDay_remove);
-		holder.removeProductDayButton.setTag(holder.productDay);
+		holder.btnRemoveStockProduct
+				.setOnClickListener(listenerRemoveProductStock);
+		holder.btnRemoveStockProduct.setTag(holder.stockProduct);
 
 		// AUTO COMPLETE PRODUCT
 		mAdapterProd = new ArrayAdapter<String>(this.context,
@@ -137,40 +151,42 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 		autoCompClient.setThreshold(0);
 		autoCompClient.setAdapter(mAdapterClient);
 
-		holder.prod_name = autoCompProduct;
-		holder.client_name = autoCompClient;
-		holder.quantity = (TextView) row.findViewById(R.id.ProductDay_quantity);
-		holder.unit_price = (TextView) row
+		holder.edtStockProdName = autoCompProduct;
+		holder.edtClientName = autoCompClient;
+		holder.tvQuantity = (TextView) row
+				.findViewById(R.id.ProductDay_quantity);
+		holder.tvUnitPrice = (TextView) row
 				.findViewById(R.id.ProductDay_unit_price);
-		setListnerOnFields(holder);
+		setListenerOnFields(holder);
 
 		row.setTag(holder);
 		setupItem(holder);
 		return row;
 	}
 
-	private void setupItem(ProductDayHolder holder) {
-		String name = hmProducts.get(holder.productDay.getIdProduct());
-		String client_name = hmClients.get(holder.productDay.getIdClient());
-		holder.prod_name.setText(name);
-		holder.client_name.setText(client_name);
-		holder.quantity
-				.setText(String.valueOf(holder.productDay.getQuantity()));
-		holder.unit_price.setText(String.valueOf(holder.productDay
+	private void setupItem(StockProductHolder holder) {
+		String name = hmProducts.get(holder.stockProduct.getIdProduct());
+		String client_name = hmClients.get(holder.stockProduct.getIdClient());
+		holder.edtStockProdName.setText(name);
+		holder.edtClientName.setText(client_name);
+		holder.tvQuantity.setText(String.valueOf(holder.stockProduct
+				.getQuantity()));
+		System.out.println("VALOR " + holder.stockProduct.getUnitPrice());
+		holder.tvUnitPrice.setText(String.valueOf(holder.stockProduct
 				.getUnitPrice()));
 	}
 
-	public static class ProductDayHolder {
-		ProductStock productDay;
-		AutoCompleteTextView prod_name;
-		AutoCompleteTextView client_name;
-		TextView quantity;
-		TextView unit_price;
-		ImageButton removeProductDayButton;
+	public static class StockProductHolder {
+		ProductStock stockProduct;
+		AutoCompleteTextView edtStockProdName;
+		AutoCompleteTextView edtClientName;
+		TextView tvQuantity;
+		TextView tvUnitPrice;
+		ImageButton btnRemoveStockProduct;
 	}
 
-	private void setListnerOnFields(final ProductDayHolder holder) {
-		holder.prod_name.addTextChangedListener(new TextWatcher() {
+	private void setListenerOnFields(final StockProductHolder holder) {
+		holder.edtStockProdName.addTextChangedListener(new TextWatcher() {
 
 			// @Override
 			public void onTextChanged(CharSequence s, int start, int before,
@@ -178,10 +194,10 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 				// Pega o id apartir do nome
 				if (getKey(hmProducts, s.toString()) != -1) {
 					long id = getKey(hmProducts, s.toString());
-					holder.productDay.setIdProduct(id);
+					holder.stockProduct.setIdProduct(id);
 					System.out.println("Setou id " + id + "  e  name " + s);
 					formatedEdit = true;
-//					listenerSave.save();
+					// listenerSave.save();
 				} else if (hmProducts.size() > 0) {
 					formatedEdit = false;
 				}
@@ -197,7 +213,7 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 			}
 
 		});
-		holder.client_name.addTextChangedListener(new TextWatcher() {
+		holder.edtClientName.addTextChangedListener(new TextWatcher() {
 
 			// @Override
 			public void onTextChanged(CharSequence s, int start, int before,
@@ -205,10 +221,10 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 				// Pega o id apartir do nome
 				if (getKey(hmClients, s.toString()) != -1) {
 					long id = getKey(hmClients, s.toString());
-					holder.productDay.setIdClient(id);
+					holder.stockProduct.setIdClient(id);
 					System.out.println("Setou id " + id + "  e  name " + s);
 					formatedEdit = true;
-//					listenerSave.save();
+					// listenerSave.save();
 				} else if (hmProducts.size() > 0) {
 					formatedEdit = false;
 				}
@@ -224,15 +240,14 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 			}
 
 		});
-		holder.quantity.addTextChangedListener(new TextWatcher() {
+		holder.tvQuantity.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
 				try {
-					holder.productDay.setQuantity(Double.parseDouble(s
+					holder.stockProduct.setQuantity(Double.parseDouble(s
 							.toString()));
-//					listenerSave.save();
 				} catch (NumberFormatException e) {
 					Log.e(LOG_TAG,
 							"error reading double value: " + s.toString());
@@ -249,15 +264,14 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 			}
 		});
 
-		holder.unit_price.addTextChangedListener(new TextWatcher() {
+		holder.tvUnitPrice.addTextChangedListener(new TextWatcher() {
 
 			@Override
 			public void onTextChanged(CharSequence s, int start, int before,
 					int count) {
 				try {
-					holder.productDay.setUnitPrice(Double.parseDouble(s
+					holder.stockProduct.setUnitPrice(Double.parseDouble(s
 							.toString()));
-//					listenerSave.save();
 				} catch (NumberFormatException e) {
 					Log.e(LOG_TAG,
 							"error reading double value: " + s.toString());
@@ -277,18 +291,12 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 
 	@Override
 	public void remove(ProductStock object) {
-		// if (isFormatedEdit()) {
 		db.removeProductDay(object);
 		super.remove(object);
-
-		// }
-
 	}
 
 	public long getKey(HashMap<Long, String> hm, String name) {
-//		System.out.println(name);
 		for (long key : hm.keySet()) {
-//			System.out.println(hm.get(key));
 			if (hm.get(key).equals(name))
 				return key;
 		}

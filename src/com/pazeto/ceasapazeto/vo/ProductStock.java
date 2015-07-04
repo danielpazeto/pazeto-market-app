@@ -2,12 +2,14 @@ package com.pazeto.ceasapazeto.vo;
 
 import java.io.Serializable;
 
+import android.database.Cursor;
+
 public class ProductStock implements Serializable {
 	/**
 	 * Product
 	 * 
 	 */
-	public static final String TABLE_NAME = "ProductDay";
+	public static final String TABLE_NAME = "StockProduct";
 	public static final String ID = "_id";
 	public static final String PRODUCT_ID = "product_id";
 	public static final String CLIENT_ID = "client_id";
@@ -16,18 +18,18 @@ public class ProductStock implements Serializable {
 	public static final String CREATED_DATE = "created_date";
 	public static final String DESCRIPTION = "description";
 	public static final String UNIT_PRICE = "unit_price";
-	public static final String IS_PAID = "unit_price";
+	public static final String IS_PAID = "is_paid";
 	public static final String _UPDATED = "_updated";
 	public static final String _DELETED = "_deleted";
 	//@formatter:off
-	    public static final String CREATE_TABLE_PRODUCTDAY = "CREATE TABLE IF NOT EXISTS "+ TABLE_NAME + " ("+
+	    public static final String CREATE_TABLE_STOCK_PRODUCT = "CREATE TABLE IF NOT EXISTS "+ TABLE_NAME + " ("+
 	    		  ID +" INTEGER PRIMARY KEY,"+
 	    		  CLIENT_ID +" INTEGER not null,"+
 	    		  PRODUCT_ID +" INTEGER not null,"+
 	    		  QUANTITY +" INTEGER not null,"+
-	    		  DATE + " INTEGER not null,"+
-	    		  UNIT_PRICE+ "INTEGER,"+
-			      IS_PAID+ " integer ,"+
+	    		  DATE + " INTEGER not null, "+
+	    		  UNIT_PRICE + " REAL ,"+
+			      IS_PAID + " INTEGER ,"+
 	    		  CREATED_DATE + " INTEGER DEFAULT CURRENT_TIMESTAMP,"+
 	    		  DESCRIPTION +" TEXT ,"+
 	    		  _UPDATED +" INTEGER,"+
@@ -62,7 +64,25 @@ public class ProductStock implements Serializable {
 		this.setDate(date);
 	}
 
-	public ProductStock(long id, long idProd, double quantity,long idClient, double unitPrice, long date) {
+	public ProductStock(Cursor c) {
+		long idProd = c.getInt(c.getColumnIndex(ProductStock.PRODUCT_ID));
+		long idClient = c.getInt(c.getColumnIndex(ProductStock.CLIENT_ID));
+		long id = c.getInt(c.getColumnIndex(ProductStock.ID));
+		long dateProd = c.getLong(c.getColumnIndex(ProductStock.DATE));
+		double quantity = c.getInt(c.getColumnIndex(ProductStock.QUANTITY));
+		double unitPrice = c.getDouble(c
+				.getColumnIndex(ProductStock.UNIT_PRICE));
+
+		this.setId(id);
+		this.setIdProduct(idProd);
+		this.setQuantity(quantity);
+		this.setIdClient(idClient);
+		this.setUnitPrice(unitPrice);
+		this.setDate(dateProd);
+	}
+
+	public ProductStock(long id, long idProd, double quantity, long idClient,
+			double unitPrice, long date) {
 		this.setId(id);
 		this.setIdProduct(idProd);
 		this.setQuantity(quantity);

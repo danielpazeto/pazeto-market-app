@@ -30,7 +30,7 @@ public class DBFacade extends SQLiteOpenHelper {
 			db.execSQL(User.CREATE_TABLE_USUARIO);
 			db.execSQL(Client.CREATE_TABLE_CLIENTE);
 			db.execSQL(Product.CREATE_TABLE_PRODUCT);
-			db.execSQL(ProductStock.CREATE_TABLE_PRODUCTDAY);
+			db.execSQL(ProductStock.CREATE_TABLE_STOCK_PRODUCT);
 			db.execSQL(Sale.CREATE_TABLE_SALE);
 			Log.d("DBFacade", "Criou Tabelas");
 		} catch (Exception e) {
@@ -127,16 +127,13 @@ public class DBFacade extends SQLiteOpenHelper {
 	public Cursor listProducts() {
 
 		SQLiteDatabase db = null;
-		db = getReadableDatabase();
 		try {
-
+			db = this.getReadableDatabase();
 			Cursor c = db.query(Product.TABLE_NAME, null, null, null, null,
 					null, null);
 			return c;
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally {
-			// db.close();
 		}
 		return null;
 	}
@@ -154,7 +151,8 @@ public class DBFacade extends SQLiteOpenHelper {
 
 	}
 
-	public long insertProductStock(ProductStock prod, SQLiteDatabase sql) throws Exception{
+	public long insertProductStock(ProductStock prod, SQLiteDatabase sql)
+			throws Exception {
 		ContentValues values = new ContentValues();
 		values.put(ProductStock.PRODUCT_ID, prod.getIdProduct());
 		values.put(ProductStock.QUANTITY, prod.getQuantity());
@@ -183,8 +181,6 @@ public class DBFacade extends SQLiteOpenHelper {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return -1;
-		} finally {
-			db.close();
 		}
 
 	}
@@ -224,12 +220,14 @@ public class DBFacade extends SQLiteOpenHelper {
 		}
 	}
 
-	public Cursor listProductsDayPerDate(long unixDate, SQLiteDatabase sql) {
+	public Cursor listStockProductsInDate(long unixDate, SQLiteDatabase sql) {
 		Cursor c = null;
 		try {
-			System.out.println("DATA PARA FILTRO: " + unixDate);
-			c = sql.rawQuery("SELECT * FROM " + ProductStock.TABLE_NAME
-					+ " WHERE date = " + unixDate, null);
+			// System.out.println("DATA PARA FILTRO: " + unixDate);
+			// c = sql.rawQuery("SELECT * FROM " + ProductStock.TABLE_NAME
+			// + " WHERE date = " + unixDate, null);
+			c = sql.query(ProductStock.TABLE_NAME, null, "date=?",
+					new String[] { unixDate + "" }, null, null, null);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
