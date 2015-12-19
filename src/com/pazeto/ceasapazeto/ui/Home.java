@@ -40,7 +40,7 @@ public class Home extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				Intent i = new Intent(Home.this, AddSale.class);
+				Intent i = new Intent(Home.this, SaleActivity.class);
 				startActivity(i);
 
 			}

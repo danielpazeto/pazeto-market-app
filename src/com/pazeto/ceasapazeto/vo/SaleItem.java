@@ -5,11 +5,13 @@ import java.io.Serializable;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-public class Sale extends BaseDB implements Serializable {
-	/**
-	 * Venda
-	 * 
-	 */
+/**
+ * 
+ * @author pazeto
+ *
+ */
+public class SaleItem extends BaseDB implements Serializable {
+
 	public static final String TABLE_NAME = "Venda";
 	public static final String ID = "_id";
 	public static final String ID_CLIENT = "id_client";
@@ -51,13 +53,13 @@ public class Sale extends BaseDB implements Serializable {
 	private boolean isPaid;
 	private String observation;
 
-	public Sale(long idProd, double quantity, long date) {
+	public SaleItem(long idProd, double quantity, long date) {
 		this.setIdProduct(idProd);
 		this.setQuantity(quantity);
 		this.setDate(date);
 	}
 
-	public Sale(long id, long idProd, double quantity, long date,
+	public SaleItem(long id, long idProd, double quantity, long date,
 			double priceUnit, long idClient, boolean isPaid) {
 		this.setId(id);
 		this.setIdClient(idClient);
@@ -68,14 +70,14 @@ public class Sale extends BaseDB implements Serializable {
 		this.setDate(date);
 	}
 
-	public Sale(Cursor c) {
-		this.setId(c.getInt(c.getColumnIndex(Sale.ID)));
-		this.setIdClient(c.getInt(c.getColumnIndex(Sale.ID_CLIENT)));
-		this.setIdProduct(c.getInt(c.getColumnIndex(Sale.ID_PRODUCT)));
-		this.setQuantity(c.getInt(c.getColumnIndex(Sale.QUANTITY)));
-		this.setUnitPrice(c.getInt(c.getColumnIndex(Sale.UNIT_PRICE)));
-		this.setPaid(c.getInt(c.getColumnIndex(Sale.IS_PAID)) > 0);
-		this.setDate(c.getLong(c.getColumnIndex(Sale.DATE)));
+	public SaleItem(Cursor c) {
+		this.setId(c.getInt(c.getColumnIndex(SaleItem.ID)));
+		this.setIdClient(c.getInt(c.getColumnIndex(SaleItem.ID_CLIENT)));
+		this.setIdProduct(c.getInt(c.getColumnIndex(SaleItem.ID_PRODUCT)));
+		this.setQuantity(c.getInt(c.getColumnIndex(SaleItem.QUANTITY)));
+		this.setUnitPrice(c.getInt(c.getColumnIndex(SaleItem.UNIT_PRICE)));
+		this.setPaid(c.getInt(c.getColumnIndex(SaleItem.IS_PAID)) > 0);
+		this.setDate(c.getLong(c.getColumnIndex(SaleItem.DATE)));
 	}
 
 	public long getIdProduct() {

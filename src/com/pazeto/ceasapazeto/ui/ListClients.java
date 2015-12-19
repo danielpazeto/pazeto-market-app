@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,11 +14,11 @@ import android.widget.ListView;
 import com.pazeto.ceasapazeto.R;
 import com.pazeto.ceasapazeto.adapter.CustomCursorAdapter;
 import com.pazeto.ceasapazeto.db.DBFacade;
+import com.pazeto.ceasapazeto.vo.Client;
 
 public class ListClients extends Activity {
 
 	private static final String TAG = "listClients";
-	protected static final int LIST_CLIENTS = 2;
 	ListView clientListView;
 	DBFacade db;
 	CustomCursorAdapter customAdapter;
@@ -27,20 +26,9 @@ public class ListClients extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.e("Entrou", "Activity listClientes");
 		setContentView(R.layout.client_list);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		db = new DBFacade(this);
-
-		clientListView = (ListView) findViewById(R.id.listview_clients);
-
-		clientListView.setOnItemClickListener(new OnItemClickListener() {
-			@Override
-			public void onItemClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				Log.d("Cliente", "clicked on item: " + position);
-			}
-		});
-
 		listClients();
 
 	}
@@ -49,8 +37,18 @@ public class ListClients extends Activity {
 		new Handler().post(new Runnable() {
 			@Override
 			public void run() {
+				clientListView = (ListView) findViewById(R.id.listview_clients);
+				clientListView.setOnItemClickListener(new OnItemClickListener() {
+					@Override
+					public void onItemClick(AdapterView<?> parent, View view,
+							int position, long id) {
+						Intent iClient = new Intent(ListClients.this, ClientActivity.class);
+						iClient.putExtra(Client.ID, id);
+						startActivityForResult(iClient, 1);
+					}
+				});
 				customAdapter = new CustomCursorAdapter(ListClients.this, db
-						.listClients(), LIST_CLIENTS);
+						.listClients(), CustomCursorAdapter.CLIENT);
 				clientListView.setAdapter(customAdapter);
 			}
 		});
@@ -58,7 +56,6 @@ public class ListClients extends Activity {
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		// TODO Auto-generated method stub
 		super.onActivityResult(requestCode, resultCode, data);
 		if (resultCode == RESULT_OK) {
 			listClients();
@@ -76,7 +73,6 @@ public class ListClients extends Activity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.menu_list, menu);
 		return true;
 	}
@@ -88,8 +84,8 @@ public class ListClients extends Activity {
 			this.finish();
 			return true;
 		case R.id.new_item:
-			startActivityForResult(
-					new Intent(ListClients.this, AddClient.class), 1);
+			startActivityForResult(new Intent(ListClients.this,
+					ClientActivity.class), 1);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

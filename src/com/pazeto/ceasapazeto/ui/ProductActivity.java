@@ -11,9 +11,11 @@ import com.pazeto.ceasapazeto.R;
 import com.pazeto.ceasapazeto.db.DBFacade;
 import com.pazeto.ceasapazeto.vo.Product;
 
-public class AddProduct extends Activity {
+public class ProductActivity extends Activity {
 
 	protected static final String TAG = "addProcudt";
+	Product currentProduct;
+
 	EditText etName;
 	EditText etDesc;
 	DBFacade db;
@@ -27,6 +29,18 @@ public class AddProduct extends Activity {
 		etDesc = (EditText) findViewById(R.id.cadprod_desc);
 		db = new DBFacade(this);
 
+		long productId = getIntent().getLongExtra(Product.ID, -1);
+		if (productId != -1) {
+			loadProduct(db.getProduct(productId));
+		} else {
+			currentProduct = new Product();
+		}
+
+	}
+
+	private void loadProduct(Product prod) {
+		etName.setText(prod.getName());
+		etDesc.setText(prod.getDescription());
 	}
 
 	@Override
@@ -42,17 +56,25 @@ public class AddProduct extends Activity {
 			this.finish();
 			return true;
 		case R.id.save:
-			Product prod = new Product();
-			prod.setName(etName.getText().toString());
-			prod.setDescription(etDesc.getText().toString());
+			String nameProd = etName.getText().toString();
+			String descProd = etDesc.getText().toString();
 
-			if (db.insertProduct(prod)) {
-				setResult(RESULT_OK);
-				finish();
-			} else {
-				Log.d(TAG, "N�o salvou produto.");
+			if (nameProd.length() > 0 && descProd.length() > 0) {
+				Product prod = new Product();
+				prod.setName(nameProd);
+				prod.setDescription(descProd);
+
+				if (db.insertProduct(prod)) {
+					setResult(RESULT_OK);
+					finish();
+				} else {
+					Log.d(TAG, "N�o salvou produto.");
+				}
+				return true;
+			}else{
+				//TODO RAISE EXCEPTION AVISANDO USUARIO que falta algo no nome ou na desc
+				return false;
 			}
-			return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

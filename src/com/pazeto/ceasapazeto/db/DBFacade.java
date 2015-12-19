@@ -1,7 +1,6 @@
 package com.pazeto.ceasapazeto.db;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -12,8 +11,8 @@ import android.util.Log;
 
 import com.pazeto.ceasapazeto.vo.Client;
 import com.pazeto.ceasapazeto.vo.Product;
-import com.pazeto.ceasapazeto.vo.ProductStock;
-import com.pazeto.ceasapazeto.vo.Sale;
+import com.pazeto.ceasapazeto.vo.StockedItem;
+import com.pazeto.ceasapazeto.vo.SaleItem;
 
 public class DBFacade extends SQLiteOpenHelper {
 
@@ -28,10 +27,10 @@ public class DBFacade extends SQLiteOpenHelper {
 		Log.d(TAG, "Tentando criar tabelas...");
 		try {
 			db.execSQL(User.CREATE_TABLE_USUARIO);
-			db.execSQL(Client.CREATE_TABLE_CLIENTE);
+			db.execSQL(Client.CREATE_TABLE_CLIENT);
 			db.execSQL(Product.CREATE_TABLE_PRODUCT);
-			db.execSQL(ProductStock.CREATE_TABLE_STOCK_PRODUCT);
-			db.execSQL(Sale.CREATE_TABLE_SALE);
+			db.execSQL(StockedItem.CREATE_TABLE_STOCKED_ITEM);
+			db.execSQL(SaleItem.CREATE_TABLE_SALE);
 			Log.d("DBFacade", "Criou Tabelas");
 		} catch (Exception e) {
 			Log.e("db", "Failure on create tables " + e);
@@ -138,43 +137,47 @@ public class DBFacade extends SQLiteOpenHelper {
 		return null;
 	}
 
-	public boolean insertClient(Client client, SQLiteDatabase sql) {
+	public boolean persistClient(Client client, SQLiteDatabase sql) {
 		try {
 			ContentValues values = client.getAsContentValue();
-			sql.insert(Client.TABLE_NAME, null, values);
+			if (client.getId() > 0) {
+				sql.update(Client.TABLE_NAME, values, Client.ID,
+						new String[] { client.getId() + "" });
+			} else {
+				sql.insert(Client.TABLE_NAME, null, values);
+			}
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
-		} finally {
 		}
 
 	}
 
-	public long insertProductStock(ProductStock prod, SQLiteDatabase sql)
+	public long insertProductStock(StockedItem prod, SQLiteDatabase sql)
 			throws Exception {
 		ContentValues values = new ContentValues();
-		values.put(ProductStock.PRODUCT_ID, prod.getIdProduct());
-		values.put(ProductStock.QUANTITY, prod.getQuantity());
-		values.put(ProductStock.CLIENT_ID, prod.getIdClient());
-		values.put(ProductStock.UNIT_PRICE, prod.getUnitPrice());
-		values.put(ProductStock.IS_PAID, prod.isPaid());
-		values.put(ProductStock.DATE, prod.getDate());
+		values.put(StockedItem.PRODUCT_ID, prod.getIdProduct());
+		values.put(StockedItem.QUANTITY, prod.getQuantity());
+		values.put(StockedItem.CLIENT_ID, prod.getIdClient());
+		values.put(StockedItem.UNIT_PRICE, prod.getUnitPrice());
+		values.put(StockedItem.IS_PAID, prod.isPaid());
+		values.put(StockedItem.DATE, prod.getDate());
 		if (prod.getId() != 0) {
-			values.put(ProductStock.ID, prod.getId());
-			return sql.update(ProductStock.TABLE_NAME, values, ProductStock.ID
+			values.put(StockedItem.ID, prod.getId());
+			return sql.update(StockedItem.TABLE_NAME, values, StockedItem.ID
 					+ " = " + prod.getId(), null);
 		} else {
-			return sql.insert(ProductStock.TABLE_NAME, null, values);
+			return sql.insert(StockedItem.TABLE_NAME, null, values);
 		}
 
 	}
 
-	public int removeProductDay(ProductStock prod) {
+	public int removeProductDay(StockedItem prod) {
 		SQLiteDatabase db = this.getWritableDatabase();
 		try {
 			if (prod.getId() != 0) {
-				return db.delete(ProductStock.TABLE_NAME,
+				return db.delete(StockedItem.TABLE_NAME,
 						"_id=" + prod.getId(), null);
 			}
 			return -1;
@@ -185,22 +188,21 @@ public class DBFacade extends SQLiteOpenHelper {
 
 	}
 
-	public long insertSale(Sale saleItem, SQLiteDatabase sql) {
+	public long insertSale(SaleItem saleItem, SQLiteDatabase sql) {
 		try {
 			ContentValues values = new ContentValues();
-
-			values.put(Sale.ID_CLIENT, saleItem.getIdClient());
-			values.put(Sale.ID_PRODUCT, saleItem.getIdProduct());
-			values.put(Sale.QUANTITY, saleItem.getQuantity());
-			values.put(Sale.UNIT_PRICE, saleItem.getUnitPrice());
-			values.put(Sale.DATE, saleItem.getDate());
-			values.put(Sale.IS_PAID, saleItem.isPaid());
+			values.put(SaleItem.ID_CLIENT, saleItem.getIdClient());
+			values.put(SaleItem.ID_PRODUCT, saleItem.getIdProduct());
+			values.put(SaleItem.QUANTITY, saleItem.getQuantity());
+			values.put(SaleItem.UNIT_PRICE, saleItem.getUnitPrice());
+			values.put(SaleItem.DATE, saleItem.getDate());
+			values.put(SaleItem.IS_PAID, saleItem.isPaid());
 			if (saleItem.getId() != 0) {
-				values.put(ProductStock.ID, saleItem.getId());
-				return sql.update(Sale.TABLE_NAME, values, Sale.ID + " = "
+				values.put(StockedItem.ID, saleItem.getId());
+				return sql.update(SaleItem.TABLE_NAME, values, SaleItem.ID + " = "
 						+ saleItem.getId(), null);
 			} else {
-				return sql.insert(Sale.TABLE_NAME, null, values);
+				return sql.insert(SaleItem.TABLE_NAME, null, values);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -208,10 +210,10 @@ public class DBFacade extends SQLiteOpenHelper {
 		}
 	}
 
-	public int removeSale(Sale sale, SQLiteDatabase sql) {
+	public int removeSale(SaleItem sale, SQLiteDatabase sql) {
 		try {
 			if (sale.getId() != 0) {
-				return sql.delete(Sale.TABLE_NAME, "_id=" + sale.getId(), null);
+				return sql.delete(SaleItem.TABLE_NAME, "_id=" + sale.getId(), null);
 			}
 			return -1;
 		} catch (Exception e) {
@@ -226,7 +228,7 @@ public class DBFacade extends SQLiteOpenHelper {
 			// System.out.println("DATA PARA FILTRO: " + unixDate);
 			// c = sql.rawQuery("SELECT * FROM " + ProductStock.TABLE_NAME
 			// + " WHERE date = " + unixDate, null);
-			c = sql.query(ProductStock.TABLE_NAME, null, "date=?",
+			c = sql.query(StockedItem.TABLE_NAME, null, "date=?",
 					new String[] { unixDate + "" }, null, null, null);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -237,7 +239,7 @@ public class DBFacade extends SQLiteOpenHelper {
 	public Cursor listProductsDayAvailables(SQLiteDatabase sql) {
 		Cursor c = null;
 		try {
-			c = sql.rawQuery("SELECT * FROM " + ProductStock.TABLE_NAME
+			c = sql.rawQuery("SELECT * FROM " + StockedItem.TABLE_NAME
 					+ " WHERE quantity > 0 ", null);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -250,7 +252,7 @@ public class DBFacade extends SQLiteOpenHelper {
 		db = getReadableDatabase();
 		try {
 			System.out.println("DATA PARA FILTRO: " + date);
-			Cursor c = db.rawQuery("select * from " + Sale.TABLE_NAME
+			Cursor c = db.rawQuery("select * from " + SaleItem.TABLE_NAME
 					+ " where strftime('%s',date) = strftime('%s','" + date
 					+ "')", null);
 			// select * from ProductDay where strftime('%s',date) <
@@ -274,13 +276,13 @@ public class DBFacade extends SQLiteOpenHelper {
 	 * @param sql
 	 * @return
 	 */
-	public ArrayList<Sale> listSalePerDateAndClient(long date, Client client,
+	public ArrayList<SaleItem> listSalePerDateAndClient(long date, Client client,
 			SQLiteDatabase sql) {
-		ArrayList<Sale> salesPerDateAndClient = new ArrayList<Sale>();
+		ArrayList<SaleItem> salesPerDateAndClient = new ArrayList<SaleItem>();
 		try {
 
 			StringBuilder query = new StringBuilder("select * from "
-					+ Sale.TABLE_NAME + " where");
+					+ SaleItem.TABLE_NAME + " where");
 
 			if (date > 0) {
 				query.append(" date = " + date + " AND ");
@@ -293,7 +295,7 @@ public class DBFacade extends SQLiteOpenHelper {
 			Cursor c = sql.rawQuery(query.toString(), null);
 
 			while (c.moveToNext()) {
-				Sale sale = new Sale(c);
+				SaleItem sale = new SaleItem(c);
 				salesPerDateAndClient.add(sale);
 			}
 
@@ -308,18 +310,18 @@ public class DBFacade extends SQLiteOpenHelper {
 		SQLiteDatabase db = null;
 		db = getWritableDatabase();
 		try {
-			Cursor c = db.rawQuery("SELECT " + ProductStock.QUANTITY + " FROM "
-					+ ProductStock.TABLE_NAME
+			Cursor c = db.rawQuery("SELECT " + StockedItem.QUANTITY + " FROM "
+					+ StockedItem.TABLE_NAME
 					+ " WHERE strftime('%s',date) = strftime('%s','" + date
-					+ "') AND " + ProductStock.ID + " = " + idProductDay, null);
+					+ "') AND " + StockedItem.ID + " = " + idProductDay, null);
 			float currentQuantity = c.getFloat((c
-					.getColumnIndex(ProductStock.QUANTITY)));
+					.getColumnIndex(StockedItem.QUANTITY)));
 
 			float newQuantity = currentQuantity - outQuantity;
 
 			ContentValues values = new ContentValues();
-			values.put(ProductStock.QUANTITY, newQuantity);
-			db.update(ProductStock.TABLE_NAME, values, "_id=" + idProductDay,
+			values.put(StockedItem.QUANTITY, newQuantity);
+			db.update(StockedItem.TABLE_NAME, values, "_id=" + idProductDay,
 					null);
 			// select * from ProductDay where strftime('%s',date) <
 			// strftime('%s','2013-12-27');
@@ -334,14 +336,15 @@ public class DBFacade extends SQLiteOpenHelper {
 
 	}
 
-	public Cursor getProductNameById(long id) {
+	public Product getProduct(long id) {
 
 		SQLiteDatabase db = null;
 		db = getReadableDatabase();
 		try {
 			Cursor c = db.query(Product.TABLE_NAME, new String[] { "name",
 					"description" }, "_id = " + id, null, null, null, null);
-			return c;
+			Product prod = new Product(c);
+			return prod;
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
@@ -350,4 +353,21 @@ public class DBFacade extends SQLiteOpenHelper {
 		return null;
 	}
 
+	public Client getClient(long id) {
+
+		SQLiteDatabase db = null;
+		db = getReadableDatabase();
+		try {
+			Cursor c = db.query(Client.TABLE_NAME, null,
+					Client.ID + " = " + id, null, null, null, null);
+			if (c.getCount() > 0 && c.moveToFirst()) {
+				return new Client(c);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			// db.close();
+		}
+		return null;
+	}
 }

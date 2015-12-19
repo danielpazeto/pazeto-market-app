@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="11"
+        android:minSdkVersion="17"
         android:targetSdkVersion="17" />
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -25,17 +25,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.AddClient" >
+        <activity android:name=".ui.ClientActivity" >
         </activity>
         <activity android:name=".ui.ListClients" >
         </activity>
-        <activity android:name=".ui.AddProduct" >
+        <activity android:name=".ui.ProductActivity" >
         </activity>
         <activity android:name=".ui.ListProducts" >
         </activity>
         <activity android:name=".ui.ListProductStock" >
         </activity>
-        <activity android:name=".ui.AddSale" >
+        <activity android:name=".ui.SaleActivity" >
         </activity>
         <activity android:name=".widgets.CalenderView" >
         </activity>

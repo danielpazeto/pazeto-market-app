@@ -20,21 +20,20 @@ import android.widget.TextView;
 
 import com.pazeto.ceasapazeto.R;
 import com.pazeto.ceasapazeto.db.DBFacade;
-import com.pazeto.ceasapazeto.ui.ListProductStock.saveStock;
+import com.pazeto.ceasapazeto.ui.ListProductStock.SaveStockListener;
 import com.pazeto.ceasapazeto.vo.Client;
 import com.pazeto.ceasapazeto.vo.Product;
-import com.pazeto.ceasapazeto.vo.ProductStock;
+import com.pazeto.ceasapazeto.vo.StockedItem;
 
-public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
+public class ProductStockListAdapter extends ArrayAdapter<StockedItem> {
 
 	protected static final String LOG_TAG = ProductStockListAdapter.class
 			.getSimpleName();
 
-	private List<ProductStock> items;
+	private List<StockedItem> items;
 	private int layoutResourceId;
 	private Context context;
 	DBFacade db;
-	int j, k;
 	String[] myListProducts;
 	HashMap<Long, String> hmProducts;
 	Cursor clients;
@@ -42,7 +41,7 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 	HashMap<Long, String> hmClients;
 	boolean formatedEdit = true;
 
-	private saveStock listenerSave;
+	private SaveStockListener listenerSave;
 
 	// public boolean isFormatedEdit() {
 	// if (!formatedEdit) {
@@ -53,7 +52,7 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 	// }
 
 	public ProductStockListAdapter(Context context, int layoutResourceId,
-			List<ProductStock> items, DBFacade db) {
+			List<StockedItem> items, DBFacade db) {
 		super(context, layoutResourceId, items);
 		this.layoutResourceId = layoutResourceId;
 		this.context = context;
@@ -69,7 +68,7 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 	public void refreshProductAndClientList() {
 		Cursor cursorProducts = db.listProducts();
 		hmProducts = new HashMap<Long, String>();
-		j = 0;
+		int productItemIdex = 0;
 		myListProducts = new String[cursorProducts.getCount()];
 		while (cursorProducts.moveToNext()) {
 			long idProd = cursorProducts.getInt(cursorProducts
@@ -79,23 +78,23 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 							.getColumnIndex(Product.NAME))).append(" ").append(
 					cursorProducts.getString(cursorProducts
 							.getColumnIndex(Product.DESCRIPTION)));
-			myListProducts[j] = name.toString();
+			myListProducts[productItemIdex] = name.toString();
 			hmProducts.put(idProd, name.toString());
-			j++;
+			productItemIdex++;
 		}
 		// setup clients
 		clients = db.listClients();
 		hmClients = new HashMap<Long, String>();
-		k = 0;
+		int clientItemIndex = 0;
 		myListClients = new String[clients.getCount()];
 		while (clients.moveToNext()) {
 			long idClient = clients.getInt(clients.getColumnIndex(Client.ID));
 			StringBuilder name = new StringBuilder(clients.getString(clients
 					.getColumnIndex(Client.NAME))).append(" ").append(
 					clients.getString(clients.getColumnIndex(Client.LASTNAME)));
-			myListClients[k] = name.toString();
+			myListClients[clientItemIndex] = name.toString();
 			hmClients.put(idClient, name.toString());
-			k++;
+			clientItemIndex++;
 		}
 		if (mAdapterClient != null) {
 			mAdapterClient.notifyDataSetChanged();
@@ -116,7 +115,7 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 
 		@Override
 		public void onClick(View v) {
-			ProductStock itemToRemove = (ProductStock) v.getTag();
+			StockedItem itemToRemove = (StockedItem) v.getTag();
 			ProductStockListAdapter.this.remove(itemToRemove);
 		}
 	};
@@ -165,10 +164,10 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 	}
 
 	private void setupItem(StockProductHolder holder) {
-		String name = hmProducts.get(holder.stockProduct.getIdProduct());
-		String client_name = hmClients.get(holder.stockProduct.getIdClient());
-		holder.edtStockProdName.setText(name);
-		holder.edtClientName.setText(client_name);
+		String productName = hmProducts.get(holder.stockProduct.getIdProduct());
+		String clientName = hmClients.get(holder.stockProduct.getIdClient());
+		holder.edtStockProdName.setText(productName);
+		holder.edtClientName.setText(clientName);
 		holder.tvQuantity.setText(String.valueOf(holder.stockProduct
 				.getQuantity()));
 		System.out.println("VALOR " + holder.stockProduct.getUnitPrice());
@@ -177,7 +176,7 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 	}
 
 	public static class StockProductHolder {
-		ProductStock stockProduct;
+		StockedItem stockProduct;
 		AutoCompleteTextView edtStockProdName;
 		AutoCompleteTextView edtClientName;
 		TextView tvQuantity;
@@ -290,7 +289,7 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 	}
 
 	@Override
-	public void remove(ProductStock object) {
+	public void remove(StockedItem object) {
 		db.removeProductDay(object);
 		super.remove(object);
 	}
@@ -303,7 +302,7 @@ public class ProductStockListAdapter extends ArrayAdapter<ProductStock> {
 		return -1;
 	}
 
-	public void setSaveListener(saveStock saveListener) {
+	public void setSaveListener(SaveStockListener saveListener) {
 		listenerSave = saveListener;
 	}
 

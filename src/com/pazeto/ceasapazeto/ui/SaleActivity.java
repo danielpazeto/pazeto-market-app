@@ -34,14 +34,14 @@ import com.pazeto.ceasapazeto.R;
 import com.pazeto.ceasapazeto.adapter.SaleListAdapter;
 import com.pazeto.ceasapazeto.db.DBFacade;
 import com.pazeto.ceasapazeto.vo.Client;
-import com.pazeto.ceasapazeto.vo.Sale;
+import com.pazeto.ceasapazeto.vo.SaleItem;
 import com.pazeto.ceasapazeto.widgets.Utils;
 
-public class AddSale extends Activity implements TextWatcher {
+public class SaleActivity extends Activity implements TextWatcher {
 	private TextView tvCurrentDate;
 	private Button changeDate, btSave;
 	static final int DATE_PICKER_ID = 1111;
-	private static final String TAG = AddSale.class.getName();
+	private static final String TAG = SaleActivity.class.getName();
 	private int year;
 	private int month;
 	private int day;
@@ -59,16 +59,18 @@ public class AddSale extends Activity implements TextWatcher {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sale_list_view);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		db = new DBFacade(this);
 		sql = db.getWritableDatabase();
-		final Calendar c = Calendar.getInstance();
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		Calendar c = Calendar.getInstance();
 		year = c.get(Calendar.YEAR);
 		month = c.get(Calendar.MONTH);
 		day = c.get(Calendar.DAY_OF_MONTH);
 		changeDate = (Button) findViewById(R.id.changeDate);
 		btSave = (Button) findViewById(R.id.btSave);
 		tvCurrentDate = (TextView) findViewById(R.id.OutputDate);
+		
+		
 		setupAutoCompleteClient();
 		// showDialog(DATE_PICKER_ID);
 
@@ -76,10 +78,8 @@ public class AddSale extends Activity implements TextWatcher {
 
 			@Override
 			public void onClick(View v) {
-
 				// On button click show datepicker dialog
 				showDialog(DATE_PICKER_ID);
-
 			}
 
 		});
@@ -103,10 +103,10 @@ public class AddSale extends Activity implements TextWatcher {
 	 * @param v
 	 */
 	public void removeSaleOnClickHandler(View v) {
-		final Sale itemToRemove = (Sale) v.getTag();
+		final SaleItem itemToRemove = (SaleItem) v.getTag();
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setMessage(
-				"Deseja remover:\n" + itemToRemove.getQuantity() + " - "
+				"Deseja remover o item nº "+ v.getId()+ ":\n" + itemToRemove.getQuantity() + " - "
 						+ adapter.getName(itemToRemove.getIdProduct()) + " - "
 						+ itemToRemove.getUnitPrice())
 				.setPositiveButton("Remover",
@@ -125,7 +125,7 @@ public class AddSale extends Activity implements TextWatcher {
 
 	}
 
-	private void setupListViewAdapter(ArrayList<Sale> items) {
+	private void setupListViewAdapter(ArrayList<SaleItem> items) {
 		adapter = new SaleListAdapter(this, R.layout.add_sale_list_item, items,
 				unixDate);
 		ListView salesListView = (ListView) findViewById(R.id.sale_ListView);
@@ -137,10 +137,10 @@ public class AddSale extends Activity implements TextWatcher {
 			@Override
 			public void onClick(View v) {
 				if (isConfigured() && unixDate > 0) {
-					adapter.insert(new Sale(0, 0, unixDate), 0);
+					adapter.insert(new SaleItem(0, 0, unixDate), 0);
 				} else {
 					Toast.makeText(getApplicationContext(),
-							"Cliente ou Data inv�lidos.", Toast.LENGTH_SHORT)
+							"Cliente ou Data inválidos.", Toast.LENGTH_SHORT)
 							.show();
 				}
 			}
@@ -148,7 +148,7 @@ public class AddSale extends Activity implements TextWatcher {
 	}
 
 	private void loadSalePerDateAndClient(long date, Client client) {
-		ArrayList<Sale> salesPerDateAndClient = db.listSalePerDateAndClient(
+		ArrayList<SaleItem> salesPerDateAndClient = db.listSalePerDateAndClient(
 				date, client, sql);
 		if (salesPerDateAndClient.size() == 0) {
 			Toast.makeText(getApplicationContext(),
@@ -212,7 +212,7 @@ public class AddSale extends Activity implements TextWatcher {
 	private void saveSales() {
 		if (adapter != null) {
 			for (int i = 0; i < adapter.getCount(); i++) {
-				Sale saleItem = adapter.getItem(i);
+				SaleItem saleItem = adapter.getItem(i);
 				saleItem.setDate(unixDate);
 				saleItem.setIdClient(currentClient.getId());
 				long id = db.insertSale(saleItem, sql);
@@ -231,13 +231,11 @@ public class AddSale extends Activity implements TextWatcher {
 	public void onBackPressed() {
 		saveSales();
 		super.onBackPressed();
-
 	}
 
 	@Override
 	public void afterTextChanged(Editable s) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -302,10 +300,8 @@ public class AddSale extends Activity implements TextWatcher {
 				if (hmClients.get(key).equals(name))
 					return key;
 			}
-			return -1;
 		}
 		return -1;
-
 	}
 
 	/**
@@ -337,13 +333,12 @@ public class AddSale extends Activity implements TextWatcher {
 			saveSales();
 			this.finish();
 			return true;
-
 		case R.id.new_client:
-			startActivityForResult(new Intent(AddSale.this, AddClient.class), 1);
+			startActivityForResult(new Intent(SaleActivity.this, ClientActivity.class), 1);
 			return true;
 
 		case R.id.new_product_day:
-			startActivityForResult(new Intent(AddSale.this, ListProductStock.class),
+			startActivityForResult(new Intent(SaleActivity.this, ListProductStock.class),
 					1);
 			return true;
 		}

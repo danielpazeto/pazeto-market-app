@@ -75,6 +75,11 @@
         android:layout_height="wrap_content" >
 
         <TextView
+            android:layout_width="5dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.4"
+            android:text="#" />
+        <TextView
             android:id="@+id/tvHeaderUnit"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

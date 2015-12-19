@@ -4,17 +4,25 @@
     android:layout_height="fill_parent"
     android:orientation="horizontal" >
 
+    <TextView
+        android:id="@+id/pos"
+        android:layout_width="0dp"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.4"
+        android:text="#"
+        android:ems="10"
+        android:gravity="center"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
     <EditText
         android:id="@+id/sale_quantity"
-        android:layout_width="0sp"
+        android:layout_width="0dp"
         android:layout_height="fill_parent"
         android:layout_weight="1"
         android:ems="10"
         android:gravity="center"
-        android:hint="0.0"
         android:inputType="numberDecimal"
         android:textAppearance="?android:attr/textAppearanceSmall" >
-        
     </EditText>
 
     <AutoCompleteTextView
@@ -47,7 +55,7 @@
         android:hint="R$"
         android:inputType="numberDecimal"
         android:textAppearance="?android:attr/textAppearanceSmall" />
-    
+
     <CheckBox
         android:id="@+id/sale_ck_is_paid"
         android:layout_width="0dp"

@@ -44,13 +44,6 @@
             android:layout_weight="1"
             android:orientation="vertical" >
 
-            <Button
-                android:id="@+id/bt_save_client"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:text="Salvar" />
-
         </LinearLayout>
 
     </LinearLayout>

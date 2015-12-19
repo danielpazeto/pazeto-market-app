@@ -25,15 +25,16 @@ import android.widget.TextView;
 import com.pazeto.ceasapazeto.R;
 import com.pazeto.ceasapazeto.db.DBFacade;
 import com.pazeto.ceasapazeto.vo.Product;
-import com.pazeto.ceasapazeto.vo.ProductStock;
-import com.pazeto.ceasapazeto.vo.Sale;
+import com.pazeto.ceasapazeto.vo.StockedItem;
+import com.pazeto.ceasapazeto.vo.SaleItem;
 
-public class SaleListAdapter extends ArrayAdapter<Sale> implements TextWatcher {
+public class SaleListAdapter extends ArrayAdapter<SaleItem> implements
+		TextWatcher {
 
 	protected static final String LOG_TAG = SaleListAdapter.class
 			.getSimpleName();
 
-	private List<Sale> items;
+	private List<SaleItem> items;
 	private int layoutResourceId;
 	private Context context;
 	DBFacade db;
@@ -50,7 +51,7 @@ public class SaleListAdapter extends ArrayAdapter<Sale> implements TextWatcher {
 	}
 
 	public SaleListAdapter(Context context, int layoutResourceId,
-			List<Sale> items, long date) {
+			List<SaleItem> items, long date) {
 
 		super(context, layoutResourceId, items);
 
@@ -67,13 +68,10 @@ public class SaleListAdapter extends ArrayAdapter<Sale> implements TextWatcher {
 		myListProductsDay = new String[prodyctsAvailables.getCount()];
 		while (prodyctsAvailables.moveToNext()) {
 			long idProd = prodyctsAvailables.getInt(prodyctsAvailables
-					.getColumnIndex(ProductStock.PRODUCT_ID));
-			Cursor prodName = db.getProductNameById(idProd);
-			prodName.moveToFirst();
-			StringBuilder name = new StringBuilder(prodName.getString(prodName
-					.getColumnIndex(Product.NAME))).append(" ").append(
-					prodName.getString(prodName
-							.getColumnIndex(Product.DESCRIPTION)));
+					.getColumnIndex(StockedItem.PRODUCT_ID));
+			Product prod = db.getProduct(idProd);
+			StringBuilder name = new StringBuilder(prod.getName() + " "
+					+ prod.getDescription());
 
 			myListProductsDay[j] = name.toString();
 			hmProductDay.put(idProd, name.toString());
@@ -84,29 +82,32 @@ public class SaleListAdapter extends ArrayAdapter<Sale> implements TextWatcher {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View row = convertView;
-		SaleHolder holder = null;
 		LayoutInflater inflater = ((Activity) context).getLayoutInflater();
 		row = inflater.inflate(layoutResourceId, parent, false);
 
-		holder = new SaleHolder();
+		SaleHolder holder = new SaleHolder();
 		holder.sale = items.get(position);
 		holder.removeSaleButton = (ImageButton) row
 				.findViewById(R.id.sale_remove);
 		holder.removeSaleButton.setTag(holder.sale);
 		// TODO FAZENDO AUTOCOMPLETE TEXT VIEW
 
-		ArrayAdapter<String> mAdapter = new ArrayAdapter<String>(this.context,
-				android.R.layout.simple_dropdown_item_1line, myListProductsDay);
+		ArrayAdapter<String> prodAdapter = new ArrayAdapter<String>(
+				this.context, android.R.layout.simple_dropdown_item_1line,
+				myListProductsDay);
 
 		AutoCompleteTextView autoCompProduct = (AutoCompleteTextView) row
 				.findViewById(R.id.sale_product);
 		autoCompProduct.addTextChangedListener(this);
 		autoCompProduct.setThreshold(0);
-		autoCompProduct.setAdapter(mAdapter);
+		autoCompProduct.setAdapter(prodAdapter);
 
 		holder.prodName = (AutoCompleteTextView) row
 				.findViewById(R.id.sale_product);
 		setNameTextChangeListener(holder);
+		TextView pos = (TextView) row.findViewById(R.id.pos);
+		pos.setText(String.valueOf(position));
+		
 		holder.quantity = (EditText) row.findViewById(R.id.sale_quantity);
 		setQuantityTextListeners(holder);
 		holder.unitPrice = (EditText) row.findViewById(R.id.sale_price_unit);
@@ -131,8 +132,9 @@ public class SaleListAdapter extends ArrayAdapter<Sale> implements TextWatcher {
 		holder.isPaid.setChecked(holder.sale.isPaid());
 	}
 
-	public static class SaleHolder {
-		Sale sale;
+	private class SaleHolder {
+		TextView position;
+		SaleItem sale;
 		AutoCompleteTextView prodName;
 		EditText quantity;
 		EditText unitPrice;
@@ -298,7 +300,7 @@ public class SaleListAdapter extends ArrayAdapter<Sale> implements TextWatcher {
 	}
 
 	@Override
-	public void remove(Sale saleToRemove) {
+	public void remove(SaleItem saleToRemove) {
 		if (isFormatedEdit()) {
 			db.removeSale(saleToRemove, sql);
 			super.remove(saleToRemove);

@@ -27,20 +27,20 @@ import android.widget.Toast;
 import com.pazeto.ceasapazeto.R;
 import com.pazeto.ceasapazeto.adapter.ProductStockListAdapter;
 import com.pazeto.ceasapazeto.db.DBFacade;
-import com.pazeto.ceasapazeto.vo.ProductStock;
+import com.pazeto.ceasapazeto.vo.StockedItem;
 import com.pazeto.ceasapazeto.widgets.Utils;
 
 public class ListProductStock extends Activity {
-	private TextView Output;
+	private TextView tvDate;
 	private Button changeDate;
-	static final int DATE_PICKER_ID = 1111;
+	static final int DATE_PICKER_ID = 451654;
 	private int year;
 	private int month;
 	private int day;
 	private String date;
 	private ProductStockListAdapter adapter;
 	DBFacade db;
-	// Cursor cursorProductsDay;
+
 	CalendarView calendar;
 	private long unixDate;
 	boolean saved = true;
@@ -57,8 +57,8 @@ public class ListProductStock extends Activity {
 		year = c.get(Calendar.YEAR);
 		month = c.get(Calendar.MONTH);
 		day = c.get(Calendar.DAY_OF_MONTH);
-		changeDate = (Button) findViewById(R.id.changeDate);
-		Output = (TextView) findViewById(R.id.Output);
+		changeDate = (Button) findViewById(R.id.btn_change_date);
+		tvDate = (TextView) findViewById(R.id.tvDate);
 		if (unixDate <= 0) {
 			showDialog(DATE_PICKER_ID);
 		}
@@ -77,22 +77,23 @@ public class ListProductStock extends Activity {
 		setupAddProductDayButton();
 	}
 
-	private void setupListViewAdapter(ArrayList<ProductStock> items) {
+	private void setupListViewAdapter(ArrayList<StockedItem> items) {
 		adapter = new ProductStockListAdapter(this,
 				R.layout.add_productday_list_item, items, db);
-		ListView productDaysListView = (ListView) findViewById(R.id.ProductDay_ListView);
+		ListView productDaysListView = (ListView) findViewById(R.id.product_day_list_view);
+		productDaysListView.setEmptyView(findViewById(android.R.id.empty));
 		productDaysListView.setAdapter(adapter);
 		adapter.setSaveListener(saveListener);
 	}
 
 	private void setupAddProductDayButton() {
-		findViewById(R.id.AddProductDay).setOnClickListener(
+		findViewById(R.id.btn_add_product_day).setOnClickListener(
 				new OnClickListener() {
 					@Override
 					public void onClick(View v) {
 						// if (adapter.isFormatedEdit()) {
 						Log.d("data do add: ", "" + unixDate);
-						adapter.insert(new ProductStock(0, 0, unixDate), 0);
+						adapter.insert(new StockedItem(0, 0, unixDate), 0);
 					}
 					// }
 				});
@@ -100,39 +101,22 @@ public class ListProductStock extends Activity {
 
 	private void loadProductDayPerDate(long date) {
 		Cursor cursorProductsDay = db.listStockProductsInDate(date, sql);
-		ArrayList<ProductStock> prodsPerDate = new ArrayList<ProductStock>();
+		ArrayList<StockedItem> prodsPerDate = new ArrayList<StockedItem>();
 		while (cursorProductsDay.moveToNext()) {
-//			long idProd = cursorProductsDay.getInt(cursorProductsDay
-//					.getColumnIndex(ProductStock.PRODUCT_ID));
-//			long idClient = cursorProductsDay.getInt(cursorProductsDay
-//					.getColumnIndex(ProductStock.CLIENT_ID));
-//			long id = cursorProductsDay.getInt(cursorProductsDay
-//					.getColumnIndex(ProductStock.ID));
-//			long dateProd = cursorProductsDay.getLong(cursorProductsDay
-//					.getColumnIndex(ProductStock.DATE));
-//			double quantity = cursorProductsDay.getInt(cursorProductsDay
-//					.getColumnIndex(ProductStock.QUANTITY));
-//			double unitPrice = cursorProductsDay.getDouble(cursorProductsDay
-//					.getColumnIndex(ProductStock.UNIT_PRICE));
-			prodsPerDate.add(new ProductStock(cursorProductsDay));
+			prodsPerDate.add(new StockedItem(cursorProductsDay));
 		}
 		if (cursorProductsDay != null) {
 			cursorProductsDay.close();
 		}
 		setupListViewAdapter(prodsPerDate);
-
 	}
 
 	@Override
 	protected Dialog onCreateDialog(int id) {
 		switch (id) {
 		case DATE_PICKER_ID:
-
-			// open datepicker dialog.
-			// set date picker for current date
-			// add pickerListener listner to date picker
 			final DatePickerDialog datePickDialog = new DatePickerDialog(this,
-					pickerListener, year, month, day);
+					datePickerListener, year, month, day);
 			datePickDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
 					"Cancelar", new DialogInterface.OnClickListener() {
 
@@ -147,19 +131,17 @@ public class ListProductStock extends Activity {
 		return null;
 	}
 
-	private DatePickerDialog.OnDateSetListener pickerListener = new DatePickerDialog.OnDateSetListener() {
-
+	private DatePickerDialog.OnDateSetListener datePickerListener = new DatePickerDialog.OnDateSetListener() {
 		// when dialog box is closed, below method will be called.
 		@Override
 		public void onDateSet(DatePicker view, int selectedYear,
 				int selectedMonth, int selectedDay) {
-
 			year = selectedYear;
 			month = selectedMonth;
 			day = selectedDay;
 
 			// Show selected date
-			Output.setText(new StringBuilder().append(month + 1).append("/")
+			tvDate.setText(new StringBuilder().append(month + 1).append("/")
 					.append(day).append("/").append(year).append(" "));
 
 			date = new StringBuilder().append(year).append("-")
@@ -172,10 +154,10 @@ public class ListProductStock extends Activity {
 
 	private boolean saveStockProducts() {
 		try {
-			int savedIds = 0;
+			int savedIdsCounter = 0;
 			System.out.println("ITEMS: " + adapter.getCount());
 			for (int i = 0; i < adapter.getCount(); i++) {
-				ProductStock prodDay = adapter.getItem(i);
+				StockedItem prodDay = adapter.getItem(i);
 
 				System.out.println("ID: " + prodDay.getId() + " Quant.: "
 						+ prodDay.getQuantity() + " Prod id: "
@@ -183,17 +165,16 @@ public class ListProductStock extends Activity {
 						+ prodDay.getDate() + " e valor : "
 						+ prodDay.getUnitPrice());
 
-				long id;
-				id = db.insertProductStock(prodDay, sql);
+				long id = db.insertProductStock(prodDay, sql);
 				if (id != -1 && id > 0) {
 					System.out.println("salvou com novo id: " + id);
 					adapter.getItem(i).setId(id);
 				}
-				savedIds++;
+				savedIdsCounter++;
 			}
 			Toast.makeText(getApplicationContext(),
-					"Salvou " + savedIds + " Item(s).", Toast.LENGTH_SHORT)
-					.show();
+					"Salvou " + savedIdsCounter + " Item(s).",
+					Toast.LENGTH_SHORT).show();
 			return true;
 		} catch (Exception e) {
 			Toast.makeText(getApplicationContext(), "Erro ao salvar itens",
@@ -229,12 +210,11 @@ public class ListProductStock extends Activity {
 			return true;
 		case R.id.new_client:
 			startActivityForResult(new Intent(ListProductStock.this,
-					AddClient.class), 1);
+					ClientActivity.class), 1);
 			return true;
-
 		case R.id.new_product:
 			startActivityForResult(new Intent(ListProductStock.this,
-					AddProduct.class), 1);
+					ProductActivity.class), 1);
 			return true;
 
 		}
@@ -261,7 +241,7 @@ public class ListProductStock extends Activity {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
-	saveStock saveListener = new saveStock() {
+	SaveStockListener saveListener = new SaveStockListener() {
 
 		@Override
 		public boolean save() {
@@ -270,7 +250,7 @@ public class ListProductStock extends Activity {
 		}
 	};
 
-	public interface saveStock {
+	public interface SaveStockListener {
 		public boolean save();
 	}
 }

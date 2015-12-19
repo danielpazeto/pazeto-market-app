@@ -15,11 +15,11 @@ import android.widget.ListView;
 import com.pazeto.ceasapazeto.R;
 import com.pazeto.ceasapazeto.adapter.CustomCursorAdapter;
 import com.pazeto.ceasapazeto.db.DBFacade;
+import com.pazeto.ceasapazeto.vo.Product;
 
 public class ListProducts extends Activity {
 
 	protected static final String TAG = "ListProducts";
-	protected static final int LIST_PRODUCT = 1;
 	ListView productListView;
 	DBFacade db;
 	CustomCursorAdapter customAdapter;
@@ -27,7 +27,7 @@ public class ListProducts extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.e("Entrou", "Activity listProducts");
+
 		setContentView(R.layout.product_list);
 		db = new DBFacade(this);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
@@ -36,7 +36,9 @@ public class ListProducts extends Activity {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view,
 					int position, long id) {
-				Log.d(TAG, "clicked on item: " + position);
+				Intent iProd = new Intent(ListProducts.this, ProductActivity.class);
+				iProd.putExtra(Product.ID, id);
+				startActivityForResult(iProd, 1);
 			}
 		});
 
@@ -50,7 +52,7 @@ public class ListProducts extends Activity {
 			@Override
 			public void run() {
 				customAdapter = new CustomCursorAdapter(ListProducts.this, db
-						.listProducts(), LIST_PRODUCT);
+						.listProducts(), CustomCursorAdapter.PRODUCT);
 				productListView.setAdapter(customAdapter);
 			}
 		});
@@ -84,7 +86,7 @@ public class ListProducts extends Activity {
 			return true;
 		case R.id.new_item:
 			startActivityForResult(new Intent(ListProducts.this,
-					AddProduct.class), 1);
+					ProductActivity.class), 1);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

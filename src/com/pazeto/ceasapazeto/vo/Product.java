@@ -1,5 +1,7 @@
 package com.pazeto.ceasapazeto.vo;
 
+import android.database.Cursor;
+
 public class Product {
 
 	/**
@@ -14,23 +16,29 @@ public class Product {
 	public static final String _DELETED = "_deleted";
 	// @formatter:off
 	public static final String CREATE_TABLE_PRODUCT = "CREATE TABLE IF NOT EXISTS "
-			+ TABLE_NAME
-			+ " ("
-			+ ID
-			+ " INTEGER PRIMARY KEY,"
-			+ NAME
-			+ " text not null,"
-			+ DESCRIPTION
-			+ " text not null,"
-			+ _UPDATED
-			+ " integer," + _DELETED + " integer)";
+			+ TABLE_NAME + " ("
+			+ ID + " INTEGER PRIMARY KEY,"
+			+ NAME + " text not null,"
+			+ DESCRIPTION + " text not null,"
+			+ _UPDATED + " integer,"
+			+ _DELETED + " integer,"
+			+ " UNIQUE("+NAME+","+DESCRIPTION+"))";
 
 	public static final String DROP_TABLE_PRODUCT = " DROP TABLE IF EXISTS "
 			+ TABLE_NAME;
 	// @formatter:on
+	
 	String id;
 	String name;
 	String description;
+
+	public Product(Cursor c) {
+		// TODO Auto-generated constructor stub
+	}
+
+	public Product() {
+		// TODO Auto-generated constructor stub
+	}
 
 	public String getId() {
 		return id;

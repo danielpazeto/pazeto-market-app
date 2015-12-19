@@ -4,12 +4,14 @@ import java.io.Serializable;
 
 import android.database.Cursor;
 
-public class ProductStock implements Serializable {
-	/**
-	 * Product
-	 * 
-	 */
-	public static final String TABLE_NAME = "StockProduct";
+/**
+ * 
+ * @author pazeto
+ *
+ */
+public class StockedItem implements Serializable {
+	
+	public static final String TABLE_NAME = "StockedItem";
 	public static final String ID = "_id";
 	public static final String PRODUCT_ID = "product_id";
 	public static final String CLIENT_ID = "client_id";
@@ -22,7 +24,7 @@ public class ProductStock implements Serializable {
 	public static final String _UPDATED = "_updated";
 	public static final String _DELETED = "_deleted";
 	//@formatter:off
-	    public static final String CREATE_TABLE_STOCK_PRODUCT = "CREATE TABLE IF NOT EXISTS "+ TABLE_NAME + " ("+
+	public static final String CREATE_TABLE_STOCKED_ITEM = "CREATE TABLE IF NOT EXISTS "+ TABLE_NAME + " ("+
 	    		  ID +" INTEGER PRIMARY KEY,"+
 	    		  CLIENT_ID +" INTEGER not null,"+
 	    		  PRODUCT_ID +" INTEGER not null,"+
@@ -37,7 +39,7 @@ public class ProductStock implements Serializable {
 	    		  " FOREIGN KEY(client_id) REFERENCES Client(_id),"+
 	    		  " FOREIGN KEY(product_id) REFERENCES Product(_id))";
 	     
-	     public static final String DROP_TABLE_PRODUCTDAY = " DROP TABLE IF EXISTS " + TABLE_NAME;
+	public static final String DROP_TABLE_STOCKED_ITEM = " DROP TABLE IF EXISTS " + TABLE_NAME;
 	// @formatter:on
 
 	private static final long serialVersionUID = -5435670920302756945L;
@@ -58,20 +60,20 @@ public class ProductStock implements Serializable {
 		this.date = date;
 	}
 
-	public ProductStock(long idProd, double quantity, long date) {
+	public StockedItem(long idProd, double quantity, long date) {
 		this.setIdProduct(idProd);
 		this.setQuantity(quantity);
 		this.setDate(date);
 	}
 
-	public ProductStock(Cursor c) {
-		long idProd = c.getInt(c.getColumnIndex(ProductStock.PRODUCT_ID));
-		long idClient = c.getInt(c.getColumnIndex(ProductStock.CLIENT_ID));
-		long id = c.getInt(c.getColumnIndex(ProductStock.ID));
-		long dateProd = c.getLong(c.getColumnIndex(ProductStock.DATE));
-		double quantity = c.getInt(c.getColumnIndex(ProductStock.QUANTITY));
+	public StockedItem(Cursor c) {
+		long idProd = c.getInt(c.getColumnIndex(StockedItem.PRODUCT_ID));
+		long idClient = c.getInt(c.getColumnIndex(StockedItem.CLIENT_ID));
+		long id = c.getInt(c.getColumnIndex(StockedItem.ID));
+		long dateProd = c.getLong(c.getColumnIndex(StockedItem.DATE));
+		double quantity = c.getInt(c.getColumnIndex(StockedItem.QUANTITY));
 		double unitPrice = c.getDouble(c
-				.getColumnIndex(ProductStock.UNIT_PRICE));
+				.getColumnIndex(StockedItem.UNIT_PRICE));
 
 		this.setId(id);
 		this.setIdProduct(idProd);
@@ -81,7 +83,7 @@ public class ProductStock implements Serializable {
 		this.setDate(dateProd);
 	}
 
-	public ProductStock(long id, long idProd, double quantity, long idClient,
+	public StockedItem(long id, long idProd, double quantity, long idClient,
 			double unitPrice, long date) {
 		this.setId(id);
 		this.setIdProduct(idProd);
