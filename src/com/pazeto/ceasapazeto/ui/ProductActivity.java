@@ -1,4 +1,4 @@
-package com.pazeto.ceasapazeto.ui;
+package com.pazeto.market.ui;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,9 +7,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.pazeto.ceasapazeto.R;
-import com.pazeto.ceasapazeto.db.DBFacade;
-import com.pazeto.ceasapazeto.vo.Product;
+import com.pazeto.market.R;
+import com.pazeto.market.db.DBFacade;
+import com.pazeto.market.vo.Product;
 
 public class ProductActivity extends Activity {
 

@@ -1,4 +1,4 @@
-package com.pazeto.ceasapazeto.ui;
+package com.pazeto.market.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -8,7 +8,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.LinearLayout;
 
-import com.pazeto.ceasapazeto.R;
+import com.pazeto.market.R;
 
 public class Home extends Activity {
 

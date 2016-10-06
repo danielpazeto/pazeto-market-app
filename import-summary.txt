@@ -1,0 +1,120 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .gitignore
+* .idea/
+* .idea/.name
+* .idea/compiler.xml
+* .idea/copyright/
+* .idea/copyright/profiles_settings.xml
+* .idea/encodings.xml
+* .idea/misc.xml
+* .idea/modules.xml
+* .idea/vcs.xml
+* .idea/workspace.xml
+* README.md
+* out/
+* out/production/
+* out/production/pazeto-market-app/
+* out/production/pazeto-market-app/com/
+* out/production/pazeto-market-app/com/pazeto/
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/BuildConfig.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/R$attr.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/R$dimen.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/R$drawable.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/R$id.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/R$layout.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/R$menu.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/R$string.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/R$style.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/R.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/CustomCursorAdapter.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/ProductStockListAdapter$1.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/ProductStockListAdapter$2.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/ProductStockListAdapter$3.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/ProductStockListAdapter$4.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/ProductStockListAdapter$5.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/ProductStockListAdapter$StockProductHolder.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/ProductStockListAdapter.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/SaleListAdapter$1.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/SaleListAdapter$2.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/SaleListAdapter$3.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/SaleListAdapter$4.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/SaleListAdapter$5.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/SaleListAdapter$SaleHolder.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/adapter/SaleListAdapter.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/db/
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/db/DBFacade.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/db/Payment.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/db/User.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/ClientActivity.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/DefaultActivity.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/Home$1.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/Home$2.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/Home$3.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/Home$4.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/Home.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/ListClients$1$1.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/ListClients$1.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/ListClients.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/ListProductStock$1.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/ListProductStock$2.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/ListProductStock$3.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/ListProductStock$4.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/ListProductStock$5.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/ListProductStock$SaveStockListener.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/ListProductStock.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/ListProducts$1.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/ListProducts$2.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/ListProducts.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/ProductActivity.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/SaleActivity$1.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/SaleActivity$2.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/SaleActivity$3.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/SaleActivity$4.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/SaleActivity$5.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/SaleActivity$6.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/SaleActivity$7.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/ui/SaleActivity.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/vo/
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/vo/BaseDB.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/vo/Client.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/vo/Product.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/vo/SaleItem.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/vo/StockedItem.class
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/widgets/
+* out/production/pazeto-market-app/com/pazeto/ceasapazeto/widgets/Utils.class
+* pazeto-market-app.iml
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* AndroidManifest.xml => app/src/main/AndroidManifest.xml
+* res/ => app/src/main/res/
+* src/ => app/src/main/java/
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Comércio</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="product_nameHint">Produto</string>
+    <string name="product_quantity">0</string>
+    <string name="remove">Remover</string>
+    <string name="save">Salvar</string>
+    <string name="new_item">Novo</string>
+    <string name="new_client">Novo Cliente</string>
+    <string name="new_product">Novo Produto</string>
+
+</resources>
