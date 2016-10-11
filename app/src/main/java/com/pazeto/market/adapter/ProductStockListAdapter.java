@@ -67,7 +67,7 @@ public class ProductStockListAdapter extends ArrayAdapter<StockedItem> {
 	 */
 	public void refreshProductAndClientList() {
 		Cursor cursorProducts = db.listProducts();
-		hmProducts = new HashMap<Long, String>();
+		hmProducts = new HashMap<>();
 		int productItemIdex = 0;
 		myListProducts = new String[cursorProducts.getCount()];
 		while (cursorProducts.moveToNext()) {
@@ -84,7 +84,7 @@ public class ProductStockListAdapter extends ArrayAdapter<StockedItem> {
 		}
 		// setup clients
 		clients = db.listClients();
-		hmClients = new HashMap<Long, String>();
+		hmClients = new HashMap<>();
 		int clientItemIndex = 0;
 		myListClients = new String[clients.getCount()];
 		while (clients.moveToNext()) {

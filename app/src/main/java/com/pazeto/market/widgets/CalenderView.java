@@ -1,5 +1,4 @@
-//package com.pazeto.ceasapazeto.widgets;
-//
+package com.pazeto.market.widgets;
 //import java.util.Calendar;
 //import java.util.Date;
 //import java.util.GregorianCalendar;
@@ -11,9 +10,9 @@
 //import android.widget.CalendarView;
 //import android.widget.CalendarView.OnDateChangeListener;
 //import android.widget.Toast;
-//import android.app.Activity;
+import android.app.Activity;
 //
-//public class CalenderView extends Activity {
+public class CalenderView extends Activity {
 //	CalendarView calendar;
 //	Button btOk,btCancel;
 //	GregorianCalendar date;
@@ -43,4 +42,4 @@
 //		
 //		
 //	}
-//}
+}

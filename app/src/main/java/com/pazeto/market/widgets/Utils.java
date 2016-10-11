@@ -9,12 +9,11 @@ import android.util.Log;
 
 public class Utils {
 
-	public static int componentTimeToTimestamp(int year, int month, int day) {
+	public static int componentTimeToTimestamp(Calendar c) {
 
-		Calendar c = Calendar.getInstance();
 		// c.setTimeZone(TimeZone.getTimeZone("America/Brasilia"));
 		// c.set(year, month, day);
-		c.set(year, month, day, 0, 0, 0);
+		c.set(c.get(c.YEAR), c.get(c.MONTH), c.get(c.DAY_OF_MONTH), 0, 0, 0);
 
 		// c.set(Calendar.YEAR, year);
 		// c.set(Calendar.MONTH, month);

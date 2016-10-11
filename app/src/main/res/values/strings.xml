@@ -7,9 +7,14 @@
     <string name="product_nameHint">Produto</string>
     <string name="product_quantity">0</string>
     <string name="remove">Remover</string>
+    <string name="cancel">Cancelar</string>
     <string name="save">Salvar</string>
     <string name="new_item">Novo</string>
     <string name="new_client">Novo Cliente</string>
     <string name="new_product">Novo Produto</string>
+    <string name="client">Cliente</string>
+    <string name="product">Produto</string>
+    <string name="sale">Venda</string>
+    <string name="new_">Novo</string>
 
 </resources>

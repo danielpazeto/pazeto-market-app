@@ -2,18 +2,11 @@
 <items version="2" >
 
     <item
-        jar="/home/pazeto/fun_workspace/pazeto-market-app1/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
+        jar="/home/pazeto/fun_workspace/pazeto-market-app/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
         jumboMode="true"
         revision="23.0.3"
-        sha1="c82ec3d9b554a170685e8de4c115efde81bf42a4">
-        <dex dex="/home/pazeto/fun_workspace/pazeto-market-app1/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_48c8abc7d0ffb63c080efb895194e2fd8dcaed21/classes.dex" />
-    </item>
-    <item
-        jar="/home/pazeto/fun_workspace/pazeto-market-app1/app/build/intermediates/incremental-runtime-classes/debug/instant-run.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="7fecd5d0e40e9ebaf6bc795d51f2e558d4a6838c">
-        <dex dex="/home/pazeto/fun_workspace/pazeto-market-app1/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run_59595ad9b09f3b954743068595e84c21d6d3d0ab/classes.dex" />
+        sha1="e59e8b97ae3582d783194deb34503a027433b31c">
+        <dex dex="/home/pazeto/fun_workspace/pazeto-market-app/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_aaae3099b6b8e8c0e33d4861cfadfd78e36febd5/classes.dex" />
     </item>
 
 </items>
