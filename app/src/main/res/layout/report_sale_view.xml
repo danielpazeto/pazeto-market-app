@@ -13,8 +13,15 @@
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/header"
             android:orientation="vertical">
+
+            <AutoCompleteTextView
+                android:id="@+id/OutputClient"
+                android:drawableLeft="@mipmap/ic_client"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/client">
+            </AutoCompleteTextView>
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -24,34 +31,23 @@
                 android:orientation="horizontal">
 
                 <EditText
-                    android:id="@+id/tv_date"
+                    android:drawableLeft="@mipmap/ic_calendar"
+                    android:id="@+id/edt_initial_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:hint="DD/MM/AAAA"
                     android:focusable="false"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:hint="DD/MM/AAAA" />
 
-                <AutoCompleteTextView
-                    android:id="@+id/OutputClient"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="@string/client"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:layout_width="match_parent">
-                </AutoCompleteTextView>
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/btSave"
-                    style="?android:attr/buttonStyleSmall"
+                <EditText
+                    android:id="@+id/edt_final_date"
+                    android:drawableLeft="@mipmap/ic_calendar"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Salvar" />
+                    android:layout_gravity="center"
+                    android:focusable="false"
+                    android:hint="DD/MM/AAAA" />
+
             </LinearLayout>
         </LinearLayout>
 
@@ -106,8 +102,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Excluir" />
-
-
         </LinearLayout>
 
         <ListView
@@ -118,6 +112,7 @@
     </LinearLayout>
 
     <com.github.clans.fab.FloatingActionMenu
+        android:visibility="gone"
         android:id="@+id/material_design_android_floating_action_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -169,7 +164,7 @@
         <com.github.clans.fab.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:onClick="onNewProductBtn"
+            android:onClick="onNewStockedProductBtn"
             android:src="@mipmap/ic_new_product"
             fab:backgroundTint="@android:color/white"
             fab:fab_label="@string/product"
@@ -178,14 +173,13 @@
     </com.github.clans.fab.FloatingActionMenu>
 
     <com.github.clans.fab.FloatingActionButton
-        android:id="@+id/btn_add_new"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:onClick="onAddNewBtnClick"
-        android:src="@mipmap/ic_new_sale"
+        android:onClick="onGenerateReport"
+        android:src="@mipmap/ic_report"
         fab:fab_colorNormal="#ffffff"
         fab:fab_colorPressed="#b1b1b1"
-        fab:fab_label="@string/sale" />
+        fab:fab_label="@string/generate_report" />
 
 </android.support.design.widget.CoordinatorLayout>

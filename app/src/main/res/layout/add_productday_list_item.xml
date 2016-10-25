@@ -1,59 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:orientation="horizontal" >
 
     <EditText
         android:id="@+id/ProductDay_quantity"
-        android:layout_width="0sp"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:ems="10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
         android:gravity="center"
-        android:inputType="numberDecimal"
-        android:textAppearance="?android:attr/textAppearanceSmall" >
+        android:inputType="numberDecimal" >
     </EditText>
 
     <AutoCompleteTextView
         android:id="@+id/ProductDay_name"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
         android:gravity="center_vertical"
-        android:hint="Nome"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:hint="@string/name"/>
 
     <AutoCompleteTextView
         android:id="@+id/ProductDay_client"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="8"
         android:gravity="center_vertical"
-        android:hint="Cliente"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:hint="@string/supplier" />
 
     <EditText
         android:id="@+id/ProductDay_unit_price"
-        android:layout_width="0sp"
-        android:layout_height="fill_parent"
-        android:layout_weight="1"
-        android:ems="10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
         android:gravity="center"
-        android:inputType="numberDecimal"
-        android:textAppearance="?android:attr/textAppearanceSmall" >
+        android:inputType="numberDecimal" >
     </EditText>
 
     <CheckBox
         android:id="@+id/productDay_ispaid"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_weight="10"
         android:layout_height="wrap_content" />
 
     <ImageButton
         android:id="@+id/ProductDay_remove"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:contentDescription="@string/app_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:scaleType="fitCenter"
         android:src="@android:drawable/ic_menu_delete" />
 
 </LinearLayout>

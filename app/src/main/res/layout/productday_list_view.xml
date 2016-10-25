@@ -10,11 +10,12 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/tv_date"
+            android:id="@+id/edt_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:focusable="false"
+            android:drawableLeft="@mipmap/ic_calendar"
             android:hint="DD/MM/AAAA"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
@@ -90,8 +91,8 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:onClick="onNewStockedProductBtn"
-        android:src="@mipmap/ic_new_product"
-        fab:backgroundTint="@android:color/white"
-        fab:fab_label="@string/sale" />
+        android:src="@mipmap/ic_stock"
+        fab:fab_colorNormal="#ffffff"
+        fab:fab_label="@string/new_" />
 
 </android.support.design.widget.CoordinatorLayout>

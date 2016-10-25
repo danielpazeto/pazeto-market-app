@@ -11,7 +11,7 @@ import com.pazeto.market.vo.Client;
 
 public class EditClientActivity extends DefaultActivity {
 
-	protected static final String TAG = "AddClient";
+	protected static final String TAG = EditClientActivity.class.getName();
 	EditText etName, etLastName, etTel, etCellPhone1, etCellPhone2, etAddres,
 			etHangar, etCity, etDescription;
 
@@ -74,7 +74,7 @@ public class EditClientActivity extends DefaultActivity {
 		currentClient.setCellPhone2(etCellPhone2.getText().toString());
 		// TODO falta outros atributos aki
 
-		if (db.persistClient(currentClient, sql)) {
+		if (db.persistClient(currentClient)) {
 			setResult(RESULT_OK);
 			finish();
 		} else {

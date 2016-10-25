@@ -44,7 +44,7 @@ public class ListProductsActivity extends DefaultActivity {
 			@Override
 			public void run() {
 				customAdapter = new CustomCursorAdapter(ListProductsActivity.this, db
-						.listProducts(), CustomCursorAdapter.PRODUCT);
+						.listCursorAllProducts(), CustomCursorAdapter.PRODUCT);
 				productListView.setAdapter(customAdapter);
 			}
 		});

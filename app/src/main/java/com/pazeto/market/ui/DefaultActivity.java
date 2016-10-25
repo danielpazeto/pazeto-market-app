@@ -8,11 +8,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 import com.pazeto.market.db.DBFacade;
+import com.pazeto.market.widgets.Utils;
 
 public class DefaultActivity extends AppCompatActivity {
 
     DBFacade db;
     SQLiteDatabase sql;
+    String dateFormatStr = "dd/MM/yy";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,6 +23,7 @@ public class DefaultActivity extends AppCompatActivity {
         db = new DBFacade(this);
         sql = db.getWritableDatabase();
         this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
     @Override
@@ -49,7 +53,7 @@ public class DefaultActivity extends AppCompatActivity {
     }
 
     public void onNewStockedProductBtn(View v) {
-        startActivityForResult(new Intent(DefaultActivity.this, ListProductStockActivity.class),
+        startActivityForResult(new Intent(DefaultActivity.this, StockActivity.class),
                 1);
     }
 

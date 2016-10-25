@@ -3,25 +3,24 @@ package com.pazeto.market.widgets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 import java.util.TimeZone;
 
 import android.util.Log;
 
+import com.pazeto.market.db.DBFacade;
+import com.pazeto.market.vo.Client;
+import com.pazeto.market.vo.Product;
+
 public class Utils {
 
-	public static int componentTimeToTimestamp(Calendar c) {
+	public static int calendarIntanceToStartSecondsDay(Calendar c) {
 
 		// c.setTimeZone(TimeZone.getTimeZone("America/Brasilia"));
 		// c.set(year, month, day);
 		c.set(c.get(c.YEAR), c.get(c.MONTH), c.get(c.DAY_OF_MONTH), 0, 0, 0);
 
-		// c.set(Calendar.YEAR, year);
-		// c.set(Calendar.MONTH, month);
-		// c.set(Calendar.DAY_OF_MONTH, day);
-		// c.set(Calendar.HOUR, -14);
-		// c.set(Calendar.MINUTE, 00);
-		// c.set(Calendar.SECOND, 00);
-		// c.set(Calendar.MILLISECOND, 0);
 		Log.d("c calendar", ":" + c.getTime().toString());
 		return (int) (c.getTimeInMillis() / 1000L);
 
@@ -110,4 +109,67 @@ public class Utils {
 	// }
 	//
 	// }
+
+
+	/**
+	 * Custom hashmap to associated client names and it ids
+	 */
+	public static class ClientHashMap extends HashMap<Long, String>{
+
+		public ClientHashMap(DBFacade db){
+			List<Client> clients = db.listClients();
+			for (Client client : clients) {
+				long idClient = client.getId();
+				String name = new StringBuilder(client.getName()).append(" ").append(
+						client.getLastname()).toString();
+				this.put(idClient, name);
+			}
+		}
+
+		public String[] getClientNames(){
+			return this.values().toArray(new String[this.size()]);
+		}
+
+
+		public long getIdByName(String name){
+			if (this != null) {
+				for (long id : this.keySet()) {
+					if (this.get(id).equals(name))
+						return id;
+				}
+			}
+			return -1;
+		}
+	}
+
+    /**
+     * Custom hashmap to associated client names and it ids
+     */
+    public static class ProductHashMap extends HashMap<Long, String>{
+
+        public ProductHashMap(DBFacade db){
+            List<Product> prods = db.listProducts();
+            for (Product prod : prods) {
+                Long idProd = prod.getId();
+                String name = new StringBuilder(prod.getName()).append(" ").append(
+                        prod.getDescription()).toString();
+                this.put(idProd, name);
+            }
+        }
+
+        public String[] getProductNames(){
+            return this.values().toArray(new String[this.size()]);
+        }
+
+
+        public long getIdByName(String name){
+            if (this != null) {
+                for (long id : this.keySet()) {
+                    if (this.get(id).equals(name))
+                        return id;
+                }
+            }
+            return -1;
+        }
+    }
 }

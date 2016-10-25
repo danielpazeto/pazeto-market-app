@@ -28,10 +28,11 @@
         </activity>
         <activity android:name="com.pazeto.market.ui.ListProductsActivity" >
         </activity>
-        <activity android:name="com.pazeto.market.ui.ListProductStockActivity" >
+        <activity android:name=".ui.StockActivity" >
         </activity>
-        <activity android:name=".ui.ListSaleActivity">
+        <activity android:name=".ui.SaleActivity">
         </activity>
+        <activity android:name=".ui.GenerateReportActivity"/>-
         <activity android:name=".widgets.CalenderView" >
         </activity>
     </application>

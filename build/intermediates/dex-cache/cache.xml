@@ -1,12 +1,2 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" >
-
-    <item
-        jar="/home/pazeto/fun_workspace/pazeto-market-app/app/build/intermediates/incremental-classes/debug/instant-run-bootstrap.jar"
-        jumboMode="true"
-        revision="23.0.3"
-        sha1="e59e8b97ae3582d783194deb34503a027433b31c">
-        <dex dex="/home/pazeto/fun_workspace/pazeto-market-app/app/build/intermediates/transforms/dex/debug/folders/1000/10/instant-run-bootstrap_aaae3099b6b8e8c0e33d4861cfadfd78e36febd5/classes.dex" />
-    </item>
-
-</items>
+<items version="2" />

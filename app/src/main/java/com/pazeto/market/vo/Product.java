@@ -28,23 +28,25 @@ public class Product {
 			+ TABLE_NAME;
 	// @formatter:on
 	
-	String id;
+	Long id;
 	String name;
 	String description;
 
 	public Product(Cursor c) {
-		// TODO Auto-generated constructor stub
+		setId(c.getLong(c.getColumnIndex(Product.ID)));
+		setName(c.getString(c.getColumnIndex(Product.NAME)));
+		setDescription(c.getString(c.getColumnIndex(Product.DESCRIPTION)));
 	}
 
 	public Product() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

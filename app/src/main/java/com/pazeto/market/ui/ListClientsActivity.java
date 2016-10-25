@@ -14,7 +14,7 @@ import com.pazeto.market.vo.Client;
 
 public class ListClientsActivity extends DefaultActivity {
 
-	private static final String TAG = "listClients";
+	private static final String TAG = "listCursorClients";
 	ListView clientListView;
 	CustomCursorAdapter customAdapter;
 
@@ -41,7 +41,7 @@ public class ListClientsActivity extends DefaultActivity {
 					}
 				});
 				customAdapter = new CustomCursorAdapter(ListClientsActivity.this, db
-						.listClients(), CustomCursorAdapter.CLIENT);
+						.listCursorClients(), CustomCursorAdapter.CLIENT);
 				clientListView.setAdapter(customAdapter);
 			}
 		});

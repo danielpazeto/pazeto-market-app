@@ -1,78 +1,115 @@
 package com.pazeto.market.ui;
 
 import android.os.Bundle;
+import android.support.design.widget.TextInputLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.pazeto.market.R;
 import com.pazeto.market.vo.Product;
 
 public class EditProductActivity extends DefaultActivity {
 
-	protected static final String TAG = "addProcudt";
-	Product currentProduct;
+    protected static final String TAG = "addProcudt";
+    private Product currentProduct;
 
-	EditText etName;
-	EditText etDesc;
+    private EditText etName;
+    private EditText etDesc;
+    private TextInputLayout inputLayoutName;
+    private TextInputLayout inputLayoutDesc;
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.add_prod);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.add_prod);
 
-		etName = (EditText) findViewById(R.id.cadprod_name);
-		etDesc = (EditText) findViewById(R.id.cadprod_desc);
+        inputLayoutName = (TextInputLayout) findViewById(R.id.input_layout_name);
+        inputLayoutDesc = (TextInputLayout) findViewById(R.id.input_layout_desc);
+        etName = (EditText) findViewById(R.id.cadprod_name);
+        etDesc = (EditText) findViewById(R.id.cadprod_desc);
 
-		long productId = getIntent().getLongExtra(Product.ID, -1);
-		if (productId != -1) {
-			loadProduct(db.getProduct(productId));
-		} else {
-			currentProduct = new Product();
-		}
+        long productId = getIntent().getLongExtra(Product.ID, -1);
+        if (productId != -1) {
+            currentProduct = db.getProduct(productId);
+        } else {
+            currentProduct = new Product();
+        }
+        loadProduct();
 
-	}
+    }
 
-	private void loadProduct(Product prod) {
-		etName.setText(prod.getName());
-		etDesc.setText(prod.getDescription());
-	}
+    private void loadProduct() {
+        etName.setText(currentProduct.getName());
+        etDesc.setText(currentProduct.getDescription());
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.menu_edit_product_client, menu);
-		return true;
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_edit_product_client, menu);
+        return true;
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			this.finish();
-			return true;
-		case R.id.save:
-			String nameProd = etName.getText().toString();
-			String descProd = etDesc.getText().toString();
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.save:
+                save();
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
-			if (nameProd.length() > 0 && descProd.length() > 0) {
-				Product prod = new Product();
-				prod.setName(nameProd);
-				prod.setDescription(descProd);
+    private boolean save() {
+        String nameProd = etName.getText().toString();
+        String descProd = etDesc.getText().toString();
 
-				if (db.insertProduct(prod)) {
-					setResult(RESULT_OK);
-					finish();
-				} else {
-					Log.d(TAG, "N�o salvou produto.");
-				}
-				return true;
-			}else{
-				//TODO RAISE EXCEPTION AVISANDO USUARIO que falta algo no nome ou na desc
-				return false;
-			}
-		}
-		return super.onOptionsItemSelected(item);
-	}
+        if (!validateName()) {
+            return false;
+        }
+        if (!validateDesc()) {
+            return false;
+        }
+
+        Product prod = new Product();
+        prod.setName(nameProd);
+        prod.setDescription(descProd);
+
+        if (db.insertProduct(prod)) {
+            setResult(RESULT_OK);
+            Toast.makeText(getApplicationContext(),
+                    R.string.save_successfully, Toast.LENGTH_LONG).show();
+            finish();
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    R.string.product_exists, Toast.LENGTH_LONG).show();
+        }
+        return true;
+    }
+
+
+    private boolean validateName() {
+        if (etName.getText().toString().trim().isEmpty()) {
+            inputLayoutName.setError(getString(R.string.invalid_name));
+            etName.requestFocus();
+            return false;
+        } else {
+            inputLayoutName.setErrorEnabled(false);
+            return true;
+        }
+    }
+
+    private boolean validateDesc() {
+        if (etDesc.getText().toString().trim().isEmpty()) {
+            inputLayoutDesc.setError(getString(R.string.invalid_name));
+            etDesc.requestFocus();
+            return false;
+        } else {
+            inputLayoutDesc.setErrorEnabled(false);
+            return true;
+        }
+    }
+
 
 }
