@@ -11,53 +11,70 @@ import android.widget.ListView;
 import com.pazeto.market.R;
 import com.pazeto.market.adapter.CustomCursorAdapter;
 import com.pazeto.market.vo.Client;
+import com.pazeto.market.vo.Product;
 
 public class ListClientsActivity extends DefaultActivity {
 
-	private static final String TAG = "listCursorClients";
-	ListView clientListView;
-	CustomCursorAdapter customAdapter;
+    private static final String TAG = ListClientsActivity.class.getName();
+    public static String IS_TO_SELECT_CLIENT = "selectClient";
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		setContentView(R.layout.client_list);
+    ListView clientListView;
+    CustomCursorAdapter customAdapter;
+    private int isToSelect;
 
-		listClients();
-	}
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        isToSelect = getIntent().getExtras().getInt(IS_TO_SELECT_CLIENT);
+        if (isToSelect != -1) {
+            setTheme(R.style.PopupTheme);
+        }
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.client_list);
 
-	private void listClients() {
-		new Handler().post(new Runnable() {
-			@Override
-			public void run() {
-				clientListView = (ListView) findViewById(R.id.listview_clients);
-				clientListView.setOnItemClickListener(new OnItemClickListener() {
-					@Override
-					public void onItemClick(AdapterView<?> parent, View view,
-							int position, long id) {
-						Intent iClient = new Intent(ListClientsActivity.this, EditClientActivity.class);
-						iClient.putExtra(Client.ID, id);
-						startActivityForResult(iClient, 1);
-					}
-				});
-				customAdapter = new CustomCursorAdapter(ListClientsActivity.this, db
-						.listCursorClients(), CustomCursorAdapter.CLIENT);
-				clientListView.setAdapter(customAdapter);
-			}
-		});
-	}
+        clientListView = (ListView) findViewById(R.id.listview_clients);
+        clientListView.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                if (isToSelect != -1) {
+                    Intent intent = new Intent();
+                    intent.putExtra(Client.ID, id);
+                    intent.putExtra(ListClientsActivity.IS_TO_SELECT_CLIENT, isToSelect);
+                    setResult(RESULT_OK, intent);
+                    finish();
+                } else {
+                    Intent iClient = new Intent(ListClientsActivity.this, EditClientActivity.class);
+                    iClient.putExtra(Client.ID, id);
+                    startActivityForResult(iClient, 1);
+                }
+            }
+        });
 
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		super.onActivityResult(requestCode, resultCode, data);
-		if (resultCode == RESULT_OK) {
-			listClients();
-		}
+        listClients();
+    }
 
-	}
+    private void listClients() {
+        new Handler().post(new Runnable() {
+            @Override
+            public void run() {
+                customAdapter = new CustomCursorAdapter(ListClientsActivity.this, db
+                        .listCursorClients(), CustomCursorAdapter.CLIENT);
+                clientListView.setAdapter(customAdapter);
+            }
+        });
+    }
 
-	public void addNewClient(View v){
-		startActivityForResult(new Intent(ListClientsActivity.this,
-				EditClientActivity.class), 1);
-	}
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            listClients();
+        }
+
+    }
+
+    public void addNewClient(View v) {
+        startActivityForResult(new Intent(ListClientsActivity.this,
+                EditClientActivity.class), 1);
+    }
 }

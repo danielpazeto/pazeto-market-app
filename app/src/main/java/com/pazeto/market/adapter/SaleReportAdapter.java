@@ -95,7 +95,6 @@ public class SaleReportAdapter extends ArrayAdapter<SaleItem> {
                     holder.unitPrice = (TextView) convertView.findViewById(R.id.sale_price_unit);
                     holder.unitPrice.setText(holder.sale.getUnitPrice() + "");
 
-
                     holder.totalPrice = (TextView) convertView.findViewById(R.id.sale_price_total);
                     holder.totalPrice.setText(holder.sale.getTotalPrice() + "");
 

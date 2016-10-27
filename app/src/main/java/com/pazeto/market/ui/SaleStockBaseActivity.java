@@ -24,7 +24,7 @@ import com.pazeto.market.R;
 import com.pazeto.market.adapter.SaleStockedListAdapter;
 import com.pazeto.market.vo.BaseStockedProduct;
 import com.pazeto.market.vo.Client;
-import com.pazeto.market.vo.SaleItem;
+import com.pazeto.market.vo.Product;
 import com.pazeto.market.widgets.Utils;
 
 import java.text.SimpleDateFormat;
@@ -52,8 +52,7 @@ public abstract class SaleStockBaseActivity extends DefaultActivity implements T
         setContentView(R.layout.sale_list_view);
 
         hmClients = new Utils.ClientHashMap(db);
-
-        btSave = (Button) findViewById(R.id.btSave);
+        btSave = (Button) findViewById(R.id.btSave);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
         edtCurrentDate = (EditText) findViewById(R.id.tv_date);
 
         setupAutoCompleteClient();
@@ -72,7 +71,6 @@ public abstract class SaleStockBaseActivity extends DefaultActivity implements T
             @Override
             public void onClick(View v) {
                 save();
-
             }
         });
 
@@ -88,7 +86,7 @@ public abstract class SaleStockBaseActivity extends DefaultActivity implements T
      * @param v
      */
     public void removeSaleOnClickHandler(View v) {
-        final SaleItem itemToRemove = (SaleItem) v.getTag();
+        final BaseStockedProduct itemToRemove = (BaseStockedProduct) v.getTag();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(
                 "Deseja remover o item nº " + v.getId() + ":\n" + itemToRemove.getQuantity() + " - "
@@ -104,20 +102,20 @@ public abstract class SaleStockBaseActivity extends DefaultActivity implements T
         builder.create().show();
     }
 
+    ListView salesListView;
+
     private void setupListViewAdapter(ArrayList<BaseStockedProduct> items) {
         adapter = new SaleStockedListAdapter(this, items,
                 unixDate);
-        ListView salesListView = (ListView) findViewById(R.id.sale_ListView);
+        salesListView = (ListView) findViewById(R.id.sale_ListView);
         salesListView.setAdapter(adapter);
     }
 
-
     abstract BaseStockedProduct getNewItem();
-
 
     public void onAddNewBtnClick(View v) {
         if (isConfigured()) {
-            adapter.insert(getNewItem(), 0);
+            adapter.insert(getNewItem(), adapter.getCount());
         } else {
             Toast.makeText(getApplicationContext(),
                     "Cliente ou Data inválidos.", Toast.LENGTH_SHORT)
@@ -181,14 +179,14 @@ public abstract class SaleStockBaseActivity extends DefaultActivity implements T
     void save() {
         if (adapter != null) {
             for (int i = 0; i < adapter.getCount(); i++) {
-                BaseStockedProduct saleItem = adapter.getItem(i);
-                saleItem.setDate(unixDate);
-                saleItem.setIdClient(currentClient.getId());
-                long id = db.insertSaleStock(saleItem, sql);
+                BaseStockedProduct itemToSave = adapter.getItem(i);
+                itemToSave.setDate(unixDate);
+                itemToSave.setIdClient(currentClient.getId());
+                long id = db.insertSaleStock(itemToSave, sql);
                 if (id != -1) {
                     System.out.println("salvou com id: " + id);
-                    System.out.println("e data" + saleItem.getDate());
-                    System.out.println("e id client" + saleItem.getIdClient());
+                    System.out.println("e data" + itemToSave.getDate());
+                    System.out.println("e id client" + itemToSave.getIdClient());
                     adapter.getItem(i).setId(id);
                 }
             }
@@ -247,7 +245,7 @@ public abstract class SaleStockBaseActivity extends DefaultActivity implements T
      * @return true if configured client and date
      */
     public boolean isConfigured() {
-        return (currentClient != null && unixDate > 0 );
+        return (currentClient != null && unixDate > 0);
     }
 
     @Override
@@ -263,7 +261,14 @@ public abstract class SaleStockBaseActivity extends DefaultActivity implements T
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        setupAutoCompleteClient();
+
+        if (data.hasExtra(ListProductsActivity.IS_TO_SELECT_PRODUCT)) {
+            int listPosition = data.getIntExtra(ListProductsActivity.IS_TO_SELECT_PRODUCT, -1);
+            Long prodId = data.getExtras().getLong(Product.ID);
+            adapter.insertProductOnPosition(listPosition, prodId);
+        } else {
+            setupAutoCompleteClient();
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 

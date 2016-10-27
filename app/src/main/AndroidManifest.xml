@@ -24,15 +24,15 @@
         </activity>
         <activity android:name="com.pazeto.market.ui.ListClientsActivity" >
         </activity>
-        <activity android:name="com.pazeto.market.ui.EditProductActivity" >
+        <activity android:name="com.pazeto.market.ui.EditProductActivity">
         </activity>
-        <activity android:name="com.pazeto.market.ui.ListProductsActivity" >
+        <activity android:name="com.pazeto.market.ui.ListProductsActivity">
         </activity>
         <activity android:name=".ui.StockActivity" >
         </activity>
         <activity android:name=".ui.SaleActivity">
         </activity>
-        <activity android:name=".ui.GenerateReportActivity"/>-
+        <activity android:name=".ui.GenerateReportActivity"/>
         <activity android:name=".widgets.CalenderView" >
         </activity>
     </application>

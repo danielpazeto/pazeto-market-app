@@ -20,4 +20,8 @@
     </style>
 
 
+    <style name="PopupTheme" parent="Theme.AppCompat.Light.Dialog" >
+        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+    </style>
+
 </resources>

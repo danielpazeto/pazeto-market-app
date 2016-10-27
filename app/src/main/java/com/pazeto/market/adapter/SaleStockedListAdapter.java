@@ -2,6 +2,7 @@ package com.pazeto.market.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -10,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
@@ -20,6 +20,7 @@ import android.widget.TextView;
 
 import com.pazeto.market.R;
 import com.pazeto.market.db.DBFacade;
+import com.pazeto.market.ui.ListProductsActivity;
 import com.pazeto.market.vo.BaseStockedProduct;
 import com.pazeto.market.widgets.Utils;
 
@@ -30,7 +31,7 @@ public class SaleStockedListAdapter extends ArrayAdapter<BaseStockedProduct> {
     protected static final String LOG_TAG = SaleStockedListAdapter.class
             .getSimpleName();
 
-    private List<BaseStockedProduct> items;
+    //    private List<BaseStockedProduct> items;
     private Context context;
     DBFacade db;
     Utils.ProductHashMap hmProducts;
@@ -48,24 +49,31 @@ public class SaleStockedListAdapter extends ArrayAdapter<BaseStockedProduct> {
         super(context, R.layout.add_sale_list_item, items);
 
         this.context = context;
-        this.items = items;
+//        this.items = items;
         db = new DBFacade(getContext());
         sql = db.getWritableDatabase();
         // Produtos disponiveis, ou seja, produtos com numero maior que zero no
         // estoque
         hmProducts = new Utils.ProductHashMap(db);
+
+    }
+
+    @Override
+    public BaseStockedProduct getItem(int position) {
+        return super.getItem(position);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         SaleStockHolder holder;
         if (convertView == null) {
+            Log.d(LOG_TAG, "Setando novo");
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
-            convertView = inflater.inflate(R.layout.add_sale_list_item, parent, false);
+            convertView = inflater.inflate(R.layout.add_sale_list_item, null);
             holder = new SaleStockHolder();
-            holder.sale = items.get(position);
+            holder.sale = getItem(position);
 
-            setupProductNameText(holder, convertView);
+            setupProductNameText(holder, convertView, position);
 
             TextView pos = (TextView) convertView.findViewById(R.id.pos);
             pos.setText(String.valueOf(position));
@@ -84,6 +92,7 @@ public class SaleStockedListAdapter extends ArrayAdapter<BaseStockedProduct> {
 
             convertView.setTag(holder);
         } else {
+            Log.d(LOG_TAG, "Ja existe");
             holder = (SaleStockHolder) convertView.getTag();
         }
         setupItem(holder);
@@ -101,10 +110,15 @@ public class SaleStockedListAdapter extends ArrayAdapter<BaseStockedProduct> {
         holder.isPaid.setChecked(holder.sale.isPaid());
     }
 
+    public void insertProductOnPosition(int listPosition, Long prodId) {
+        getItem(listPosition).setIdProduct(prodId);
+        notifyDataSetInvalidated();
+    }
+
     private class SaleStockHolder {
         TextView position;
         BaseStockedProduct sale;
-        AutoCompleteTextView prodName;
+        TextView prodName;
         EditText quantity;
         EditText unitPrice;
         TextView totalPrice;
@@ -112,40 +126,17 @@ public class SaleStockedListAdapter extends ArrayAdapter<BaseStockedProduct> {
         ImageButton removeSaleButton;
     }
 
-    private void setupProductNameText(final SaleStockHolder holder, View convertView) {
-        ArrayAdapter<String> prodAdapter = new ArrayAdapter<>(
-                this.context, android.R.layout.simple_dropdown_item_1line,
-                hmProducts.getProductNames());
 
-        AutoCompleteTextView autoCompProduct = (AutoCompleteTextView) convertView
+    private void setupProductNameText(final SaleStockHolder holder, View convertView, final int pos) {
+        holder.prodName = (TextView) convertView
                 .findViewById(R.id.sale_product);
-        autoCompProduct.setThreshold(0);
-        autoCompProduct.setAdapter(prodAdapter);
-        holder.prodName = autoCompProduct;
-        holder.prodName.addTextChangedListener(new TextWatcher() {
-
-            // @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-                // Pega o id apartir do nome
-                long id = hmProducts.getIdByName(s.toString());
-                if (id != -1) {
-                    holder.sale.setIdProduct(id);
-                    formatedEdit = true;
-                } else {
-                    formatedEdit = false;
-                }
-            }
-
+        holder.prodName.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count,
-                                          int after) {
+            public void onClick(View view) {
+                Intent intent = new Intent(context, ListProductsActivity.class);
+                intent.putExtra(ListProductsActivity.IS_TO_SELECT_PRODUCT, pos);
+                ((Activity)context).startActivityForResult(intent, 0);
             }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-            }
-
         });
     }
 
@@ -246,15 +237,6 @@ public class SaleStockedListAdapter extends ArrayAdapter<BaseStockedProduct> {
         });
     }
 
-//	public long getKey(String name) {
-//
-//		for (long key : hmProducts.keySet()) {
-//			if (hmProducts.get(key).equals(name))
-//				return key;
-//		}
-//		return -1;
-//	}
-
     public String getName(long id) {
         return hmProducts.get(id);
     }
@@ -266,4 +248,5 @@ public class SaleStockedListAdapter extends ArrayAdapter<BaseStockedProduct> {
             super.remove(saleToRemove);
         }
     }
+
 }

@@ -22,7 +22,9 @@ public class DefaultActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         db = new DBFacade(this);
         sql = db.getWritableDatabase();
-        this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (this.getSupportActionBar() != null) {
+            this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
     }
 

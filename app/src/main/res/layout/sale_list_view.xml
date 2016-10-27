@@ -28,17 +28,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:hint="DD/MM/AAAA"
                     android:focusable="false"
+                    android:hint="DD/MM/AAAA"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <AutoCompleteTextView
                     android:id="@+id/OutputClient"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
                     android:hint="@string/client"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:layout_width="match_parent">
+                    android:textAppearance="?android:attr/textAppearanceLarge">
                 </AutoCompleteTextView>
             </LinearLayout>
 
@@ -51,7 +50,7 @@
                     style="?android:attr/buttonStyleSmall"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Salvar" />
+                    android:text="@string/save" />
             </LinearLayout>
         </LinearLayout>
 
@@ -61,60 +60,58 @@
 
             <TextView
                 android:layout_width="5dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="0.4"
                 android:text="#" />
 
             <TextView
                 android:id="@+id/tvHeaderUnit"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Qtd" />
 
             <TextView
                 android:id="@+id/tvHeaderProduct"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="2"
-                android:text="Produto" />
+                android:text="@string/product" />
 
             <TextView
                 android:id="@+id/tvHeaderUnitValue"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Valor Unit." />
 
             <TextView
                 android:id="@+id/tvHeaderTotal"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Valor Total" />
 
             <TextView
                 android:id="@+id/tvHeaderPaid"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:text="Pago" />
 
             <TextView
                 android:id="@+id/Excluir"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:text="Excluir" />
-
-
+                android:text="@string/remove" />
         </LinearLayout>
 
         <ListView
             android:id="@+id/sale_ListView"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:listitem="@layout/add_sale_list_item"></ListView>
+            android:layout_height="match_parent">
+        </ListView>
     </LinearLayout>
 
     <com.github.clans.fab.FloatingActionMenu

@@ -174,7 +174,7 @@ public class DBFacade extends SQLiteOpenHelper {
                 db.insert(Client.TABLE_NAME, null, values);
             }
             return true;
-        }  catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
             return false;
         } finally {
@@ -222,8 +222,9 @@ public class DBFacade extends SQLiteOpenHelper {
             ContentValues values = item.getAsContentValue();
             if (item.getId() != 0) {
                 values.put(StockedItem.ID, item.getId());
-                return sql.update(BaseStockedProduct.TABLE_NAME, values, BaseStockedProduct.ID + " = "
+                sql.update(BaseStockedProduct.TABLE_NAME, values, BaseStockedProduct.ID + " = "
                         + item.getId(), null);
+                return item.getId();
             } else {
                 return sql.insert(BaseStockedProduct.TABLE_NAME, null, values);
             }
@@ -302,6 +303,7 @@ public class DBFacade extends SQLiteOpenHelper {
                                                                           BaseStockedProduct.TYPE_PRODUCT type,
                                                                           SQLiteDatabase sql) {
         ArrayList<BaseStockedProduct> itemsPerDateAndClient = new ArrayList<>();
+        Cursor c = null;
         try {
 
             StringBuilder query = new StringBuilder("select * from "
@@ -317,13 +319,13 @@ public class DBFacade extends SQLiteOpenHelper {
 
 //			query.replace(query.length() - 4, query.length(), "");
             Log.d(TAG, "QUERYYY: " + query.toString());
-            Cursor c = sql.rawQuery(query.toString(), null);
+            c = sql.rawQuery(query.toString(), null);
 
             while (c.moveToNext()) {
                 BaseStockedProduct item = null;
-                if(type.equals(BaseStockedProduct.TYPE_PRODUCT.SALE)){
+                if (type.equals(BaseStockedProduct.TYPE_PRODUCT.SALE)) {
                     item = new SaleItem(c);
-                }else if(type.equals(BaseStockedProduct.TYPE_PRODUCT.STOCKED)){
+                } else if (type.equals(BaseStockedProduct.TYPE_PRODUCT.STOCKED)) {
                     item = new StockedItem(c);
                 }
                 itemsPerDateAndClient.add(item);
@@ -331,6 +333,10 @@ public class DBFacade extends SQLiteOpenHelper {
 
         } catch (Exception e) {
             e.printStackTrace();
+        } finally {
+            if (c != null) {
+                c.close();
+            }
         }
         return itemsPerDateAndClient;
     }
