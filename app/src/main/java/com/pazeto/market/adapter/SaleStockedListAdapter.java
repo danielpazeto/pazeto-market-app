@@ -21,62 +21,61 @@ import android.widget.TextView;
 import com.pazeto.market.R;
 import com.pazeto.market.db.DBFacade;
 import com.pazeto.market.ui.ListProductsActivity;
-import com.pazeto.market.vo.BaseStockedProduct;
+import com.pazeto.market.vo.BaseSaleStockedProduct;
 import com.pazeto.market.widgets.Utils;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class SaleStockedListAdapter extends ArrayAdapter<BaseStockedProduct> {
+public class SaleStockedListAdapter extends ArrayAdapter<BaseSaleStockedProduct> {
 
     protected static final String LOG_TAG = SaleStockedListAdapter.class
             .getSimpleName();
 
-    //    private List<BaseStockedProduct> items;
     private Context context;
-    DBFacade db;
-    Utils.ProductHashMap hmProducts;
-    boolean formatedEdit = true;
-
+    private DBFacade db;
     private SQLiteDatabase sql;
+    public Utils.ProductHashMap hmProducts;
+    boolean formattedEdit = true;
 
-    public boolean isFormatedEdit() {
-        return formatedEdit;
+    public boolean isFormattedEdit() {
+        return formattedEdit;
     }
+
+    List<BaseSaleStockedProduct> items;
+
 
     public SaleStockedListAdapter(Context context,
-                                  List<BaseStockedProduct> items, long date) {
+                                  List<BaseSaleStockedProduct> items) {
 
         super(context, R.layout.add_sale_list_item, items);
-
+        this.items = items;
         this.context = context;
-//        this.items = items;
         db = new DBFacade(getContext());
         sql = db.getWritableDatabase();
-        // Produtos disponiveis, ou seja, produtos com numero maior que zero no
-        // estoque
         hmProducts = new Utils.ProductHashMap(db);
-
+        hmHolderPostition = new HashMap<>();
     }
 
-    @Override
-    public BaseStockedProduct getItem(int position) {
-        return super.getItem(position);
+    public BaseSaleStockedProduct getItem(int position) {
+        return items.get(position);
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         SaleStockHolder holder;
         if (convertView == null) {
-            Log.d(LOG_TAG, "Setando novo");
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             convertView = inflater.inflate(R.layout.add_sale_list_item, null);
             holder = new SaleStockHolder();
             holder.sale = getItem(position);
+            Log.d(LOG_TAG, "getView - new   POS " + position + " -- getitem() : " + holder.sale.getIdProduct());
 
             setupProductNameText(holder, convertView, position);
 
-            TextView pos = (TextView) convertView.findViewById(R.id.pos);
-            pos.setText(String.valueOf(position));
+            holder.position = (TextView) convertView.findViewById(R.id.pos);
+            holder.position.setText(String.valueOf(position));
 
             holder.quantity = (EditText) convertView.findViewById(R.id.sale_quantity);
             setQuantityTextListeners(holder);
@@ -85,22 +84,23 @@ public class SaleStockedListAdapter extends ArrayAdapter<BaseStockedProduct> {
             holder.totalPrice = (TextView) convertView.findViewById(R.id.sale_price_total);
             holder.isPaid = (CheckBox) convertView.findViewById(R.id.sale_ck_is_paid);
             setIsPaidCheckListener(holder);
-
             holder.removeSaleButton = (ImageButton) convertView
                     .findViewById(R.id.sale_remove);
             holder.removeSaleButton.setTag(holder.sale);
-
+            hmHolderPostition.put(position, holder);
             convertView.setTag(holder);
-        } else {
-            Log.d(LOG_TAG, "Ja existe");
-            holder = (SaleStockHolder) convertView.getTag();
         }
+
+        holder = (SaleStockHolder) convertView.getTag();
+        Log.d(LOG_TAG, "getView - gettag POS " + position + " -- getitem() : " + holder.sale.getIdProduct());
+
         setupItem(holder);
         return convertView;
     }
 
-    private void setupItem(SaleStockHolder holder) {
+    Map<Integer, SaleStockHolder> hmHolderPostition;
 
+    private void setupItem(SaleStockHolder holder) {
         String prodName = hmProducts.get(holder.sale.getIdProduct());
         holder.prodName.setText(prodName);
         holder.quantity.setText(String.valueOf(holder.sale.getQuantity()));
@@ -112,12 +112,14 @@ public class SaleStockedListAdapter extends ArrayAdapter<BaseStockedProduct> {
 
     public void insertProductOnPosition(int listPosition, Long prodId) {
         getItem(listPosition).setIdProduct(prodId);
+        hmProducts.refreshProducts();
+        hmHolderPostition.get(listPosition).prodName.setText(hmProducts.getNameFullNameById(prodId));
         notifyDataSetInvalidated();
     }
 
     private class SaleStockHolder {
         TextView position;
-        BaseStockedProduct sale;
+        BaseSaleStockedProduct sale;
         TextView prodName;
         EditText quantity;
         EditText unitPrice;
@@ -135,7 +137,7 @@ public class SaleStockedListAdapter extends ArrayAdapter<BaseStockedProduct> {
             public void onClick(View view) {
                 Intent intent = new Intent(context, ListProductsActivity.class);
                 intent.putExtra(ListProductsActivity.IS_TO_SELECT_PRODUCT, pos);
-                ((Activity)context).startActivityForResult(intent, 0);
+                ((Activity) context).startActivityForResult(intent, 0);
             }
         });
     }
@@ -237,13 +239,13 @@ public class SaleStockedListAdapter extends ArrayAdapter<BaseStockedProduct> {
         });
     }
 
-    public String getName(long id) {
-        return hmProducts.get(id);
+    public String getProductFullName(long id) {
+        return hmProducts.getNameFullNameById(id);
     }
 
     @Override
-    public void remove(BaseStockedProduct saleToRemove) {
-        if (isFormatedEdit()) {
+    public void remove(BaseSaleStockedProduct saleToRemove) {
+        if (isFormattedEdit()) {
             db.removeSaleStock(saleToRemove, sql);
             super.remove(saleToRemove);
         }

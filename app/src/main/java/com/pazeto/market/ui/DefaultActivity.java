@@ -10,7 +10,7 @@ import android.view.View;
 import com.pazeto.market.db.DBFacade;
 import com.pazeto.market.widgets.Utils;
 
-public class DefaultActivity extends AppCompatActivity {
+public abstract class DefaultActivity extends AppCompatActivity {
 
     DBFacade db;
     SQLiteDatabase sql;
@@ -25,7 +25,6 @@ public class DefaultActivity extends AppCompatActivity {
         if (this.getSupportActionBar() != null) {
             this.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         }
-
     }
 
     @Override
@@ -63,5 +62,4 @@ public class DefaultActivity extends AppCompatActivity {
         startActivityForResult(new Intent(DefaultActivity.this, EditProductActivity.class),
                 1);
     }
-
 }

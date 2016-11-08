@@ -26,6 +26,7 @@ public class ListProductsActivity extends DefaultActivity {
         isToSelect = getIntent().getExtras().getInt(IS_TO_SELECT_PRODUCT);
         if (isToSelect != -1) {
             setTheme(R.style.PopupTheme);
+            setTitle(R.string.choose_product);
         }
 
         super.onCreate(savedInstanceState);

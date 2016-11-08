@@ -22,14 +22,14 @@
 //import com.pazeto.market.db.DBFacade;
 //import com.pazeto.market.vo.Client;
 //import com.pazeto.market.vo.Product;
-//import com.pazeto.market.vo.StockedItem;
+//import com.pazeto.market.vo.SaleStockedItem;
 //
-//public class ProductStockListAdapter extends ArrayAdapter<StockedItem> {
+//public class ProductStockListAdapter extends ArrayAdapter<SaleStockedItem> {
 //
 //    protected static final String LOG_TAG = ProductStockListAdapter.class
 //            .getSimpleName();
 //
-//    private List<StockedItem> items;
+//    private List<SaleStockedItem> items;
 //    private int layoutResourceId;
 //    private Context context;
 //    DBFacade db;
@@ -38,20 +38,20 @@
 //    Cursor clients;
 //    String[] myListClients;
 //    HashMap<Long, String> hmClients;
-//    boolean formatedEdit = true;
+//    boolean formattedEdit = true;
 //
 ////    private SaveStockListener listenerSave;
 //
-//    // public boolean isFormatedEdit() {
-//    // if (!formatedEdit) {
+//    // public boolean isFormattedEdit() {
+//    // if (!formattedEdit) {
 //    // Toast.makeText(context, "Peencha o campo Produto corretamente.",
 //    // Toast.LENGTH_SHORT).show();
 //    // }
-//    // return formatedEdit;
+//    // return formattedEdit;
 //    // }
 //
 //    public ProductStockListAdapter(Context context, int layoutResourceId,
-//                                   List<StockedItem> items, DBFacade db) {
+//                                   List<SaleStockedItem> items, DBFacade db) {
 //        super(context, layoutResourceId, items);
 //        this.layoutResourceId = layoutResourceId;
 //        this.context = context;
@@ -72,7 +72,7 @@
 //        for (Product prod : productList) {
 //            long idProd = prod.getId();
 //            StringBuilder name = new StringBuilder(
-//                    prod.getName()).append(" ").append(prod.getDescription());
+//                    prod.getProductFullName()).append(" ").append(prod.getDescription());
 //            myListProducts[productItemIdex] = name.toString();
 //            hmProducts.put(idProd, name.toString());
 //            productItemIdex++;
@@ -107,7 +107,7 @@
 //
 //        @Override
 //        public void onClick(View v) {
-//            StockedItem itemToRemove = (StockedItem) v.getTag();
+//            SaleStockedItem itemToRemove = (SaleStockedItem) v.getTag();
 //            ProductStockListAdapter.this.remove(itemToRemove);
 //        }
 //    };
@@ -168,7 +168,7 @@
 //    }
 //
 //    public static class StockProductHolder {
-//        StockedItem stockProduct;
+//        SaleStockedItem stockProduct;
 //        AutoCompleteTextView edtStockProdName;
 //        AutoCompleteTextView edtClientName;
 //        TextView tvQuantity;
@@ -187,10 +187,10 @@
 //                    long id = getKey(hmProducts, s.toString());
 //                    holder.stockProduct.setIdProduct(id);
 //                    System.out.println("Setou id " + id + "  e  name " + s);
-//                    formatedEdit = true;
+//                    formattedEdit = true;
 //                    // listenerSave.save();
 //                } else if (hmProducts.size() > 0) {
-//                    formatedEdit = false;
+//                    formattedEdit = false;
 //                }
 //            }
 //
@@ -214,10 +214,10 @@
 //                    long id = getKey(hmClients, s.toString());
 //                    holder.stockProduct.setIdClient(id);
 //                    System.out.println("Setou id " + id + "  e  name " + s);
-//                    formatedEdit = true;
+//                    formattedEdit = true;
 //                    // listenerSave.save();
 //                } else if (hmProducts.size() > 0) {
-//                    formatedEdit = false;
+//                    formattedEdit = false;
 //                }
 //            }
 //
@@ -281,7 +281,7 @@
 //    }
 //
 //    @Override
-//    public void remove(StockedItem object) {
+//    public void remove(SaleStockedItem object) {
 //        db.removeProductDay(object);
 //        super.remove(object);
 //    }

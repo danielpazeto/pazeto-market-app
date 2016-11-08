@@ -15,139 +15,146 @@ import com.pazeto.market.vo.Product;
 
 public class Utils {
 
-	public static int calendarIntanceToStartSecondsDay(Calendar c) {
+    public static int calendarIntanceToStartSecondsDay(Calendar c) {
 
-		// c.setTimeZone(TimeZone.getTimeZone("America/Brasilia"));
-		// c.set(year, month, day);
-		c.set(c.get(c.YEAR), c.get(c.MONTH), c.get(c.DAY_OF_MONTH), 0, 0, 0);
+        // c.setTimeZone(TimeZone.getTimeZone("America/Brasilia"));
+        // c.set(year, month, day);
+        c.set(c.get(c.YEAR), c.get(c.MONTH), c.get(c.DAY_OF_MONTH), 0, 0, 0);
 
-		Log.d("c calendar", ":" + c.getTime().toString());
-		return (int) (c.getTimeInMillis() / 1000L);
+        Log.d("c calendar", ":" + c.getTime().toString());
+        return (int) (c.getTimeInMillis() / 1000L);
 
-	}
+    }
 
-	public static int dateToUnixTimeStamp(int year, int month, int day) {
-		SimpleDateFormat dfm = new SimpleDateFormat("yyyyMMddHHmmss");
-		dfm.setTimeZone(TimeZone.getTimeZone("GMT"));
-		String date = String.valueOf(year);
-		date = date.concat(String.valueOf(month));
-		date = date.concat(String.valueOf(day));
-		Log.d("", date);
+    public static int dateToUnixTimeStamp(int year, int month, int day) {
+        SimpleDateFormat dfm = new SimpleDateFormat("yyyyMMddHHmmss");
+        dfm.setTimeZone(TimeZone.getTimeZone("GMT"));
+        String date = String.valueOf(year);
+        date = date.concat(String.valueOf(month));
+        date = date.concat(String.valueOf(day));
+        Log.d("", date);
 
-		try {
-			java.util.Date ddate = new SimpleDateFormat("yyyyMMdd").parse(date);
-			Log.d(" data realemnte", ddate.toString());
-			ddate.getTime();
-			return (int) ddate.getTime();
-		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return 0;
-	}
-
-
-	// public static void createPDF()
-	// {
-	// System.out.println("OI");
-	// Document doc = new Document();
-	//
-	//
-	// try {
-	// String path = Environment.getExternalStorageDirectory().getAbsolutePath()
-	// + "/droidText";
-	//
-	// File dir = new File(path);
-	// if(!dir.exists())
-	// dir.mkdirs();
-	//
-	// Log.d("PDFCreator", "PDF Path: " + path);
-	//
-	//
-	// File file = new File(dir, "sample.pdf");
-	// FileOutputStream fOut = new FileOutputStream(file);
-	//
-	// PdfWriter.getInstance(doc, fOut);
-	//
-	// //open the document
-	// doc.open();
-	//
-	//
-	// Paragraph p1 = new
-	// Paragraph("Hi! I am generating my first PDF using DroidText");
-	// Font paraFont= new Font(Font.COURIER);
-	// p1.setAlignment(Paragraph.ALIGN_CENTER);
-	// p1.setFont(paraFont);
-	//
-	// //add paragraph to document
-	// doc.add(p1);
-	//
-	// Paragraph p2 = new Paragraph("This is an example of a simple paragraph");
-	// Font paraFont2= new Font(Font.COURIER,14.0f,Color.GREEN);
-	// p2.setAlignment(Paragraph.ALIGN_CENTER);
-	// p2.setFont(paraFont2);
-	//
-	// doc.add(p2);
-	//
-	//
-	//
-	// //set footer
-	// Phrase footerText = new Phrase("This is an example of a footer");
-	// HeaderFooter pdfFooter = new HeaderFooter(footerText, false);
-	// doc.setFooter(pdfFooter);
-	//
-	//
-	//
-	// } catch (DocumentException de) {
-	// Log.e("PDFCreator", "DocumentException:" + de);
-	// } catch (IOException e) {
-	// Log.e("PDFCreator", "ioException:" + e);
-	// }
-	// finally
-	// {
-	// doc.close();
-	// }
-	//
-	// }
+        try {
+            java.util.Date ddate = new SimpleDateFormat("yyyyMMdd").parse(date);
+            Log.d(" data realemnte", ddate.toString());
+            ddate.getTime();
+            return (int) ddate.getTime();
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        return 0;
+    }
 
 
-	/**
-	 * Custom hashmap to associated client names and it ids
-	 */
-	public static class ClientHashMap extends HashMap<Long, String>{
+    // public static void createPDF()
+    // {
+    // System.out.println("OI");
+    // Document doc = new Document();
+    //
+    //
+    // try {
+    // String path = Environment.getExternalStorageDirectory().getAbsolutePath()
+    // + "/droidText";
+    //
+    // File dir = new File(path);
+    // if(!dir.exists())
+    // dir.mkdirs();
+    //
+    // Log.d("PDFCreator", "PDF Path: " + path);
+    //
+    //
+    // File file = new File(dir, "sample.pdf");
+    // FileOutputStream fOut = new FileOutputStream(file);
+    //
+    // PdfWriter.getInstance(doc, fOut);
+    //
+    // //open the document
+    // doc.open();
+    //
+    //
+    // Paragraph p1 = new
+    // Paragraph("Hi! I am generating my first PDF using DroidText");
+    // Font paraFont= new Font(Font.COURIER);
+    // p1.setAlignment(Paragraph.ALIGN_CENTER);
+    // p1.setFont(paraFont);
+    //
+    // //add paragraph to document
+    // doc.add(p1);
+    //
+    // Paragraph p2 = new Paragraph("This is an example of a simple paragraph");
+    // Font paraFont2= new Font(Font.COURIER,14.0f,Color.GREEN);
+    // p2.setAlignment(Paragraph.ALIGN_CENTER);
+    // p2.setFont(paraFont2);
+    //
+    // doc.add(p2);
+    //
+    //
+    //
+    // //set footer
+    // Phrase footerText = new Phrase("This is an example of a footer");
+    // HeaderFooter pdfFooter = new HeaderFooter(footerText, false);
+    // doc.setFooter(pdfFooter);
+    //
+    //
+    //
+    // } catch (DocumentException de) {
+    // Log.e("PDFCreator", "DocumentException:" + de);
+    // } catch (IOException e) {
+    // Log.e("PDFCreator", "ioException:" + e);
+    // }
+    // finally
+    // {
+    // doc.close();
+    // }
+    //
+    // }
 
-		public ClientHashMap(DBFacade db){
-			List<Client> clients = db.listClients();
-			for (Client client : clients) {
-				long idClient = client.getId();
-				String name = new StringBuilder(client.getName()).append(" ").append(
-						client.getLastname()).toString();
-				this.put(idClient, name);
-			}
-		}
-
-		public String[] getClientNames(){
-			return this.values().toArray(new String[this.size()]);
-		}
-
-
-		public long getIdByName(String name){
-			if (this != null) {
-				for (long id : this.keySet()) {
-					if (this.get(id).equals(name))
-						return id;
-				}
-			}
-			return -1;
-		}
-	}
 
     /**
      * Custom hashmap to associated client names and it ids
      */
-    public static class ProductHashMap extends HashMap<Long, String>{
+    public static class ClientHashMap extends HashMap<Long, String> {
 
-        public ProductHashMap(DBFacade db){
+        public ClientHashMap(DBFacade db) {
+            List<Client> clients = db.listClients();
+            for (Client client : clients) {
+                long idClient = client.getId();
+                String name = new StringBuilder(client.getName()).append(" ").append(
+                        client.getLastname()).toString();
+                this.put(idClient, name);
+            }
+        }
+
+        public String[] getClientNames() {
+            return this.values().toArray(new String[this.size()]);
+        }
+
+
+        public long getIdByName(String name) {
+            if (this != null) {
+                for (long id : this.keySet()) {
+                    if (this.get(id).equals(name))
+                        return id;
+                }
+            }
+            return -1;
+        }
+    }
+
+    /**
+     * Custom hashmap to associated client names and it ids
+     */
+    public static class ProductHashMap extends HashMap<Long, String> {
+
+        DBFacade db;
+
+        public ProductHashMap(DBFacade db) {
+            this.db = db;
+            refreshProducts();
+        }
+
+        public void refreshProducts() {
             List<Product> prods = db.listProducts();
             for (Product prod : prods) {
                 Long idProd = prod.getId();
@@ -157,12 +164,13 @@ public class Utils {
             }
         }
 
-        public String[] getProductNames(){
+
+        public String[] getProductNames() {
             return this.values().toArray(new String[this.size()]);
         }
 
 
-        public long getIdByName(String name){
+        public long getIdByName(String name) {
             if (this != null) {
                 for (long id : this.keySet()) {
                     if (this.get(id).equals(name))
@@ -170,6 +178,10 @@ public class Utils {
                 }
             }
             return -1;
+        }
+
+        public String getNameFullNameById(long id) {
+            return this.get(id);
         }
     }
 }

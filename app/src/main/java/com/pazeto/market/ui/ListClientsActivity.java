@@ -20,13 +20,14 @@ public class ListClientsActivity extends DefaultActivity {
 
     ListView clientListView;
     CustomCursorAdapter customAdapter;
-    private int isToSelect;
+    private boolean isToSelect;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        isToSelect = getIntent().getExtras().getInt(IS_TO_SELECT_CLIENT);
-        if (isToSelect != -1) {
+        isToSelect = getIntent().getExtras().getBoolean(IS_TO_SELECT_CLIENT);
+        if (isToSelect) {
             setTheme(R.style.PopupTheme);
+            setTitle(R.string.choose_client);
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.client_list);
@@ -36,7 +37,7 @@ public class ListClientsActivity extends DefaultActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
-                if (isToSelect != -1) {
+                if (isToSelect) {
                     Intent intent = new Intent();
                     intent.putExtra(Client.ID, id);
                     intent.putExtra(ListClientsActivity.IS_TO_SELECT_CLIENT, isToSelect);

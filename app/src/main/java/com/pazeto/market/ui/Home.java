@@ -11,7 +11,7 @@ import android.widget.LinearLayout;
 
 import com.pazeto.market.R;
 import com.pazeto.market.db.DBFacade;
-import com.pazeto.market.vo.BaseStockedProduct;
+import com.pazeto.market.vo.BaseSaleStockedProduct;
 import com.pazeto.market.vo.Client;
 import com.pazeto.market.vo.Product;
 
@@ -75,7 +75,7 @@ public class Home extends DefaultActivity {
     }
 
     public void openReportActivity(View v) {
-        Intent i = new Intent(Home.this, GenerateReportActivity.class);
+        Intent i = new Intent(Home.this, ReportActivity.class);
         startActivity(i);
     }
 
@@ -98,7 +98,7 @@ public class Home extends DefaultActivity {
         try {
             sql.execSQL(Client.DROP_TABLE_CLIENT);
             sql.execSQL(Product.DROP_TABLE_PRODUCT);
-            sql.execSQL(BaseStockedProduct.DROP_TABLE_STOCKED_ITEM);
+            sql.execSQL(BaseSaleStockedProduct.DROP_TABLE_STOCKED_ITEM);
             Log.d("DBFacade", "Dropou Tabelas");
 
             db = new DBFacade(getApplicationContext());

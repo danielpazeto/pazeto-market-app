@@ -24,7 +24,7 @@ public class ClientAutoCompletEditText extends AutoCompleteTextView {
 //    /**
 //     * Inicializa o autocomplete do cliente
 //     */
-//    public void setupAutoCompleteClient() {
+//    public void setClient() {
 //        int j = 0;
 //        hmClients = new HashMap<>();
 //        Cursor clients = db.listCursorClients();

@@ -5,57 +5,58 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.clans.fab.FloatingActionButton;
 import com.pazeto.market.R;
 import com.pazeto.market.adapter.SaleStockedListAdapter;
-import com.pazeto.market.vo.BaseStockedProduct;
+import com.pazeto.market.vo.BaseSaleStockedProduct;
 import com.pazeto.market.vo.Client;
 import com.pazeto.market.vo.Product;
-import com.pazeto.market.widgets.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Locale;
 
-import static com.pazeto.market.widgets.Utils.ClientHashMap;
 import static com.pazeto.market.widgets.Utils.calendarIntanceToStartSecondsDay;
 
-public abstract class SaleStockBaseActivity extends DefaultActivity implements TextWatcher {
-    EditText edtCurrentDate;
+public abstract class SaleStockBaseActivity extends DefaultActivity {
     private Button btSave;
+    private TextView tvClient,edtCurrentDate;
     private static final String TAG = SaleStockBaseActivity.class.getName();
     SaleStockedListAdapter adapter;
 
     Client currentClient;
     long unixDate;
     Calendar myCalendar = Calendar.getInstance();
-    Utils.ClientHashMap hmClients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.sale_list_view);
+        setContentView(R.layout.sale_stocked_prod_list_view);
 
-        hmClients = new Utils.ClientHashMap(db);
-        btSave = (Button) findViewById(R.id.btSave);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
-        edtCurrentDate = (EditText) findViewById(R.id.tv_date);
-
-        setupAutoCompleteClient();
+        btSave = (Button) findViewById(R.id.btSave);
+        edtCurrentDate = (TextView) findViewById(R.id.tv_date);
+        tvClient = (TextView) findViewById(R.id.OutputClient);
+        tvClient.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(SaleStockBaseActivity.this, ListClientsActivity.class);
+                intent.putExtra(ListClientsActivity.IS_TO_SELECT_CLIENT, true);
+                startActivityForResult(intent, 0);
+            }
+        });
 
         edtCurrentDate.setOnClickListener(new OnClickListener() {
 
@@ -74,10 +75,19 @@ public abstract class SaleStockBaseActivity extends DefaultActivity implements T
             }
         });
 
+        adapter = new SaleStockedListAdapter(this, new ArrayList<BaseSaleStockedProduct>());
+        salesStockedProdListView = (ListView) findViewById(R.id.sale_ListView);
+        salesStockedProdListView.setAdapter(adapter);
+        salesStockedProdListView.setEmptyView(findViewById(R.id.tv_empty));
+
         FloatingActionButton btnAddNew = (FloatingActionButton) findViewById(R.id.btn_add_new);
         btnAddNew.setImageResource(getNewBtnDrawable());
     }
 
+    /**
+     * Method to return the int resource for the new btn image
+     * @return
+     */
     protected abstract int getNewBtnDrawable();
 
     /**
@@ -86,11 +96,11 @@ public abstract class SaleStockBaseActivity extends DefaultActivity implements T
      * @param v
      */
     public void removeSaleOnClickHandler(View v) {
-        final BaseStockedProduct itemToRemove = (BaseStockedProduct) v.getTag();
+        final BaseSaleStockedProduct itemToRemove = (BaseSaleStockedProduct) v.getTag();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage(
                 "Deseja remover o item nº " + v.getId() + ":\n" + itemToRemove.getQuantity() + " - "
-                        + adapter.getName(itemToRemove.getIdProduct()) + " - "
+                        + adapter.getProductFullName(itemToRemove.getIdProduct()) + " - "
                         + itemToRemove.getUnitPrice())
                 .setPositiveButton(getResources().getText(R.string.remove),
                         new DialogInterface.OnClickListener() {
@@ -102,31 +112,25 @@ public abstract class SaleStockBaseActivity extends DefaultActivity implements T
         builder.create().show();
     }
 
-    ListView salesListView;
+    ListView salesStockedProdListView;
 
-    private void setupListViewAdapter(ArrayList<BaseStockedProduct> items) {
-        adapter = new SaleStockedListAdapter(this, items,
-                unixDate);
-        salesListView = (ListView) findViewById(R.id.sale_ListView);
-        salesListView.setAdapter(adapter);
-    }
-
-    abstract BaseStockedProduct getNewItem();
+    abstract BaseSaleStockedProduct getNewItem();
 
     public void onAddNewBtnClick(View v) {
         if (isConfigured()) {
             adapter.insert(getNewItem(), adapter.getCount());
+            adapter.notifyDataSetChanged();
         } else {
-            Toast.makeText(getApplicationContext(),
-                    "Cliente ou Data inválidos.", Toast.LENGTH_SHORT)
+            Toast.makeText(getApplicationContext(), getString(R.string.invalid_date_client)
+                    , Toast.LENGTH_SHORT)
                     .show();
         }
     }
 
-    abstract BaseStockedProduct.TYPE_PRODUCT getItemType();
+    abstract BaseSaleStockedProduct.TYPE_PRODUCT getItemType();
 
     void loadItemsPerDateAndClient(long date, Client client) {
-        ArrayList<BaseStockedProduct> itemPerDateAndClient = db.listSaleAndStockPerDateAndClient(
+        HashMap<Long, List<BaseSaleStockedProduct>> itemPerDateAndClient = db.listSaleAndStockPerDateAndClient(
                 date, client, getItemType(), sql);
         if (itemPerDateAndClient.size() == 0) {
             Toast.makeText(getApplicationContext(),
@@ -135,14 +139,22 @@ public abstract class SaleStockBaseActivity extends DefaultActivity implements T
         }
         Log.d(TAG, itemPerDateAndClient.size()
                 + " resultados para o cliente:  " + client);
-        setupListViewAdapter(itemPerDateAndClient);
+        setupListViewAdapter(itemPerDateAndClient.get(date));
+    }
+
+    private void setupListViewAdapter(List<BaseSaleStockedProduct> items) {
+        adapter.clear();
+        if(items !=null) {
+            adapter.addAll(items);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     protected void createAndShowDatePickerDialog() {
         final DatePickerDialog datePickDialog = new DatePickerDialog(this,
                 onSetDatePpickerListener, myCalendar.get(Calendar.YEAR),
                 myCalendar.get(Calendar.MONTH), myCalendar.get(Calendar.DAY_OF_MONTH));
-        datePickDialog.setTitle("Escolha a data:");
+        datePickDialog.setTitle(R.string.choose_date);
         datePickDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
                 getResources().getText(R.string.cancel), new DialogInterface.OnClickListener() {
 
@@ -179,7 +191,7 @@ public abstract class SaleStockBaseActivity extends DefaultActivity implements T
     void save() {
         if (adapter != null) {
             for (int i = 0; i < adapter.getCount(); i++) {
-                BaseStockedProduct itemToSave = adapter.getItem(i);
+                BaseSaleStockedProduct itemToSave = adapter.getItem(i);
                 itemToSave.setDate(unixDate);
                 itemToSave.setIdClient(currentClient.getId());
                 long id = db.insertSaleStock(itemToSave, sql);
@@ -200,43 +212,15 @@ public abstract class SaleStockBaseActivity extends DefaultActivity implements T
         super.onBackPressed();
     }
 
-    @Override
-    public void afterTextChanged(Editable s) {
-    }
-
-    @Override
-    public void beforeTextChanged(CharSequence s, int start, int count,
-                                  int after) {
-    }
-
-    @Override
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        System.out.println("Cliente autocomplete: " + s.toString());
-        long id = hmClients.getIdByName(s.toString());
-        if (id != -1) {
-            currentClient = db.getClient(id);
-            System.out.println("Setou id " + id + "  e  name " + s);
-            if (isConfigured()) {
-                loadItemsPerDateAndClient(unixDate, currentClient);
-            }
-        } else {
-            currentClient = null;
-        }
-    }
-
     /**
      * Inicializa o autocomplete do cliente
      */
-    public void setupAutoCompleteClient() {
-        hmClients = new ClientHashMap(db);
-
-        ArrayAdapter<String> mAdapter = new ArrayAdapter<>(
-                getApplicationContext(), R.layout.dropdown_list_custom,
-                hmClients.getClientNames());
-        AutoCompleteTextView autoCompProduct = (AutoCompleteTextView) findViewById(R.id.OutputClient);
-        autoCompProduct.addTextChangedListener(this);
-        autoCompProduct.setThreshold(0);
-        autoCompProduct.setAdapter(mAdapter);
+    void setClient(long clientId) {
+        currentClient = db.getClient(clientId);
+        tvClient.setText(currentClient.getName() + " " + currentClient.getLastname());
+        if (isConfigured()) {
+            loadItemsPerDateAndClient(unixDate, currentClient);
+        }
     }
 
     /**
@@ -261,13 +245,15 @@ public abstract class SaleStockBaseActivity extends DefaultActivity implements T
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (data.hasExtra(ListProductsActivity.IS_TO_SELECT_PRODUCT)) {
-            int listPosition = data.getIntExtra(ListProductsActivity.IS_TO_SELECT_PRODUCT, -1);
-            Long prodId = data.getExtras().getLong(Product.ID);
-            adapter.insertProductOnPosition(listPosition, prodId);
-        } else {
-            setupAutoCompleteClient();
+        if (data != null) {
+            if (data.hasExtra(ListProductsActivity.IS_TO_SELECT_PRODUCT)) {
+                int listPosition = data.getIntExtra(ListProductsActivity.IS_TO_SELECT_PRODUCT, -1);
+                Long prodId = data.getExtras().getLong(Product.ID);
+                adapter.insertProductOnPosition(listPosition, prodId);
+            } else if (data.hasExtra(ListClientsActivity.IS_TO_SELECT_CLIENT)) {
+                Long clientId = data.getExtras().getLong(Client.ID);
+                setClient(clientId);
+            }
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

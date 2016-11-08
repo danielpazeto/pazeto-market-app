@@ -29,6 +29,14 @@
 
     <string name="save_successfully">Salvo com sucesso</string>
 
+    <string name="invalid_date_client">Cliente ou Data inválidos."</string>
+
+    <string name="choose_date">Selecione a data</string>
+    <string name="choose_client">Selecione o cliente</string>
+    <string name="choose_product">Selecione o produto</string>
+
+    <string name="without_items">Não há itens</string>
+    <string name="all">Todos</string>
 
 
 

@@ -9,8 +9,7 @@
         android:id="@+id/pos"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="11"
-        android:text="#" />
+        android:layout_weight="11" />
 
     <EditText
         android:id="@+id/sale_quantity"
@@ -34,16 +33,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="10"
-        android:hint="R$"
-        android:inputType="numberDecimal"
-        android:autoText="false" />
+        android:inputType="numberDecimal" />
 
     <TextView
         android:id="@+id/sale_price_total"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="10"
-        android:hint="R$"
         android:inputType="numberDecimal" />
 
     <CheckBox

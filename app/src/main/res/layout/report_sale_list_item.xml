@@ -6,47 +6,46 @@
 
     <TextView
         android:id="@+id/pos"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="0.4"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
         android:text="#"
         android:gravity="center"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <EditText
+    <TextView
         android:id="@+id/sale_quantity"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.8"
         android:gravity="center"
         android:inputType="numberDecimal"
         android:textAppearance="?android:attr/textAppearanceSmall" >
-    </EditText>
+    </TextView>
 
-    <AutoCompleteTextView
+    <TextView
         android:id="@+id/sale_product"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
         android:gravity="center_vertical"
         android:hint="@string/product"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <EditText
+    <TextView
         android:id="@+id/sale_price_unit"
-        android:layout_width="0sp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.8"
         android:gravity="center"
         android:hint="R$"
-        android:inputType="numberDecimal"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
     <TextView
         android:id="@+id/sale_price_total"
-        android:layout_width="0sp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1.8"
         android:gravity="center"
         android:hint="R$"
         android:inputType="numberDecimal"
@@ -54,16 +53,16 @@
 
     <CheckBox
         android:id="@+id/sale_ck_is_paid"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" />
+        android:layout_weight="1.8" />
 
-    <ImageButton
-        android:id="@+id/sale_remove"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:onClick="removeSaleOnClickHandler"
-        android:src="@android:drawable/ic_menu_delete" />
+    <!--<ImageButton-->
+        <!--android:id="@+id/sale_remove"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:layout_weight="1"-->
+        <!--android:onClick="removeSaleOnClickHandler"-->
+        <!--android:src="@android:drawable/ic_menu_delete" />-->
 
 </LinearLayout>
