@@ -3,6 +3,7 @@ package com.pazeto.market.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -20,14 +21,16 @@ public class ListClientsActivity extends DefaultActivity {
 
     ListView clientListView;
     CustomCursorAdapter customAdapter;
-    private boolean isToSelect;
+    private boolean isToSelect= false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        isToSelect = getIntent().getExtras().getBoolean(IS_TO_SELECT_CLIENT);
-        if (isToSelect) {
-            setTheme(R.style.PopupTheme);
-            setTitle(R.string.choose_client);
+        if (getIntent().getExtras() != null) {
+            isToSelect = getIntent().getExtras().getBoolean(IS_TO_SELECT_CLIENT);
+            if (isToSelect) {
+                setTheme(R.style.PopupTheme);
+                setTitle(R.string.choose_client);
+            }
         }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.client_list);
@@ -37,6 +40,8 @@ public class ListClientsActivity extends DefaultActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+                id = ((Client) view.getTag()).getId();
+                Log.d(TAG,"Id selecionado : " + id + " : "+((Client) view.getTag()).getName());
                 if (isToSelect) {
                     Intent intent = new Intent();
                     intent.putExtra(Client.ID, id);

@@ -22,14 +22,14 @@
 //import com.pazeto.market.db.DBFacade;
 //import com.pazeto.market.vo.Client;
 //import com.pazeto.market.vo.Product;
-//import com.pazeto.market.vo.SaleStockedItem;
+//import com.pazeto.market.vo.StockedItem;
 //
-//public class ProductStockListAdapter extends ArrayAdapter<SaleStockedItem> {
+//public class ProductStockListAdapter extends ArrayAdapter<StockedItem> {
 //
 //    protected static final String LOG_TAG = ProductStockListAdapter.class
 //            .getSimpleName();
 //
-//    private List<SaleStockedItem> items;
+//    private List<StockedItem> items;
 //    private int layoutResourceId;
 //    private Context context;
 //    DBFacade db;
@@ -51,7 +51,7 @@
 //    // }
 //
 //    public ProductStockListAdapter(Context context, int layoutResourceId,
-//                                   List<SaleStockedItem> items, DBFacade db) {
+//                                   List<StockedItem> items, DBFacade db) {
 //        super(context, layoutResourceId, items);
 //        this.layoutResourceId = layoutResourceId;
 //        this.context = context;
@@ -107,7 +107,7 @@
 //
 //        @Override
 //        public void onClick(View v) {
-//            SaleStockedItem itemToRemove = (SaleStockedItem) v.getTag();
+//            StockedItem itemToRemove = (StockedItem) v.getTag();
 //            ProductStockListAdapter.this.remove(itemToRemove);
 //        }
 //    };
@@ -168,7 +168,7 @@
 //    }
 //
 //    public static class StockProductHolder {
-//        SaleStockedItem stockProduct;
+//        StockedItem stockProduct;
 //        AutoCompleteTextView edtStockProdName;
 //        AutoCompleteTextView edtClientName;
 //        TextView tvQuantity;
@@ -281,7 +281,7 @@
 //    }
 //
 //    @Override
-//    public void remove(SaleStockedItem object) {
+//    public void remove(StockedItem object) {
 //        db.removeProductDay(object);
 //        super.remove(object);
 //    }

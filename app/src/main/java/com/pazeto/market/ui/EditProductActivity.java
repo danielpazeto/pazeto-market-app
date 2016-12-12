@@ -2,7 +2,6 @@ package com.pazeto.market.ui;
 
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -72,11 +71,10 @@ public class EditProductActivity extends DefaultActivity {
             return false;
         }
 
-        Product prod = new Product();
-        prod.setName(nameProd);
-        prod.setDescription(descProd);
+        currentProduct.setName(nameProd);
+        currentProduct.setDescription(descProd);
 
-        if (db.insertProduct(prod)) {
+        if (db.persistProduct(currentProduct)) {
             setResult(RESULT_OK);
             Toast.makeText(getApplicationContext(),
                     R.string.save_successfully, Toast.LENGTH_LONG).show();

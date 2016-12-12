@@ -2,9 +2,7 @@ package com.pazeto.market.db;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -14,11 +12,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.pazeto.market.R;
 import com.pazeto.market.vo.BaseSaleStockedProduct;
 import com.pazeto.market.vo.Client;
 import com.pazeto.market.vo.Product;
-import com.pazeto.market.vo.SaleStockedItem;
+import com.pazeto.market.vo.StockedItem;
 import com.pazeto.market.vo.SaleItem;
 
 public class DBFacade extends SQLiteOpenHelper {
@@ -63,7 +60,6 @@ public class DBFacade extends SQLiteOpenHelper {
     public Cursor listUsuario() {
         SQLiteDatabase db = null;
         db = getReadableDatabase();
-
         Cursor c = db
                 .query(User.TABLE_NAME, null, null, null, null, null, null);
 
@@ -79,30 +75,11 @@ public class DBFacade extends SQLiteOpenHelper {
 
     }
 
-    // public void insertClientes() {
-    // SQLiteDatabase db;
-    // db = this.getWritableDatabase();
-    // try {
-    // ContentValues values = new ContentValues();
-    // values.put("name", "Clinte1");
-    // values.put("phone1", "9685758");
-    // values.put("created_by", "1");
-    // db.insert(Client.TABLE_NAME, null, values);
-    // } catch (Exception e) {
-    // // TODO: handle exception
-    // } finally {
-    // db.close();
-    // }
-    //
-    // }
-
     public Cursor listCursorClients() {
         SQLiteDatabase db = getReadableDatabase();
         try {
-            Cursor c = db.query(Client.TABLE_NAME, null, null, null, null,
+            return db.query(Client.TABLE_NAME, null, null, null, null,
                     null, null);
-            Log.d("Clientes:  ", "" + c.getCount());
-            return c;
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -120,13 +97,16 @@ public class DBFacade extends SQLiteOpenHelper {
         return list;
     }
 
-    public boolean insertProduct(Product prod) {
+    public boolean persistProduct(Product prod) {
         SQLiteDatabase db = this.getWritableDatabase();
         try {
-            ContentValues values = new ContentValues();
-            values.put("name", prod.getName());
-            values.put("description", prod.getDescription());
-            db.insertOrThrow(Product.TABLE_NAME, null, values);
+            ContentValues values = prod.getAsContentValue();
+            if (prod.getId() > 0) {
+                db.update(Product.TABLE_NAME, values, Product.ID+" = ?",
+                        new String[]{prod.getId() + ""});
+            } else {
+                db.insert(Product.TABLE_NAME, null, values);
+            }
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -168,7 +148,7 @@ public class DBFacade extends SQLiteOpenHelper {
         try {
             ContentValues values = client.getAsContentValue();
             if (client.getId() > 0) {
-                db.update(Client.TABLE_NAME, values, Client.ID,
+                db.update(Client.TABLE_NAME, values, Client.ID+" = ?",
                         new String[]{client.getId() + ""});
             } else {
                 db.insert(Client.TABLE_NAME, null, values);
@@ -183,45 +163,45 @@ public class DBFacade extends SQLiteOpenHelper {
 
     }
 
-    public long insertProductStock(SaleStockedItem prod, SQLiteDatabase sql)
-            throws Exception {
-        ContentValues values = new ContentValues();
-        values.put(SaleStockedItem.PRODUCT_ID, prod.getIdProduct());
-        values.put(SaleStockedItem.QUANTITY, prod.getQuantity());
-        values.put(SaleStockedItem.CLIENT_ID, prod.getIdClient());
-        values.put(SaleStockedItem.UNIT_PRICE, prod.getUnitPrice());
-        values.put(SaleStockedItem.IS_PAID, prod.isPaid());
-        values.put(SaleStockedItem.DATE, prod.getDate());
-        if (prod.getId() != 0) {
-            values.put(SaleStockedItem.ID, prod.getId());
-            return sql.update(SaleStockedItem.TABLE_NAME, values, SaleStockedItem.ID
-                    + " = " + prod.getId(), null);
-        } else {
-            return sql.insert(SaleStockedItem.TABLE_NAME, null, values);
-        }
+//    public long insertProductStock(StockedItem prod, SQLiteDatabase sql)
+//            throws Exception {
+//        ContentValues values = new ContentValues();
+//        values.put(StockedItem.PRODUCT_ID, prod.getIdProduct());
+//        values.put(StockedItem.QUANTITY, prod.getQuantity());
+//        values.put(StockedItem.CLIENT_ID, prod.getIdClient());
+//        values.put(StockedItem.UNIT_PRICE, prod.getUnitPrice());
+//        values.put(StockedItem.IS_PAID, prod.isPaid());
+//        values.put(StockedItem.DATE, prod.getDate());
+//        if (prod.getId() != 0) {
+//            values.put(StockedItem.ID, prod.getId());
+//            return sql.update(StockedItem.TABLE_NAME, values, StockedItem.ID
+//                    + " = " + prod.getId(), null);
+//        } else {
+//            return sql.insert(StockedItem.TABLE_NAME, null, values);
+//        }
+//
+//    }
 
-    }
-
-    public int removeProductDay(SaleStockedItem prod) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        try {
-            if (prod.getId() != 0) {
-                return db.delete(SaleStockedItem.TABLE_NAME,
-                        "_id=" + prod.getId(), null);
-            }
-            return -1;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return -1;
-        }
-
-    }
+//    public int removeProductDay(StockedItem prod) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        try {
+//            if (prod.getId() != 0) {
+//                return db.delete(StockedItem.TABLE_NAME,
+//                        "_id=" + prod.getId(), null);
+//            }
+//            return -1;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//            return -1;
+//        }
+//
+//    }
 
     public long insertSaleStock(BaseSaleStockedProduct item, SQLiteDatabase sql) {
         try {
             ContentValues values = item.getAsContentValue();
             if (item.getId() != 0) {
-                values.put(SaleStockedItem.ID, item.getId());
+                values.put(StockedItem.ID, item.getId());
                 sql.update(BaseSaleStockedProduct.TABLE_NAME, values, BaseSaleStockedProduct.ID + " = "
                         + item.getId(), null);
                 return item.getId();
@@ -239,56 +219,55 @@ public class DBFacade extends SQLiteOpenHelper {
             if (sale.getId() != 0) {
                 return sql.delete(BaseSaleStockedProduct.TABLE_NAME, "_id=" + sale.getId(), null);
             }
-            return -1;
         } catch (Exception e) {
             e.printStackTrace();
-            return -1;
         }
+        return -1;
     }
 
-    public Cursor listStockProductsInDate(long unixDate, SQLiteDatabase sql) {
-        Cursor c = null;
-        try {
-            // System.out.println("DATA PARA FILTRO: " + unixDate);
-            // c = sql.rawQuery("SELECT * FROM " + ProductStock.TABLE_NAME
-            // + " WHERE date = " + unixDate, null);
-            c = sql.query(SaleStockedItem.TABLE_NAME, null, "type=? and date=?",
-                    new String[]{SaleItem.TYPE_PRODUCT.SALE.name(), unixDate + ""}, null, null, null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return c;
-    }
+//    public Cursor listStockProductsInDate(long unixDate, SQLiteDatabase sql) {
+//        Cursor c = null;
+//        try {
+//            // System.out.println("DATA PARA FILTRO: " + unixDate);
+//            // c = sql.rawQuery("SELECT * FROM " + ProductStock.TABLE_NAME
+//            // + " WHERE date = " + unixDate, null);
+//            c = sql.query(StockedItem.TABLE_NAME, null, "type=? and date=?",
+//                    new String[]{SaleItem.TYPE_PRODUCT.SALE.name(), unixDate + ""}, null, null, null);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return c;
+//    }
 
-    public Cursor listProductsDayAvailables(SQLiteDatabase sql) {
-        Cursor c = null;
-        try {
-            c = sql.rawQuery("SELECT * FROM " + SaleStockedItem.TABLE_NAME
-                    + " WHERE type=" + SaleItem.TYPE_PRODUCT.SALE.name() + " ", null);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return c;
-    }
+//    public Cursor listProductsDayAvailables(SQLiteDatabase sql) {
+//        Cursor c = null;
+//        try {
+//            c = sql.rawQuery("SELECT * FROM " + StockedItem.TABLE_NAME
+//                    + " WHERE type=" + SaleItem.TYPE_PRODUCT.SALE.name() + " ", null);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return c;
+//    }
 
-    public Cursor listSalePerDate(String date) {
-        SQLiteDatabase db = null;
-        db = getReadableDatabase();
-        try {
-            System.out.println("DATA PARA FILTRO: " + date);
-            Cursor c = db.rawQuery("select * from " + SaleItem.TABLE_NAME
-                    + " where type=" + SaleItem.TYPE_PRODUCT.SALE.name() + " strftime('%s',date) = strftime('%s','" + date
-                    + "')", null);
-            // select * from ProductDay where strftime('%s',date) <
-            // strftime('%s','2013-12-27');
-            return c;
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            // db.close();
-        }
-        return null;
-    }
+//    public Cursor listSalePerDate(String date) {
+//        SQLiteDatabase db = null;
+//        db = getReadableDatabase();
+//        try {
+//            System.out.println("DATA PARA FILTRO: " + date);
+//            Cursor c = db.rawQuery("select * from " + SaleItem.TABLE_NAME
+//                    + " where type=" + SaleItem.TYPE_PRODUCT.SALE.name() + " strftime('%s',date) = strftime('%s','" + date
+//                    + "')", null);
+//            // select * from ProductDay where strftime('%s',date) <
+//            // strftime('%s','2013-12-27');
+//            return c;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        } finally {
+//            // db.close();
+//        }
+//        return null;
+//    }
 
     /**
      * List by date and client, if date is null, get all date, if client is null
@@ -300,10 +279,10 @@ public class DBFacade extends SQLiteOpenHelper {
      * @return
      */
     public HashMap<Long, List<BaseSaleStockedProduct>> listSaleAndStockPerDateAndClient(long date, Client client,
-                                                                              BaseSaleStockedProduct.TYPE_PRODUCT type,
-                                                                              SQLiteDatabase sql) {
+                                                                                        BaseSaleStockedProduct.TYPE_PRODUCT type,
+                                                                                        SQLiteDatabase sql) {
 
-        return this.listSaleAndStockPerDateAndClient(date,date,type,client,sql);
+        return this.listSaleAndStockPerDateAndClient(date, date, type, client, sql);
 //
 //
 //        ArrayList<BaseSaleStockedProduct> itemsPerDateAndClient = new ArrayList<>();
@@ -330,7 +309,7 @@ public class DBFacade extends SQLiteOpenHelper {
 //                if (type.equals(BaseSaleStockedProduct.TYPE_PRODUCT.SALE)) {
 //                    item = new SaleItem(c);
 //                } else if (type.equals(BaseSaleStockedProduct.TYPE_PRODUCT.STOCKED)) {
-//                    item = new SaleStockedItem(c);
+//                    item = new StockedItem(c);
 //                }
 //                itemsPerDateAndClient.add(item);
 //            }
@@ -381,7 +360,7 @@ public class DBFacade extends SQLiteOpenHelper {
 
             if (type.equals(BaseSaleStockedProduct.TYPE_PRODUCT.SALE) ||
                     type.equals(BaseSaleStockedProduct.TYPE_PRODUCT.STOCKED)) {
-                query.append(" AND type LIKE '" + type.name()+"'");
+                query.append(" AND type LIKE '" + type.name() + "'");
             }
 
 
@@ -395,7 +374,7 @@ public class DBFacade extends SQLiteOpenHelper {
                 if (saleStockStype.equals(BaseSaleStockedProduct.TYPE_PRODUCT.SALE)) {
                     item = new SaleItem(c);
                 } else if (saleStockStype.equals(BaseSaleStockedProduct.TYPE_PRODUCT.STOCKED)) {
-                    item = new SaleStockedItem(c);
+                    item = new StockedItem(c);
                 }
                 //separate per date
                 List<BaseSaleStockedProduct> list = salesPerDateAndClient.get(item.getDate());
@@ -405,64 +384,20 @@ public class DBFacade extends SQLiteOpenHelper {
                 }
                 list.add(item);
             }
-
-            //DEBUG
-            Iterator it = salesPerDateAndClient.entrySet().iterator();
-//            while (it.hasNext()) {
-//                Map.Entry pair = (Map.Entry) it.next();
-//                Log.d(TAG, "***** Date = " + pair.getKey());
-//                it.remove(); // avoids a ConcurrentModificationException
-//                List<BaseSaleStockedProduct> l = (List) pair.getValue();
-//                for (BaseSaleStockedProduct s : l) {
-////                    Log.d(TAG, s.getQuantity() + " : " + s.getIdProduct() + " : " + s.getUnitPrice());
-//                }
-//            }
         } catch (Exception e) {
             e.printStackTrace();
         }
         return salesPerDateAndClient;
     }
 
-//    public boolean outProductDay(String date, int idProductDay,
-//                                 float outQuantity) {
-//        SQLiteDatabase db = null;
-//        db = getWritableDatabase();
-//        try {
-//            Cursor c = db.rawQuery("SELECT " + SaleStockedItem.QUANTITY + " FROM "
-//                    + SaleStockedItem.TABLE_NAME
-//                    + " WHERE strftime('%s',date) = strftime('%s','" + date
-//                    + "') AND " + SaleStockedItem.ID + " = " + idProductDay, null);
-//            float currentQuantity = c.getFloat((c
-//                    .getColumnIndex(SaleStockedItem.QUANTITY)));
-//
-//            float newQuantity = currentQuantity - outQuantity;
-//
-//            ContentValues values = new ContentValues();
-//            values.put(SaleStockedItem.QUANTITY, newQuantity);
-//            db.update(SaleStockedItem.TABLE_NAME, values, "_id=" + idProductDay,
-//                    null);
-//            // select * from ProductDay where strftime('%s',date) <
-//            // strftime('%s','2013-12-27');
-//            return true;
-//
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            return false;
-//        } finally {
-//            // db.close();
-//        }
-//
-//    }
-
     public Product getProduct(long id) {
 
-        SQLiteDatabase db = null;
-        db = getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         try {
-            Cursor c = db.query(Product.TABLE_NAME, new String[]{"name",
-                    "description"}, "_id = " + id, null, null, null, null);
-            Product prod = new Product(c);
-            return prod;
+            Cursor c = db.query(Product.TABLE_NAME, null, "_id = " + id, null, null, null, null);
+            if (c.getCount() > 0 && c.moveToFirst()) {
+                return new Product(c);
+            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
@@ -473,8 +408,7 @@ public class DBFacade extends SQLiteOpenHelper {
 
     public Client getClient(long id) {
 
-        SQLiteDatabase db = null;
-        db = getReadableDatabase();
+        SQLiteDatabase db = getReadableDatabase();
         try {
             Cursor c = db.query(Client.TABLE_NAME, null,
                     Client.ID + " = " + id, null, null, null, null);

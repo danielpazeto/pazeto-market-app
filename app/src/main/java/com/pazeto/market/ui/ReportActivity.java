@@ -4,13 +4,15 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -28,19 +30,27 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
+import android.support.design.widget.FloatingActionButton;
+
 public class ReportActivity extends DefaultActivity {
-    private EditText edtInitialDate;
-    private EditText edtFinalDate;
+    private TextView edtInitialDate;
+    private TextView edtFinalDate;
     private static final String TAG = ReportActivity.class.getName();
     private SaleStockReportAdapter adapter;
     HashMap<Long, String> hmClients;
     private Client currentClient;
     private TextView tvClient;
     private Spinner reportTypeSpinner;
+    ListView salesListView;
+
+    private DATE_TYPE currentDateEditing;
 
     enum DATE_TYPE {
         INITIAL, FINAL
     }
+
+    private Snackbar snackbar;
+    private CoordinatorLayout cdlReport;
 
     private static String[] TYPES;
 
@@ -49,12 +59,13 @@ public class ReportActivity extends DefaultActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.report_sale_view);
 
-        edtInitialDate = (EditText) findViewById(R.id.edt_initial_date);
-        edtFinalDate = (EditText) findViewById(R.id.edt_final_date);
+        edtInitialDate = (TextView) findViewById(R.id.edt_initial_date);
+        edtFinalDate = (TextView) findViewById(R.id.edt_final_date);
         tvClient = (TextView) findViewById(R.id.OutputClient);
+        salesListView = (ListView) findViewById(R.id.sale_ListView);
         reportTypeSpinner = (Spinner)
                 findViewById(R.id.tv_item_type);
-        setupAutoCompleteType();
+        setupTypeSpinner();
 
         edtInitialDate.setOnClickListener(new OnClickListener() {
 
@@ -73,9 +84,27 @@ public class ReportActivity extends DefaultActivity {
 
         });
         setupListViewAdapter();
+
+        cdlReport = (CoordinatorLayout) findViewById(R.id.cdl_report);
+
     }
 
-    private void setupAutoCompleteType() {
+    private Snackbar getSummarySnackBar() {
+        if(snackbar!=null && snackbar.isShown()){
+            snackbar.dismiss();
+        }
+        snackbar = Snackbar
+                .make(cdlReport, "Total", Snackbar.LENGTH_INDEFINITE)
+                .setAction(R.string.summary, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        onSummaryBtnClick(view);
+                    }
+                });
+        return snackbar;
+    }
+
+    private void setupTypeSpinner() {
         TYPES = new String[]{
                 getString(R.string.all), getString(R.string.sales), getString(R.string.stock)
         };
@@ -86,7 +115,21 @@ public class ReportActivity extends DefaultActivity {
 
     private void setupListViewAdapter() {
         adapter = new SaleStockReportAdapter(this, R.layout.report_sale_list_item);
-        ListView salesListView = (ListView) findViewById(R.id.sale_ListView);
+        final TextView tv = (TextView) findViewById(R.id.tv_empty);
+
+//        Animation a = AnimationUtils.loadAnimation(this, R.anim.scale_1dot5);
+//        a.setRepeatMode(Animation.ABSOLUTE);
+//        tv.setAnimation(a);
+//        tv.setOnSystemUiVisibilityChangeListener(new View.OnSystemUiVisibilityChangeListener() {
+//            @Override
+//            public void onSystemUiVisibilityChange(int i) {
+//                if(View.VISIBLE==i){
+//                    tv.animate();
+//                }
+//            }
+//        });
+
+        salesListView.setEmptyView(tv);
         salesListView.setAdapter(adapter);
     }
 
@@ -94,31 +137,36 @@ public class ReportActivity extends DefaultActivity {
     SimpleDateFormat dateFormat = new SimpleDateFormat(dateFormatStr);
 
     public void onGenerateReport(View v) {
-        if (validateDates() && isValidClient()) {
+        if (isValidClient() && validateDates()) {
 
             BaseSaleStockedProduct.TYPE_PRODUCT type = BaseSaleStockedProduct.TYPE_PRODUCT.ALL;
             if (reportTypeSpinner.getSelectedItem().toString().equals(getString(R.string.sales))) {
                 type = BaseSaleStockedProduct.TYPE_PRODUCT.SALE;
-            } else if (reportTypeSpinner.getSelectedItem().toString().equals(getString(R.string.sales))) {
+            } else if (reportTypeSpinner.getSelectedItem().toString().equals(getString(R.string.stock))) {
                 type = BaseSaleStockedProduct.TYPE_PRODUCT.STOCKED;
             }
 
             HashMap<Long, List<BaseSaleStockedProduct>> salesPerDateAndClient = db.listSaleAndStockPerDateAndClient(initialDate,
                     finalDate, type, currentClient, sql);
-            adapter.clear();
-            if(!salesPerDateAndClient.isEmpty()){
+            if (!salesPerDateAndClient.isEmpty()) {
+                setupListViewAdapter();
                 adapter.addAll(salesPerDateAndClient);
-                adapter.notifyDataSetChanged();
+                getSummarySnackBar().setText(salesPerDateAndClient.size() + " dia(s)");
+                getSummarySnackBar().show();
+            } else {
+                getSummarySnackBar().dismiss();
+                adapter.clear();
+                salesListView.getEmptyView().animate();
             }
         }
     }
 
     private boolean isValidClient() {
-        if( currentClient != null){
+        if (currentClient != null) {
             return true;
-        }else{
+        } else {
             Toast.makeText(getApplicationContext(),
-                    "Cliente inválido", Toast.LENGTH_SHORT)
+                    R.string.invalid_client, Toast.LENGTH_SHORT)
                     .show();
         }
         return false;
@@ -137,7 +185,7 @@ public class ReportActivity extends DefaultActivity {
             long finalDate = Utils.calendarIntanceToStartSecondsDay(calendarUntil);
             if (initialDate <= 0 && finalDate <= 0 && finalDate < initialDate) {
                 Toast.makeText(getApplicationContext(),
-                        "Datas inválidas.", Toast.LENGTH_SHORT)
+                        getString(R.string.invalid_date_client), Toast.LENGTH_SHORT)
                         .show();
                 return false;
             }
@@ -145,21 +193,23 @@ public class ReportActivity extends DefaultActivity {
             ReportActivity.finalDate = finalDate;
         } catch (ParseException e) {
             Toast.makeText(getApplicationContext(),
-                    "Datas inválidas.", Toast.LENGTH_SHORT)
+                    R.string.invalid_dates, Toast.LENGTH_SHORT)
                     .show();
             return false;
         }
         return true;
     }
 
-    private DATE_TYPE currentDateEditing;
-
     protected void createAndShowDatePickerDialog(DATE_TYPE type) {
-        currentDateEditing = type;
         final DatePickerDialog datePickDialog = new DatePickerDialog(this,
                 onSetDatePpickerListener, calendarAux.get(Calendar.YEAR),
                 calendarAux.get(Calendar.MONTH), calendarAux.get(Calendar.DAY_OF_MONTH));
-        datePickDialog.setTitle("Escolha a data:");
+        currentDateEditing = type;
+        if (currentDateEditing.equals(DATE_TYPE.FINAL)) {
+            datePickDialog.setTitle(R.string.choose_final_date_2dot);
+        } else if (currentDateEditing.equals(DATE_TYPE.INITIAL)) {
+            datePickDialog.setTitle(R.string.choose_initial_date_2dot);
+        }
         datePickDialog.setButton(DialogInterface.BUTTON_NEGATIVE,
                 getResources().getText(R.string.cancel), new DialogInterface.OnClickListener() {
 
@@ -190,6 +240,9 @@ public class ReportActivity extends DefaultActivity {
                 edtFinalDate.setText(sdf.format(calendarAux.getTime()));
             } else {
                 edtInitialDate.setText(sdf.format(calendarAux.getTime()));
+                if(edtFinalDate.getText().toString().isEmpty() ){
+                    edtFinalDate.setText(sdf.format(calendarAux.getTime()));
+                }
             }
         }
 
@@ -223,4 +276,14 @@ public class ReportActivity extends DefaultActivity {
         intent.putExtra(ListClientsActivity.IS_TO_SELECT_CLIENT, true);
         startActivityForResult(intent, 0);
     }
+
+
+    public void onSummaryBtnClick(View v) {
+        HashMap<Long, List<BaseSaleStockedProduct>> itemsPerDate = adapter.getAll();
+        Intent intent = new Intent(this, SummaryActivity.class);
+        intent.putExtra(SummaryActivity.EXTRA_MAP_ITEMS, itemsPerDate);
+        intent.putExtra(Client.ID, currentClient.getId());
+        startActivity(intent);
+    }
+
 }

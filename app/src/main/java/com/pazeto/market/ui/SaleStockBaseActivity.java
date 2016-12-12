@@ -33,7 +33,7 @@ import static com.pazeto.market.widgets.Utils.calendarIntanceToStartSecondsDay;
 
 public abstract class SaleStockBaseActivity extends DefaultActivity {
     private Button btSave;
-    private TextView tvClient,edtCurrentDate;
+    private TextView tvClient, tvCurrentDate;
     private static final String TAG = SaleStockBaseActivity.class.getName();
     SaleStockedListAdapter adapter;
 
@@ -47,7 +47,7 @@ public abstract class SaleStockBaseActivity extends DefaultActivity {
         setContentView(R.layout.sale_stocked_prod_list_view);
 
         btSave = (Button) findViewById(R.id.btSave);
-        edtCurrentDate = (TextView) findViewById(R.id.tv_date);
+        tvCurrentDate = (TextView) findViewById(R.id.tv_date);
         tvClient = (TextView) findViewById(R.id.OutputClient);
         tvClient.setOnClickListener(new OnClickListener() {
             @Override
@@ -58,7 +58,7 @@ public abstract class SaleStockBaseActivity extends DefaultActivity {
             }
         });
 
-        edtCurrentDate.setOnClickListener(new OnClickListener() {
+        tvCurrentDate.setOnClickListener(new OnClickListener() {
 
             @Override
             public void onClick(View v) {
@@ -178,7 +178,7 @@ public abstract class SaleStockBaseActivity extends DefaultActivity {
 
             SimpleDateFormat sdf = new SimpleDateFormat(dateFormatStr, Locale.getDefault());
 
-            edtCurrentDate.setText(sdf.format(myCalendar.getTime()));
+            tvCurrentDate.setText(sdf.format(myCalendar.getTime()));
 
             unixDate = calendarIntanceToStartSecondsDay(myCalendar);
             if (isConfigured()) {

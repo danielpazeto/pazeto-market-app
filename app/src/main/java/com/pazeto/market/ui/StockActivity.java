@@ -4,7 +4,7 @@ import android.os.Bundle;
 
 import com.pazeto.market.R;
 import com.pazeto.market.vo.BaseSaleStockedProduct;
-import com.pazeto.market.vo.SaleStockedItem;
+import com.pazeto.market.vo.StockedItem;
 
 public class StockActivity extends SaleStockBaseActivity {
 
@@ -20,7 +20,7 @@ public class StockActivity extends SaleStockBaseActivity {
 
     @Override
     BaseSaleStockedProduct getNewItem() {
-        return new SaleStockedItem(0, 0, unixDate);
+        return new StockedItem(0, 0, unixDate);
     }
 
     @Override

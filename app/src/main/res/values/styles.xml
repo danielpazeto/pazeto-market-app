@@ -21,7 +21,8 @@
 
 
     <style name="PopupTheme" parent="Theme.AppCompat.Light.Dialog" >
-        <!-- All customizations that are NOT specific to a particular API-level can go here. -->
+        <item name="windowFixedWidthMajor">95%</item>
+        <item name="windowFixedWidthMinor">80%</item>
     </style>
 
 </resources>

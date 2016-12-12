@@ -5,20 +5,20 @@ import android.database.Cursor;
 /**
  * @author pazeto
  */
-public class SaleStockedItem extends BaseSaleStockedProduct {
+public class StockedItem extends BaseSaleStockedProduct {
 
 
-    public SaleStockedItem(long idProd, double quantity, long date) {
+    public StockedItem(long idProd, double quantity, long date) {
         super(idProd, quantity, date);
         this.type= TYPE_PRODUCT.STOCKED;
     }
 
-    public SaleStockedItem(Cursor c) {
+    public StockedItem(Cursor c) {
         super(c);
         this.type= TYPE_PRODUCT.STOCKED;
     }
 
-    public SaleStockedItem(long id, long idProd, double quantity, long idClient, double unitPrice, long date) {
+    public StockedItem(long id, long idProd, double quantity, long idClient, double unitPrice, long date) {
         super(id, idProd, quantity, idClient, unitPrice, date);
         this.type= TYPE_PRODUCT.STOCKED;
     }

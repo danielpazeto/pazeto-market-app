@@ -168,7 +168,7 @@ public abstract class BaseSaleStockedProduct extends BaseDB implements Serializa
     private double totalPrice;
 
     public double getTotalPrice() {
-        return totalPrice;
+        return getUnitPrice()*getQuantity();
     }
 
     public void setTotalPrice(double totalPrice) {

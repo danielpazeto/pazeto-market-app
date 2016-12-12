@@ -119,7 +119,7 @@ public class Home extends DefaultActivity {
             Product pro = new Product();
             pro.setName(name);
             pro.setDescription(desc);
-            db.insertProduct(pro);
+            db.persistProduct(pro);
         }
 
         String[] clientNames = {"João", "Marcos", "Pedro", "Carlos", "Maria"};

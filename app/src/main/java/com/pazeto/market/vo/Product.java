@@ -1,8 +1,9 @@
 package com.pazeto.market.vo;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 
-public class Product {
+public class Product extends BaseDB {
 
 	/**
 	 * Product
@@ -66,4 +67,11 @@ public class Product {
 		this.description = description;
 	}
 
+	@Override
+	public ContentValues getAsContentValue() {
+		ContentValues values = new ContentValues();
+		values.put(NAME, getName());
+		values.put(DESCRIPTION, getDescription());
+		return values;
+	}
 }

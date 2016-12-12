@@ -12,7 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="1"
         android:gravity="center" >
 
         <LinearLayout
@@ -26,8 +26,6 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="10"
-                android:scaleType="fitCenter"
                 android:src="@drawable/sale" />
 
             <TextView
@@ -50,8 +48,6 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="10"
-                android:scaleType="fitCenter"
                 android:src="@drawable/stock" />
 
             <TextView
@@ -69,15 +65,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:layout_weight="2"
         android:gravity="center"
+        android:layout_weight="1"
         android:orientation="horizontal" >
 
         <LinearLayout
             android:id="@+id/ll_btn_client"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical" >
 
@@ -94,19 +91,20 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Clientes" />
+                android:text="@string/clients" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/ll_cad_prod"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:clickable="true"
             android:gravity="center"
             android:orientation="vertical" >
 
             <ImageView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="10"
                 android:scaleType="fitCenter"
@@ -118,30 +116,31 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Produtos" />
+                android:text="@string/products" />
         </LinearLayout>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:layout_weight="1"
             android:gravity="center"
             android:onClick="openReportActivity"
             android:orientation="vertical" >
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="314dp"
                 android:scaleType="fitCenter"
+                android:layout_height="128dp"
                 android:src="@mipmap/ic_report" />
 
             <TextView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Relatórios" />
-            </LinearLayout>
+                android:text="@string/reports" />
+        </LinearLayout>
         <!-- <Button -->
         <!-- android:id="@+id/droptables" -->
         <!-- android:layout_width="wrap_content" -->

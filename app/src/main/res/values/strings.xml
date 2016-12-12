@@ -30,14 +30,23 @@
     <string name="save_successfully">Salvo com sucesso</string>
 
     <string name="invalid_date_client">Cliente ou Data inválidos."</string>
+    <string name="invalid_dates">Datas inválidas."</string>
+    <string name="invalid_client">Cliente inválido."</string>
 
     <string name="choose_date">Selecione a data</string>
+    <string name="choose_initial_date_2dot">Selecione a data inicial:</string>
+    <string name="choose_final_date_2dot">Selecione a data final:</string>
     <string name="choose_client">Selecione o cliente</string>
     <string name="choose_product">Selecione o produto</string>
 
     <string name="without_items">Não há itens</string>
     <string name="all">Todos</string>
 
+    <string name="date_hint">DD/MM/YY</string>
 
+    <string name="summary">Resumo</string>
+    <string name="reports">Relatórios</string>
+    <string name="products">Produtos</string>
+    <string name="clients">Clientes</string>
 
 </resources>

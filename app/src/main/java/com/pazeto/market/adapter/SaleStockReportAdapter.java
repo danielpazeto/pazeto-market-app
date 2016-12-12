@@ -41,13 +41,19 @@ public class SaleStockReportAdapter extends ArrayAdapter<BaseSaleStockedProduct>
 
     public void addItem(final BaseSaleStockedProduct sale) {
         mData.add(sale);
+    }
+
+    @Override
+    public void clear() {
+        mData.clear();
+        sectionHeader.clear();
+        super.clear();
         notifyDataSetChanged();
     }
 
     public void addSectionHeaderItem(final BaseSaleStockedProduct itemToExtractDate) {
         mData.add(itemToExtractDate);
         sectionHeader.add(mData.size() - 1);
-        notifyDataSetChanged();
     }
 
     @Override
@@ -76,11 +82,12 @@ public class SaleStockReportAdapter extends ArrayAdapter<BaseSaleStockedProduct>
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        SaleStockHolder holder = null;
+        SaleStockHolder holder;
         int rowType = getItemViewType(position);
         if (convertView == null) {
             holder = new SaleStockHolder();
             holder.sale = mData.get(position);
+            Log.d("GETVIEW", "Positino: " + position + " - type" + rowType);
             switch (rowType) {
                 case TYPE_ITEM:
                     convertView = mInflater.inflate(R.layout.report_sale_list_item, null);
@@ -89,15 +96,12 @@ public class SaleStockReportAdapter extends ArrayAdapter<BaseSaleStockedProduct>
                     holder.quantity = (TextView) convertView.findViewById(R.id.sale_quantity);
                     holder.unitPrice = (TextView) convertView.findViewById(R.id.sale_price_unit);
                     holder.totalPrice = (TextView) convertView.findViewById(R.id.sale_price_total);
-                    if(holder.sale.getType().equals(BaseSaleStockedProduct.TYPE_PRODUCT.SALE)){
-                        convertView.setBackgroundColor(Color.GREEN);
-                    }else{
-                        convertView.setBackgroundColor(Color.RED);
-                    }
+                    Log.d("GETVIEW", "item: " + holder.sale.getType() + " : " + String.valueOf(holder.sale.getQuantity()) + ": " + hmProducts.get(holder.sale.getIdProduct()));
                     break;
                 case TYPE_SEPARATOR:
-                    convertView = mInflater.inflate(android.R.layout.simple_list_item_1, null);
-                    holder.tvDateHeaderGroup = (TextView) convertView.findViewById(android.R.id.text1);
+                    convertView = mInflater.inflate(R.layout.date_section_header_item, null);
+                    holder.tvDateHeaderGroup = (TextView) convertView.findViewById(R.id.tv_date_section);
+                    Log.d("GETVIEW", "Date: " + mData.get(position).getDate());
                     break;
             }
             convertView.setTag(holder);
@@ -105,12 +109,12 @@ public class SaleStockReportAdapter extends ArrayAdapter<BaseSaleStockedProduct>
             holder = (SaleStockHolder) convertView.getTag();
         }
 
-        setupItem(holder, rowType, position);
+        setupItem(holder, rowType, position, convertView);
 
         return convertView;
     }
 
-    private void setupItem(SaleStockHolder holder, int rowType, int position) {
+    private void setupItem(SaleStockHolder holder, int rowType, int position, View convertView) {
         switch (rowType) {
             case TYPE_ITEM:
                 holder.position.setText(String.valueOf(position));
@@ -118,10 +122,15 @@ public class SaleStockReportAdapter extends ArrayAdapter<BaseSaleStockedProduct>
                 holder.quantity.setText(String.valueOf(holder.sale.getQuantity()));
                 holder.unitPrice.setText(String.valueOf(holder.sale.getUnitPrice()));
                 holder.totalPrice.setText(String.valueOf(holder.sale.getTotalPrice()));
+                if (holder.sale.getType().equals(BaseSaleStockedProduct.TYPE_PRODUCT.SALE)) {
+                    convertView.setBackgroundColor(getContext().getResources().getColor(R.color.green_section_header));
+                } else if (holder.sale.getType().equals(BaseSaleStockedProduct.TYPE_PRODUCT.STOCKED)) {
+                    convertView.setBackgroundColor(getContext().getResources().getColor(R.color.red_section_header));
+                }
                 break;
             case TYPE_SEPARATOR:
                 String dateString = new SimpleDateFormat("dd/MM/yyyy").
-                        format(new Date(mData.get(position).getDate()*1000));
+                        format(new Date(mData.get(position).getDate() * 1000));
                 holder.tvDateHeaderGroup.setText(dateString);
                 break;
         }
@@ -130,6 +139,7 @@ public class SaleStockReportAdapter extends ArrayAdapter<BaseSaleStockedProduct>
     Utils.ProductHashMap hmProducts;
 
     public void addAll(HashMap<Long, List<BaseSaleStockedProduct>> salesPerDateAndClient) {
+        clear();
         if (salesPerDateAndClient != null && !salesPerDateAndClient.isEmpty()) {
             for (Long date : salesPerDateAndClient.keySet()) {
                 Log.d(SaleStockReportAdapter.class.getName(), "Date : " + date);
@@ -145,6 +155,14 @@ public class SaleStockReportAdapter extends ArrayAdapter<BaseSaleStockedProduct>
 
             }
         }
+        fullMapData = salesPerDateAndClient;
+        notifyDataSetChanged();
+    }
+
+    private HashMap<Long, List<BaseSaleStockedProduct>> fullMapData;
+
+    public HashMap<Long, List<BaseSaleStockedProduct>> getAll() {
+        return fullMapData;
     }
 
     private class SaleStockHolder {

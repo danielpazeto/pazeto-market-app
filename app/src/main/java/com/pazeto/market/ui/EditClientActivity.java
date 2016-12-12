@@ -30,7 +30,6 @@ public class EditClientActivity extends DefaultActivity {
 		etCity = (EditText) findViewById(R.id.etClientCity);
 
 		long idClient = getIntent().getLongExtra(Client.ID, -1);
-		System.out.println("AQUIIII"+idClient);
 		if (idClient != -1) {
 			loadClient(db.getClient(idClient));
 		}else{

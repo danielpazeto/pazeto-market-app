@@ -3,6 +3,7 @@ package com.pazeto.market.widgets;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TimeZone;
@@ -44,6 +45,14 @@ public class Utils {
             e.printStackTrace();
         }
         return 0;
+    }
+
+    public static String unixtimeToDate(Long timestamp, String format) {
+        Calendar date = Calendar.getInstance();
+        date.setTimeInMillis(timestamp);
+
+        SimpleDateFormat dfm = new SimpleDateFormat(format);
+        return dfm.format(date.getTime());
     }
 
 

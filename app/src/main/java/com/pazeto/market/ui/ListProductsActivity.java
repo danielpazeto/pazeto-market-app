@@ -19,14 +19,16 @@ public class ListProductsActivity extends DefaultActivity {
     public static String IS_TO_SELECT_PRODUCT = "selectProduct";
     ListView productListView;
     CustomCursorAdapter customAdapter;
-    int isToSelect;
+    int isToSelect = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        isToSelect = getIntent().getExtras().getInt(IS_TO_SELECT_PRODUCT);
-        if (isToSelect != -1) {
-            setTheme(R.style.PopupTheme);
-            setTitle(R.string.choose_product);
+        if (getIntent().getExtras() != null) {
+            isToSelect = getIntent().getExtras().getInt(IS_TO_SELECT_PRODUCT);
+            if (isToSelect != -1) {
+                setTheme(R.style.PopupTheme);
+                setTitle(R.string.choose_product);
+            }
         }
 
         super.onCreate(savedInstanceState);
@@ -36,6 +38,8 @@ public class ListProductsActivity extends DefaultActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
+                id = ((Product) view.getTag()).getId();
+                Log.d(TAG,"Id selecionado : " + id + " : "+((Product) view.getTag()).getName());
                 if (isToSelect != -1) {
                     Intent intent = new Intent();
                     intent.putExtra(Product.ID, id);

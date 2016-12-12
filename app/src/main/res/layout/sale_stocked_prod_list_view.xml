@@ -21,23 +21,27 @@
                 android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/OutputClient"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center|left"
+                    android:drawableStart="@mipmap/ic_client"
+                    android:hint="@string/client"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
+                <TextView
                     android:id="@+id/tv_date"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:drawableStart="@mipmap/ic_calendar"
+                    android:focusable="false"
+                    android:gravity="center|left"
+                    android:hint="@string/date_hint"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                <TextView
-                    android:id="@+id/OutputClient"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/client"
-                    android:layout_weight="1"
-                    android:drawableStart="@mipmap/ic_client"
-                    android:textAppearance="?android:attr/textAppearanceLarge">
-                </TextView>
             </LinearLayout>
 
             <LinearLayout
@@ -47,9 +51,9 @@
                 <Button
                     android:id="@+id/btSave"
                     style="?android:attr/buttonStyleSmall"
-                    android:drawableStart="@mipmap/ic_save"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:drawableStart="@mipmap/ic_save"
                     android:text="@string/save" />
             </LinearLayout>
         </LinearLayout>
@@ -110,13 +114,14 @@
         <ListView
             android:id="@+id/sale_ListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ListView>
+            android:layout_height="match_parent"></ListView>
+
         <TextView
             android:id="@+id/tv_empty"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/without_items" />
+            android:text="@string/without_items"
+            android:visibility="gone" />
     </LinearLayout>
 
     <com.github.clans.fab.FloatingActionMenu
