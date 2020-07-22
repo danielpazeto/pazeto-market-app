@@ -1,4 +1,4 @@
-package com.pazeto.ceasapazeto.adapter;
+package com.pazeto.comercio.adapter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -22,11 +22,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.pazeto.ceasapazeto.R;
-import com.pazeto.ceasapazeto.db.DBFacade;
-import com.pazeto.ceasapazeto.vo.Product;
-import com.pazeto.ceasapazeto.vo.StockedItem;
-import com.pazeto.ceasapazeto.vo.SaleItem;
+import com.pazeto.comercio.R;
+import com.pazeto.comercio.db.DBFacade;
+import com.pazeto.comercio.vo.Product;
+import com.pazeto.comercio.vo.StockedItem;
+import com.pazeto.comercio.vo.SaleItem;
 
 public class SaleListAdapter extends ArrayAdapter<SaleItem> implements
 		TextWatcher {

@@ -1,4 +1,4 @@
-package com.pazeto.ceasapazeto.vo;
+package com.pazeto.comercio.vo;
 
 import android.content.ContentValues;
 

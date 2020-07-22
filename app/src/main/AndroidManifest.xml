@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.pazeto.comercio"
+    android:versionCode="1"
+    android:versionName="1.0" >
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:configChanges="keyboardHidden|orientation|screenSize"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity android:name="com.pazeto.comercio.ui.HomeActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.pazeto.comercio.ui.EditClientActivity" />
+        <activity android:name="com.pazeto.comercio.ui.ListClientsActivity" />
+        <activity android:name="com.pazeto.comercio.ui.EditProductActivity" />
+        <activity android:name="com.pazeto.comercio.ui.ListProductsActivity" />
+        <activity android:name="com.pazeto.comercio.ui.EditSaleStockActivity" />
+        <activity android:name="com.pazeto.comercio.ui.StockListListActivity" />
+        <activity android:name="com.pazeto.comercio.ui.SaleListListActivity" />
+        <activity android:name="com.pazeto.comercio.ui.ReportActivity" />
+        <activity android:name="com.pazeto.comercio.ui.SummaryActivity" />
+        <activity android:name="com.pazeto.comercio.widgets.CalenderView" >
+        </activity>
+    </application>
+
+</manifest>

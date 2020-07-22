@@ -1,10 +1,10 @@
-package com.pazeto.ceasapazeto.db;
+package com.pazeto.comercio.db;
 
 
 public class User {
 	  
 	 /**
-	  * Usuário 
+	  * Usuï¿½rio 
 	  * 
 	  */
 	     public static final String TABLE_NAME = "Usuario";

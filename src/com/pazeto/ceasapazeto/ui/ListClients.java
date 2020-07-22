@@ -1,4 +1,4 @@
-package com.pazeto.ceasapazeto.ui;
+package com.pazeto.comercio.ui;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -11,10 +11,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-import com.pazeto.ceasapazeto.R;
-import com.pazeto.ceasapazeto.adapter.CustomCursorAdapter;
-import com.pazeto.ceasapazeto.db.DBFacade;
-import com.pazeto.ceasapazeto.vo.Client;
+import com.pazeto.comercio.R;
+import com.pazeto.comercio.adapter.CustomCursorAdapter;
+import com.pazeto.comercio.db.DBFacade;
+import com.pazeto.comercio.vo.Client;
 
 public class ListClients extends Activity {
 

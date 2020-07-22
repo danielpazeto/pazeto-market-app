@@ -1,4 +1,4 @@
-package com.pazeto.ceasapazeto.db;
+package com.pazeto.comercio.db;
 
 import java.util.ArrayList;
 
@@ -9,10 +9,10 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-import com.pazeto.ceasapazeto.vo.Client;
-import com.pazeto.ceasapazeto.vo.Product;
-import com.pazeto.ceasapazeto.vo.StockedItem;
-import com.pazeto.ceasapazeto.vo.SaleItem;
+import com.pazeto.comercio.vo.Client;
+import com.pazeto.comercio.vo.Product;
+import com.pazeto.comercio.vo.StockedItem;
+import com.pazeto.comercio.vo.SaleItem;
 
 public class DBFacade extends SQLiteOpenHelper {
 

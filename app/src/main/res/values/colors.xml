@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="green_section_header">#b1ffb7</color>
+    <color name="red_section_header">#fd9090</color>
+    <color name="float_btn_background_color">#9DC2E3</color>
+
+
+</resources>

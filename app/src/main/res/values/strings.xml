@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Facebook application ID and custom URL scheme (app ID prefixed by 'fb'). -->
+    <string name="facebook_application_id" translatable="false">1586940098141496</string>
+    <string name="facebook_login_protocol_scheme" translatable="false">fb1586940098141496</string>
+
+
+    <string name="app_name">Comércio</string>
+    <string name="action_settings">Ferramentas</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="product_nameHint">Produto</string>
+    <string name="quantity">Quantidade</string>
+    <string name="unit_price">Preço unitário</string>
+    <string name="remove">Remover</string>
+    <string name="cancel">Cancelar</string>
+    <string name="save">Salvar</string>
+    <string name="new_item">Novo</string>
+    <string name="new_client">Novo Cliente</string>
+    <string name="new_product">Novo Produto</string>
+    <string name="client">Cliente</string>
+    <string name="supplier">Fornecedor</string>
+    <string name="product">Produto</string>
+    <string name="product_description">Descrição do produto</string>
+    <string name="sale">Venda</string>
+    <string name="sales">Vendas</string>
+    <string name="stock">Estoque</string>
+    <string name="new_">Novo</string>
+    <string name="name">Nome</string>
+    <string name="generate_report">Gerar Relatório</string>
+
+    <!--error msgs-->
+    <string name="invalid_name">Nome Inválido</string>
+    <string name="product_exists">Produto já existe!</string>
+
+    <string name="save_successfully">Salvo com sucesso</string>
+
+    <string name="invalid_date_client">Cliente ou Data inválidos."</string>
+    <string name="invalid_dates">Datas inválidas."</string>
+    <string name="invalid_client">Cliente inválido."</string>
+
+    <string name="choose_date">Selecione a data</string>
+    <string name="choose_initial_date_2dot">Selecione a data inicial:</string>
+    <string name="choose_final_date_2dot">Selecione a data final:</string>
+    <string name="choose_client">Selecione o cliente</string>
+    <string name="choose_product">Selecione o produto</string>
+
+    <string name="without_items">Não há itens</string>
+    <string name="all">Todos</string>
+
+    <string name="date_hint">DD/MM/YY</string>
+
+    <string name="summary">Resumo</string>
+    <string name="reports">Relatórios</string>
+    <string name="products">Produtos</string>
+    <string name="clients">Clientes</string>
+    <string name="login_pref_file_key">com.pazeto.comercio.LOGIN_PREFERENCE_FILE_KEY</string>
+    <string name="login_pref_uid">com.pazeto.comercio.login_pref_uid</string>
+    <string name="logout">Sair</string>
+
+</resources>

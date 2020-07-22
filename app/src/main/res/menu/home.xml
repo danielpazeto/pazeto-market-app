@@ -1,0 +1,15 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="100"
+        android:title="@string/action_settings"/>
+    <item
+        android:id="@+id/insert_fake_data"
+        android:orderInCategory="100"
+        android:title="Popular base de dados"/>
+    <item
+        android:id="@+id/drop_table"
+        android:orderInCategory="100"
+        android:title="Drop Tabelas"/>
+</menu>

@@ -1,4 +1,4 @@
-package com.pazeto.ceasapazeto.ui;
+package com.pazeto.comercio.ui;
 
 import android.app.Activity;
 import android.database.sqlite.SQLiteDatabase;
@@ -8,9 +8,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 
-import com.pazeto.ceasapazeto.R;
-import com.pazeto.ceasapazeto.db.DBFacade;
-import com.pazeto.ceasapazeto.vo.Client;
+import com.pazeto.comercio.R;
+import com.pazeto.comercio.db.DBFacade;
+import com.pazeto.comercio.vo.Client;
 
 public class ClientActivity extends Activity {
 

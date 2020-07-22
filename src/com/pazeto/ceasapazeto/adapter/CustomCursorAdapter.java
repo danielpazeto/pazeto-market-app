@@ -1,4 +1,4 @@
-package com.pazeto.ceasapazeto.adapter;
+package com.pazeto.comercio.adapter;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.CursorAdapter;
 import android.widget.TextView;
 
-import com.pazeto.ceasapazeto.R;
-import com.pazeto.ceasapazeto.vo.Client;
-import com.pazeto.ceasapazeto.vo.Product;
+import com.pazeto.comercio.R;
+import com.pazeto.comercio.vo.Client;
+import com.pazeto.comercio.vo.Product;
 
 public class CustomCursorAdapter extends CursorAdapter {
 
