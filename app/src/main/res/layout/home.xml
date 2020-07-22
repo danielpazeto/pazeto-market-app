@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".ui.Home">
+    tools:context="com.pazeto.comercio.ui.HomeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,6 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical" >
 
@@ -32,7 +33,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:layout_weight="1"
                 android:gravity="center"
                 android:text="Vendas" />
         </LinearLayout>
@@ -42,6 +42,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:clickable="true"
+            android:layout_weight="1"
             android:gravity="center"
             android:orientation="vertical" >
 
@@ -118,36 +119,49 @@
                 android:gravity="center"
                 android:text="@string/products" />
         </LinearLayout>
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clickable="true"
-            android:layout_weight="1"
             android:gravity="center"
+            android:layout_weight="1"
             android:onClick="openReportActivity"
             android:orientation="vertical" >
 
             <ImageView
-                android:layout_width="314dp"
+                android:layout_width="wrap_content"
                 android:scaleType="fitCenter"
-                android:layout_height="128dp"
+                android:layout_height="wrap_content"
                 android:src="@mipmap/ic_report" />
 
             <TextView
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_weight="1"
                 android:gravity="center"
                 android:text="@string/reports" />
         </LinearLayout>
-        <!-- <Button -->
-        <!-- android:id="@+id/droptables" -->
-        <!-- android:layout_width="wrap_content" -->
-        <!-- android:layout_height="wrap_content" -->
-        <!-- android:background="@android:drawable/alert_light_frame" -->
-        <!-- android:onClick="dropTables" -->
-        <!-- android:text="DROP TABLEs" /> -->
+
+        <Button
+            android:id="@+id/logout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="logout"
+            android:text="@string/logout" />
+
     </LinearLayout>
 
 </LinearLayout>

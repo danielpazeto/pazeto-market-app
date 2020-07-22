@@ -1,4 +1,4 @@
-package com.pazeto.market.adapter;
+package com.pazeto.comercio.adapter;
 
 import java.util.HashMap;
 import java.util.List;
@@ -18,12 +18,12 @@ import android.widget.AutoCompleteTextView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import com.pazeto.market.R;
-import com.pazeto.market.db.DBFacade;
-import com.pazeto.market.ui.ListProductStock.SaveStockListener;
-import com.pazeto.market.vo.Client;
-import com.pazeto.market.vo.Product;
-import com.pazeto.market.vo.StockedItem;
+import com.pazeto.comercio.R;
+import com.pazeto.comercio.db.DBFacade;
+import com.pazeto.comercio.ui.ListProductStock.SaveStockListener;
+import com.pazeto.comercio.vo.Client;
+import com.pazeto.comercio.vo.Product;
+import com.pazeto.comercio.vo.StockedItem;
 
 public class ProductStockListAdapter extends ArrayAdapter<StockedItem> {
 

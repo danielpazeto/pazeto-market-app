@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.pazeto.market"
+    package="com.pazeto.comercio"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -14,28 +14,23 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
-        <activity android:name=".ui.Home" >
+        <activity android:name="com.pazeto.comercio.ui.HomeActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.EditClientActivity" >
-        </activity>
-        <activity android:name=".ui.ListClientsActivity" >
-        </activity>
-        <activity android:name=".ui.EditProductActivity" >
-        </activity>
-        <activity android:name=".ui.ListProductsActivity" >
-        </activity>
-        <activity android:name=".ui.StockActivity" >
-        </activity>
-        <activity android:name=".ui.SaleActivity" >
-        </activity>
-        <activity android:name=".ui.ReportActivity" />
-        <activity android:name=".ui.SummaryActivity" />
-        <activity android:name=".widgets.CalenderView" >
+        <activity android:name="com.pazeto.comercio.ui.EditClientActivity" />
+        <activity android:name="com.pazeto.comercio.ui.ListClientsActivity" />
+        <activity android:name="com.pazeto.comercio.ui.EditProductActivity" />
+        <activity android:name="com.pazeto.comercio.ui.ListProductsActivity" />
+        <activity android:name="com.pazeto.comercio.ui.EditSaleStockActivity" />
+        <activity android:name="com.pazeto.comercio.ui.StockListListActivity" />
+        <activity android:name="com.pazeto.comercio.ui.SaleListListActivity" />
+        <activity android:name="com.pazeto.comercio.ui.ReportActivity" />
+        <activity android:name="com.pazeto.comercio.ui.SummaryActivity" />
+        <activity android:name="com.pazeto.comercio.widgets.CalenderView" >
         </activity>
     </application>
 

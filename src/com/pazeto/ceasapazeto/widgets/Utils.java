@@ -1,4 +1,4 @@
-package com.pazeto.market.widgets;
+package com.pazeto.comercio.widgets;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -10,7 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
 
-import com.pazeto.market.R;
+import com.pazeto.comercio.R;
 
 public class Utils {
 

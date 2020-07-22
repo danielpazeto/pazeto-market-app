@@ -1,4 +1,4 @@
-package com.pazeto.market.ui;
+package com.pazeto.comercio.ui;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,11 +24,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.pazeto.market.R;
-import com.pazeto.market.adapter.ProductStockListAdapter;
-import com.pazeto.market.db.DBFacade;
-import com.pazeto.market.vo.StockedItem;
-import com.pazeto.market.widgets.Utils;
+import com.pazeto.comercio.R;
+import com.pazeto.comercio.adapter.ProductStockListAdapter;
+import com.pazeto.comercio.db.DBFacade;
+import com.pazeto.comercio.vo.StockedItem;
+import com.pazeto.comercio.widgets.Utils;
 
 public class ListProductStock extends Activity {
 	private TextView tvDate;

@@ -1,4 +1,4 @@
-package com.pazeto.market.ui;
+package com.pazeto.comercio.ui;
 
 import android.app.Activity;
 import android.os.Bundle;

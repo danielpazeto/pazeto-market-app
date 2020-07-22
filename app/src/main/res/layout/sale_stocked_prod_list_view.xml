@@ -1,34 +1,28 @@
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:padding="@dimen/activity_form_padding"
         android:orientation="vertical">
-        <!--http://www.viralandroid.com/2016/02/android-floating-action-menu-example.html-->
+
         <LinearLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="#D2E6DE"
+            android:layout_marginBottom="10dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/OutputClient"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:gravity="center|left"
-                    android:drawableStart="@mipmap/ic_client"
-                    android:hint="@string/client"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <TextView
                     android:id="@+id/tv_date"
@@ -42,20 +36,18 @@
                     android:hint="@string/date_hint"
                     android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/btSave"
-                    style="?android:attr/buttonStyleSmall"
-                    android:layout_width="wrap_content"
+                <TextView
+                    android:id="@+id/OutputClient"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:drawableStart="@mipmap/ic_save"
-                    android:text="@string/save" />
+                    android:layout_weight="1"
+                    android:drawableStart="@mipmap/ic_client"
+                    android:gravity="center_vertical"
+                    android:hint="@string/client"
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
+
             </LinearLayout>
+
         </LinearLayout>
 
         <LinearLayout
@@ -63,16 +55,11 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:layout_width="5dp"
-                android:layout_height="match_parent"
-                android:layout_weight="0.4"
-                android:text="#" />
-
-            <TextView
                 android:id="@+id/tvHeaderUnit"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textStyle="bold"
                 android:text="Qtd" />
 
             <TextView
@@ -80,6 +67,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="2"
+                android:textStyle="bold"
                 android:text="@string/product" />
 
             <TextView
@@ -87,6 +75,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textStyle="bold"
                 android:text="Valor Unit." />
 
             <TextView
@@ -94,6 +83,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textStyle="bold"
                 android:text="Valor Total" />
 
             <TextView
@@ -101,98 +91,36 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:textStyle="bold"
                 android:text="Pago" />
 
-            <TextView
-                android:id="@+id/Excluir"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:text="@string/remove" />
+
         </LinearLayout>
 
         <ListView
             android:id="@+id/sale_ListView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></ListView>
+            android:layout_height="match_parent">
+        </ListView>
 
         <TextView
             android:id="@+id/tv_empty"
             android:layout_width="match_parent"
+            android:layout_gravity="center"
             android:layout_height="wrap_content"
             android:text="@string/without_items"
             android:visibility="gone" />
     </LinearLayout>
 
-    <com.github.clans.fab.FloatingActionMenu
-        android:id="@+id/material_design_android_floating_action_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_gravity="top|end"
-        android:layout_marginTop="15dp"
-        fab:menu_animationDelayPerItem="55"
-        fab:menu_backgroundColor="@android:color/transparent"
-        fab:menu_buttonSpacing="0dp"
-        fab:menu_colorNormal="#ffffff"
-        fab:menu_colorPressed="#bcbaba"
-        fab:menu_colorRipple="#99d4d4d4"
-        fab:menu_fab_label="@string/new_"
-        fab:menu_fab_size="normal"
-        fab:menu_icon="@mipmap/ic_add"
-        fab:menu_labels_colorNormal="#333"
-        fab:menu_labels_colorPressed="#444"
-        fab:menu_labels_colorRipple="#66efecec"
-        fab:menu_labels_cornerRadius="3dp"
-        fab:menu_labels_ellipsize="none"
-        fab:menu_labels_hideAnimation="@anim/fab_slide_out_to_right"
-        fab:menu_labels_margin="0dp"
-        fab:menu_labels_maxLines="-1"
-        fab:menu_labels_padding="8dp"
-        fab:menu_labels_position="left"
-        fab:menu_labels_showAnimation="@anim/fab_slide_in_from_right"
-        fab:menu_labels_showShadow="true"
-        fab:menu_labels_singleLine="false"
-        fab:menu_labels_textColor="#f2f1f1"
-        fab:menu_labels_textSize="15sp"
-        fab:menu_openDirection="down"
-        fab:menu_shadowColor="#49000000"
-        fab:menu_shadowRadius="4dp"
-        fab:menu_shadowXOffset="1dp"
-        fab:menu_shadowYOffset="4dp"
-        fab:menu_showShadow="true">
-
-
-        <com.github.clans.fab.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onNewClientBtn"
-            android:src="@mipmap/ic_new_client"
-            fab:backgroundTint="@android:color/white"
-            fab:fab_label="@string/client"
-            fab:fab_size="mini" />
-
-        <com.github.clans.fab.FloatingActionButton
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:onClick="onNewProductBtn"
-            android:src="@mipmap/ic_new_product"
-            fab:backgroundTint="@android:color/white"
-            fab:fab_label="@string/product"
-            fab:fab_size="mini" />
-
-    </com.github.clans.fab.FloatingActionMenu>
-
-    <com.github.clans.fab.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_add_new"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
-        android:onClick="onAddNewBtnClick"
-        android:src="@mipmap/ic_new_sale"
-        fab:fab_colorNormal="#ffffff"
-        fab:fab_colorPressed="#b1b1b1"
-        fab:fab_label="@string/sale" />
+        android:onClick="addNewSaleStock"
+        app:backgroundTint="@color/float_btn_background_color"
+        app:maxImageSize="@dimen/float_btn_image_size"
+        android:layout_margin="@dimen/float_button_margin"
+        android:src="@mipmap/ic_new_sale" />
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

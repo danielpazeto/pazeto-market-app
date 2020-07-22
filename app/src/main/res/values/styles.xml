@@ -5,7 +5,7 @@
         by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
 
     -->
-    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!--
             Theme customizations available in newer API levels can go in
             res/values-vXX/styles.xml, while customizations related to
@@ -21,8 +21,8 @@
 
 
     <style name="PopupTheme" parent="Theme.AppCompat.Light.Dialog" >
-        <item name="windowFixedWidthMajor">95%</item>
-        <item name="windowFixedWidthMinor">80%</item>
+        <item name="windowFixedWidthMajor">98%</item>
+        <item name="windowFixedWidthMinor">95%</item>
     </style>
 
 </resources>

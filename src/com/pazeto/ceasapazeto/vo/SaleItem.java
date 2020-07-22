@@ -1,4 +1,4 @@
-package com.pazeto.market.vo;
+package com.pazeto.comercio.vo;
 
 import java.io.Serializable;
 

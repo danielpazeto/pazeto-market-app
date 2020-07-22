@@ -1,4 +1,4 @@
-package com.pazeto.market.ui;
+package com.pazeto.comercio.ui;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -30,12 +30,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.pazeto.market.R;
-import com.pazeto.market.adapter.SaleListAdapter;
-import com.pazeto.market.db.DBFacade;
-import com.pazeto.market.vo.Client;
-import com.pazeto.market.vo.SaleItem;
-import com.pazeto.market.widgets.Utils;
+import com.pazeto.comercio.R;
+import com.pazeto.comercio.adapter.SaleListAdapter;
+import com.pazeto.comercio.db.DBFacade;
+import com.pazeto.comercio.vo.Client;
+import com.pazeto.comercio.vo.SaleItem;
+import com.pazeto.comercio.widgets.Utils;
 
 public class SaleActivity extends Activity implements TextWatcher {
 	private TextView tvCurrentDate;

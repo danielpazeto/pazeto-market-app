@@ -1,4 +1,4 @@
-package com.pazeto.market.db;
+package com.pazeto.comercio.db;
 
 
 public class User {
