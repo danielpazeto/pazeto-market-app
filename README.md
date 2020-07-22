@@ -1,3 +1,2 @@
-# Android Pazeto Market Application#
-
-Project to small market focused in fruit and vegetables, but applicable to others market branchs
+# Comércio
+Comércio is a commerce application focused small merchants
