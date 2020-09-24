@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +16,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.pazeto.comercio.R;
 import com.pazeto.comercio.db.AuthHandler;
 
+import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
 
@@ -22,7 +24,6 @@ import java.util.List;
 public abstract class DefaultActivity extends AppCompatActivity {
 
     private static final int RC_SIGN_IN = 63535;
-    public final static String DATE_FORMAT_STRING = "dd/MM/yy";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,7 @@ public abstract class DefaultActivity extends AppCompatActivity {
                 AuthUI.getInstance()
                         .createSignInIntentBuilder()
                         .setAvailableProviders(providers)
-                        .setLogo(R.drawable.ic_launcher)      // Set logo drawable
+                        .setLogo(R.drawable.shop)      // Set logo drawable
                         .setTheme(R.style.AppTheme)      // Set theme
                         .setIsSmartLockEnabled(false)
                         .build(),

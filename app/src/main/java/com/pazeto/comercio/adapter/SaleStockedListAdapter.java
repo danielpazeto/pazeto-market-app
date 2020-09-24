@@ -14,22 +14,19 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.pazeto.comercio.R;
 import com.pazeto.comercio.db.FirebaseHandler;
-import com.pazeto.comercio.ui.DefaultActivity;
 import com.pazeto.comercio.ui.EditSaleStockActivity;
 import com.pazeto.comercio.vo.BaseSaleStocked;
 import com.pazeto.comercio.vo.Client;
@@ -37,14 +34,10 @@ import com.pazeto.comercio.vo.Sale;
 import com.pazeto.comercio.vo.Stock;
 import com.pazeto.comercio.widgets.Utils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Objects;
 
 public class SaleStockedListAdapter extends BaseAdapter {
@@ -53,12 +46,26 @@ public class SaleStockedListAdapter extends BaseAdapter {
 
     private Context context;
 
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
+        ((AdapterUpdateNotify)context).adapterNotifyChange();
+    }
+
     List<BaseSaleStocked> items = new ArrayList<>();
-    Map<Integer, ViewHolder> hmHolderPostition;
+//    Map<Integer, ViewHolder> hmHolderPosition;
 
     public SaleStockedListAdapter(Context context) {
         this.context = context;
-        hmHolderPostition = new HashMap<>();
+//        hmHolderPosition = new HashMap<>();
+    }
+
+    public double getTotalAmout() {
+        return items.stream().mapToDouble(BaseSaleStocked::getTotalPrice).sum();
+    }
+
+    public interface AdapterUpdateNotify {
+        void adapterNotifyChange();
     }
 
     @Override
@@ -96,7 +103,7 @@ public class SaleStockedListAdapter extends BaseAdapter {
             holder.removeSaleButton.setTag(holder);
             setRemoveButtonClickListener(holder);
 
-            hmHolderPostition.put(position, holder);
+//            hmHolderPosition.put(position, holder);
             convertView.setTag(holder);
         }
 
@@ -130,7 +137,7 @@ public class SaleStockedListAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    private class ViewHolder {
+    private static class ViewHolder {
 
         int index;
         TextView prodName;
@@ -148,20 +155,25 @@ public class SaleStockedListAdapter extends BaseAdapter {
 
         holder.prodName.setText(item.getProduct().getName());
         holder.prodDescription.setText(item.getProduct().getDescription());
-        holder.quantity.setText(String.valueOf(item.getQuantity()));
-        holder.unitPrice.setText(String.valueOf(item.getUnitPrice()));
-        holder.totalPrice.setText(String.valueOf(item.getTotalPrice()));
+
+        Utils.setNumberValueView(holder.quantity, item.getQuantity());
+        Utils.setNumberValueView(holder.unitPrice, item.getUnitPrice());
+        Utils.setNumberValueView(holder.totalPrice, item.getTotalPrice());
+
         holder.isPaid.setChecked(item.isPaid());
     }
 
     public void reload(Client currentClient, Date currentDate, BaseSaleStocked.TYPE type) {
 
-        new FirebaseHandler(context).getSaleStocksCollectionReference()
-                .whereEqualTo("date", Utils.ISO_8601_DATE_FORMAT.format(currentDate))
+        Date endDate = Utils.addDateOneDay(currentDate);
+
+        Query query = new FirebaseHandler(context).getSaleStocksCollectionReference()
+                .orderBy("date")
+                .startAt(currentDate)
+                .endBefore(endDate)
                 .whereEqualTo("idClient", currentClient.getId())
-                .whereEqualTo("type", type)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .whereEqualTo("type", type);
+        query.get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
@@ -180,11 +192,11 @@ public class SaleStockedListAdapter extends BaseAdapter {
                             }
 
                             if (saleStockList.size() == 0) {
-                                SimpleDateFormat sdf = new SimpleDateFormat(DefaultActivity.DATE_FORMAT_STRING, Locale.getDefault());
 
                                 String saleStock = (type == BaseSaleStocked.TYPE.SALE) ? "vendas": "compras";
+
                                 Toast.makeText(context,
-                                        "Não há "+ saleStock +" para a data: " + sdf.format(currentDate), Toast.LENGTH_SHORT)
+                                        "Não há "+ saleStock +" para a data: " + Utils.formatDateToString(currentDate), Toast.LENGTH_SHORT)
                                         .show();
                             }
 
@@ -226,35 +238,47 @@ public class SaleStockedListAdapter extends BaseAdapter {
                         notifyDataSetChanged();
                     }
                 });
-
     }
 
-    public void add(BaseSaleStocked newItem) {
-        new FirebaseHandler(context).getSaleStocksCollectionReference()
-                .add(newItem)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+    private void save(BaseSaleStocked item) {
+
+        new FirebaseHandler(context).getSaleStocksCollectionReference().document(item.getId())
+                .set(item)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
-
-                        items.add(getCount(), newItem);
-
-                        newItem.setId(documentReference.getId());
-
-                        SaleStockedListAdapter.this.notifyDataSetChanged();
-                    }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.e(TAG, "Error adding document", e);
+                    public void onComplete(@NonNull Task<Void> task) {
+                        updateItem(item);
+                        notifyDataSetChanged();
                     }
                 });
     }
 
+//    public void add(BaseSaleStocked newItem) {
+//        new FirebaseHandler(context).getSaleStocksCollectionReference()
+//                .add(newItem)
+//                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+//                    @Override
+//                    public void onSuccess(DocumentReference documentReference) {
+//                        Log.d(TAG, "DocumentSnapshot written with ID: " + documentReference.getId());
+//
+//                        items.add(getCount(), newItem);
+//
+//                        newItem.setId(documentReference.getId());
+//
+//                        SaleStockedListAdapter.this.notifyDataSetChanged();
+//                    }
+//                })
+//                .addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//                        Log.e(TAG, "Error adding document", e);
+//                    }
+//                });
+//    }
+
     private void setupItemClickListener(final ViewHolder holder, View convertView) {
 
-        LinearLayout productLayout = convertView.findViewById(R.id.sale_stock_item);
+        ConstraintLayout productLayout = convertView.findViewById(R.id.sale_stock_item);
         productLayout.setOnClickListener(view -> {
             Intent intent = new Intent(context, EditSaleStockActivity.class);
             intent.putExtra(EditSaleStockActivity.SALE_STOCK_EXTRA, getItem(holder.index));
@@ -271,8 +295,9 @@ public class SaleStockedListAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView,
                                          boolean isChecked) {
                 try {
-                    BaseSaleStocked sale = getItem(holder.index);
-                    sale.setPaid(isChecked);
+                    BaseSaleStocked saleStockItem = getItem(holder.index);
+                    saleStockItem.setPaid(isChecked);
+                    save(saleStockItem);
                 } catch (Exception e) {
                     Log.e(TAG, "CHeckBox is Paid?: " + isChecked
                             + " Erro: " + e);

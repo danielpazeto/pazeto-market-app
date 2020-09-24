@@ -1,2 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<items version="2" />
+<items version="2" >
+
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="26674000177e45447a0326a6ad84612761199a13">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/com.android.support-support-core-ui-25.0.0_3164de2d170cad31c5a01296361e44360db5cad7.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="75b1f366ff0bbc78f8b1f7cf0dc82e7c53afef6a">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/com.android.support-support-compat-25.0.0_6649eb970d9b8c059385f466850fda5696951dea.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="4ccbcda5c72027c7f7c14be9ff8640d9cb0d8da0">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/com.android.support-support-core-utils-25.0.0_3c9e9ab18ee1233edc8ced170389c114f68a6074.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/Android/Sdk/extras/android/m2repository/com/android/support/support-annotations/25.0.0/support-annotations-25.0.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="a22d2cc94da87b254451fa8ed28afc30b4653773">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/support-annotations-25.0.0_b706fbef1c2c523f8525d89aee9ea3b1ca354fcd.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="07daa0b6e1d455c82a38422ffe287c18823d339a">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/com.android.support-support-fragment-25.0.0_72f4b968b8e9e8db7664776c7d26f8cd9fc28b41.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/design/25.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="26384be22ddc74cfe197ebda9edbc7d1fd8bd537">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/com.android.support-design-25.0.0_6efcc403dea3c5bb6c709a1c3b849c11ceb8d007.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/support-core-ui/25.0.0/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="e5343c9d19cb19ff55f6b268c7f3fe8c9d224f6f">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/internal_impl-25.0.0_a0ec25c3af840249e4666b16251b88e4bd5a8643.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.github.clans/fab/1.6.2/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="7e6a161b3796c15fe00755ce47e03067e568ecc4">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/com.github.clans-fab-1.6.2_c8f9c9304a9a310b821b50ce3cb059537a4e249d.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.0.0/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="665d21a8a069c96b4d9e8b434f5096d865b4e261">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/internal_impl-25.0.0_c6323b00f428152779ee70d210939eab773f12f5.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/25.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="d29714cc76b38157e3cbd034c66e1ec808eb4c19">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/com.android.support-support-vector-drawable-25.0.0_26d985b09de6d093b746d8380d6bf6d5b79e1b56.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="8bc45ce1f63d1a391fd38b32a201be5a42f9c95d">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/com.android.support-appcompat-v7-25.0.0_a46e5ddee12620203d477fabd24a59ec11738067.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/support-compat/25.0.0/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="f2e3b9bc1ec25f652e8007ce7774c991e38f6a00">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/internal_impl-25.0.0_5238c413fceaac8eee921f169cf527c1b52b65c5.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/25.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="53a420cd4f49274db6bd43475f8006ba67ef6bbd">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/com.android.support-animated-vector-drawable-25.0.0_4cc10af54cb25be473ceccfd3004982f2579113e.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/support-core-utils/25.0.0/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="3b61a70884adaf0be3fc06c70c801e3e6df13133">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/internal_impl-25.0.0_6dcd2182c07d2177e9c7da062dd942d7224e049f.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/transition/25.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="0c6d948e6cb9ea6f535d175fb61ba2930719c0e9">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/com.android.support-transition-25.0.0_23c311ea44594362f2af9b632ccdea38d6fc4a9a.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/support-v4/25.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="d7c42c80f6509b9ea4db28ca7859ffae08ec5741">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/com.android.support-support-v4-25.0.0_d423fc6b04cf90374b2c96e4c3ed2968dec5cb20.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/support-media-compat/25.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="76fb65a4b41ea42dab8a1310ed772a2420c96b52">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/com.android.support-support-media-compat-25.0.0_abece865bb42a4067dbe0409ea480446c5481bea.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/25.0.0/jars/classes.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="5e497d60f0cb6ce87c458ac5420a46d0fed49bd0">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/com.android.support-recyclerview-v7-25.0.0_5d653c92af99d6624154642b6bd0069b2531c415.jar" />
+    </item>
+    <item
+        jar="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/exploded-aar/com.android.support/support-fragment/25.0.0/jars/libs/internal_impl-25.0.0.jar"
+        jumboMode="false"
+        revision="23.0.3"
+        sha1="ee5faf4dee5b6a4364bf51587871047dde7c703a">
+        <dex dex="/home/pazeto/projects/pazeto-market-app/app/build/intermediates/pre-dexed/debug/internal_impl-25.0.0_5d642c94ecb269e150a3bc74171ded48c8e69740.jar" />
+    </item>
+
+</items>

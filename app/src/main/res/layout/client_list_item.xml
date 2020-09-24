@@ -2,6 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/client_list_item_height"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
     android:orientation="horizontal" >
 
     <LinearLayout
@@ -14,14 +16,16 @@
             android:id="@+id/tv_client_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Large Text"
-            android:textAppearance="?android:attr/textAppearanceLarge" />
+            android:text="João Neto Francisco"
+            android:textColor="@android:color/black"
+            android:textSize="18sp"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/tv_client_city"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Small Text"
+            android:text="Campinas"
             android:textAppearance="?android:attr/textAppearanceSmall" />
 
     </LinearLayout>
@@ -37,13 +41,13 @@
             android:id="@+id/tv_client_telephone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="1964915631" />
 
         <TextView
             android:id="@+id/tv_client_cellphone1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:text="1599545485" />
 
     </LinearLayout>
 

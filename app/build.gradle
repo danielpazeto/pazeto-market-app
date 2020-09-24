@@ -32,7 +32,7 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.1.0'
 
     //Fast scroll
-    compile 'com.simplecityapps:recyclerview-fastscroll:2.0.1'
+    implementation 'com.simplecityapps:recyclerview-fastscroll:2.0.1'
 
 
     //Auth

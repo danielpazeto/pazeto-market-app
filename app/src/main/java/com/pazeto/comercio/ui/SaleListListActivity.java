@@ -30,8 +30,12 @@ public class SaleListListActivity extends SaleStockBaseListActivity {
     }
 
     @Override
-    CharSequence getMenuTitle() {
-        return getString(R.string.sale);
+    protected int getTotalLayoutBackground() {
+        return R.drawable.background_rounded_border_green;
     }
 
+    @Override
+    protected int getHeaderLayoutBackground() {
+        return R.color.green_section_header;
+    }
 }

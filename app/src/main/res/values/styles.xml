@@ -21,6 +21,7 @@
 
 
     <style name="PopupTheme" parent="Theme.AppCompat.Light.Dialog" >
+        <item name="windowNoTitle">true</item>
         <item name="windowFixedWidthMajor">98%</item>
         <item name="windowFixedWidthMinor">95%</item>
     </style>

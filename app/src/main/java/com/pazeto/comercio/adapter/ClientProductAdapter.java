@@ -3,7 +3,6 @@ package com.pazeto.comercio.adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -53,7 +52,7 @@ public class ClientProductAdapter extends RecyclerView.Adapter<ClientProductAdap
 
     public ClientProductAdapter(int type, RecyclerViewClickListener itemListener) {
         this.type = type;
-        this.itemListener = itemListener;
+        ClientProductAdapter.itemListener = itemListener;
     }
 
     static abstract class BaseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -131,7 +130,7 @@ public class ClientProductAdapter extends RecyclerView.Adapter<ClientProductAdap
                 clientViewHolder.tvClientName.setText(client.getName() + " " + client.getLastname());
                 clientViewHolder.tvClientCity.setText(client.getCity());
                 clientViewHolder.tvClientTelephone.setText(client.getTelephone());
-                clientViewHolder.tcClientCellphone1.setText(client.getCellPhone1());
+                clientViewHolder.tcClientCellphone1.setText(client.getCellPhone());
                 break;
 
             default:

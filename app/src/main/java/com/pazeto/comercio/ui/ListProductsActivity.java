@@ -39,8 +39,8 @@ public class ListProductsActivity extends DefaultActivity implements ClientProdu
         if (getIntent().getExtras() != null) {
             isToSelect = getIntent().getBooleanExtra(EXTRA_IS_TO_SELECT_PRODUCT, false);
             if (isToSelect) {
+                setFinishOnTouchOutside(false);
                 setTheme(R.style.PopupTheme);
-                setTitle(R.string.choose_product);
             }
         }
 
@@ -63,7 +63,6 @@ public class ListProductsActivity extends DefaultActivity implements ClientProdu
                         List<Product> products = new ArrayList<>();
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d(TAG, document.getId() + " => " + document.getData());
 
                             Product product = document.toObject(Product.class);
                             product.setId(document.getId());

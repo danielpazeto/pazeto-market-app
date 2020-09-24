@@ -11,7 +11,7 @@
     <application
         android:allowBackup="true"
         android:configChanges="keyboardHidden|orientation|screenSize"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/shop"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity android:name="com.pazeto.comercio.ui.HomeActivity" >

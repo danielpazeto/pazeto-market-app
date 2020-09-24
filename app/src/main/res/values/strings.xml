@@ -11,7 +11,11 @@
     <string name="hello_world">Hello world!</string>
     <string name="product_nameHint">Produto</string>
     <string name="quantity">Quantidade</string>
+    <string name="quantity_abbreviated">Quant.</string>
     <string name="unit_price">Preço unitário</string>
+    <string name="unit_price_abbrev">Preço Unit.</string>
+    <string name="unit_price_abbrev_real">Preço Unit.(R$)</string>
+    <string name="unit_price_reais">Preço unitário (R$)</string>
     <string name="remove">Remover</string>
     <string name="cancel">Cancelar</string>
     <string name="save">Salvar</string>
@@ -26,7 +30,6 @@
     <string name="sales">Vendas</string>
     <string name="stock">Estoque</string>
     <string name="new_">Novo</string>
-    <string name="name">Nome</string>
     <string name="generate_report">Gerar Relatório</string>
 
     <!--error msgs-->
@@ -42,8 +45,8 @@
     <string name="choose_date">Selecione a data</string>
     <string name="choose_initial_date_2dot">Selecione a data inicial:</string>
     <string name="choose_final_date_2dot">Selecione a data final:</string>
-    <string name="choose_client">Selecione o cliente</string>
-    <string name="choose_product">Selecione o produto</string>
+    <string name="choose_client">Escolha o cliente</string>
+    <string name="choose_product">Escolha o produto</string>
 
     <string name="without_items">Não há itens</string>
     <string name="all">Todos</string>
@@ -57,5 +60,15 @@
     <string name="login_pref_file_key">com.pazeto.comercio.LOGIN_PREFERENCE_FILE_KEY</string>
     <string name="login_pref_uid">com.pazeto.comercio.login_pref_uid</string>
     <string name="logout">Sair</string>
+    <string name="name">Nome</string>
+    <string name="last_name">Sobrenome</string>
+    <string name="telephone">Telefone</string>
+    <string name="cellphone">Celular</string>
+    <string name="total_money">Total (R$)</string>
+    <string name="email">Email</string>
+    <string name="address">Endereço</string>
+    <string name="client_supplier">Cliente/Fornecedor</string>
+    <string name="city">Cidade</string>
+    <string name="clients_and_suppliers">Clientes e Fornecedores</string>
 
 </resources>

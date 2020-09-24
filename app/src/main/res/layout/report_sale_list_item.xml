@@ -1,68 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal" >
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/pos"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2"
-        android:text="#"
-        android:gravity="center"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
-
-    <TextView
-        android:id="@+id/sale_quantity"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1.8"
-        android:gravity="center"
-        android:inputType="numberDecimal"
-        android:textAppearance="?android:attr/textAppearanceSmall" >
-    </TextView>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:id="@+id/sale_stock_item"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    app:layout_constraintBottom_toBottomOf="parent"
+    app:layout_constraintEnd_toEndOf="parent"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toTopOf="parent">
 
     <TextView
         android:id="@+id/tv_sale_product"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:gravity="center_vertical"
         android:hint="@string/product"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/sale_ck_is_paid"/>
+
+    <TextView
+        android:id="@+id/tv_sale_product_description"
+        android:layout_width="120dp"
+        android:layout_height="0dp"
+        android:hint="@string/product_description"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:singleLine="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_sale_product" />
+
+    <TextView
+        android:id="@+id/tv_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:gravity="center_vertical"
+        android:text="@string/quantity_abbreviated"
+        android:textSize="12sp"
+        app:layout_constraintTop_toBottomOf="@id/tv_sale_product"
+        app:layout_constraintBottom_toTopOf="@id/sale_quantity"
+        app:layout_constraintStart_toEndOf="@+id/tv_sale_product_description"/>
+
+    <TextView
+        android:id="@+id/sale_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAlignment="textStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_quantity"
+        tools:text="1500" />
+
+    <TextView
+        android:id="@+id/tv_unit_price"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:text="@string/unit_price_abbrev_real"
+        android:textSize="12sp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/sale_price_unit"
+        app:layout_constraintStart_toEndOf="@+id/tv_quantity"/>
 
     <TextView
         android:id="@+id/sale_price_unit"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1.8"
-        android:gravity="center"
-        android:hint="R$"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_unit_price"
+        tools:text="3999" />
+
+    <TextView
+        android:id="@+id/tv_sale_price_total"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="Total(R$)"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/sale_price_total"
+        app:layout_constraintStart_toEndOf="@+id/tv_unit_price" />
 
     <TextView
         android:id="@+id/sale_price_total"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1.8"
-        android:gravity="center"
-        android:hint="R$"
-        android:inputType="numberDecimal"
-        android:textAppearance="?android:attr/textAppearanceSmall" />
+        android:gravity="center_vertical"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_sale_price_total"
+        tools:text="45000" />
+
+    <TextView
+        android:id="@+id/tv_checkbox_paid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Pago"
+        android:textSize="12sp"
+        android:layout_marginStart="25dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sale_ck_is_paid"
+        app:layout_constraintStart_toStartOf="@+id/tv_sale_price_total"
+        app:layout_constraintTop_toTopOf="parent" />
+
 
     <CheckBox
         android:id="@+id/sale_ck_is_paid"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1.8" />
+        android:textSize="12sp"
+        android:translationX="-5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/tv_sale_price_total"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <!--<ImageButton-->
-        <!--android:id="@+id/sale_remove"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:layout_weight="1"-->
-        <!--android:onClick="removeSaleOnClickHandler"-->
-        <!--android:src="@android:drawable/ic_menu_delete" />-->
+</androidx.constraintlayout.widget.ConstraintLayout>
 
-</LinearLayout>
+
+
+<ImageButton
+    android:id="@+id/sale_remove"
+    android:layout_width="0dp"
+    android:layout_height="wrap_content"
+    android:background="#00FFFFFF"
+    android:onClick="removeSaleOnClickHandler"
+    android:scaleType="fitCenter"
+    android:src="@android:drawable/ic_delete"
+    app:layout_constraintBottom_toBottomOf="@+id/sale_stock_item"
+    app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

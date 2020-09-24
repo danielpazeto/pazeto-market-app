@@ -47,13 +47,13 @@ public class SummaryActivity extends DefaultActivity {
         Collections.sort(dates);
         Long initialDate = dates.get(0);
         Long finalDate;
-        if (dates.size() > 1) {
-            finalDate = dates.get(dates.size() - 1);
-            tvDate.setText("De " + Utils.unixtimeToDate(initialDate, DATE_FORMAT_STRING)
-                    + " à " + Utils.unixtimeToDate(finalDate, DATE_FORMAT_STRING));
-        } else {
-            tvDate.setText(Utils.unixtimeToDate(initialDate, DATE_FORMAT_STRING));
-        }
+//        if (dates.size() > 1) {
+//            finalDate = dates.get(dates.size() - 1);
+//            tvDate.setText("De " + Utils.unixtimeToDate(initialDate, DATE_FORMAT_STRING)
+//                    + " à " + Utils.unixtimeToDate(finalDate, DATE_FORMAT_STRING));
+//        } else {
+//            tvDate.setText(Utils.unixtimeToDate(initialDate, DATE_FORMAT_STRING));
+//        }
 
     }
 

@@ -3,10 +3,7 @@ package com.pazeto.comercio.ui;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -19,6 +16,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.pazeto.comercio.R;
 import com.pazeto.comercio.adapter.ClientProductAdapter;
 import com.pazeto.comercio.db.FirebaseHandler;
+import com.pazeto.comercio.utils.Constants;
 import com.pazeto.comercio.vo.Client;
 
 import java.util.ArrayList;
@@ -27,7 +25,7 @@ import java.util.List;
 public class ListClientsActivity extends DefaultActivity implements ClientProductAdapter.RecyclerViewClickListener {
 
     private static final String TAG = ListClientsActivity.class.getName();
-    public static String IS_TO_SELECT_CLIENT = "selectClient";
+    public static String IS_TO_SELECT_CLIENT = "com.pazeto.comercio.ListClientsActivity.IS_TO_SELECT";
 
     RecyclerView clietRecyclerView;
     ClientProductAdapter customAdapter;
@@ -41,8 +39,8 @@ public class ListClientsActivity extends DefaultActivity implements ClientProduc
         if (getIntent().getExtras() != null) {
             isToSelect = getIntent().getExtras().getBoolean(IS_TO_SELECT_CLIENT);
             if (isToSelect) {
+                setFinishOnTouchOutside(false);
                 setTheme(R.style.PopupTheme);
-                setTitle(R.string.choose_client);
             }
         }
         super.onCreate(savedInstanceState);
@@ -60,19 +58,18 @@ public class ListClientsActivity extends DefaultActivity implements ClientProduc
     public void recyclerViewListClicked(View v, int position) {
         Client client = (Client) customAdapter.getItem(position);
         String id = client.getId();
-        Log.d(TAG,"Id selecionado : " + id + " : "+client.getName());
         if (isToSelect) {
             onClientSelected(client);
         } else {
             Intent iClient = new Intent(ListClientsActivity.this, EditClientActivity.class);
-            iClient.putExtra(EditClientActivity.ID_EXTRA, id);
+            iClient.putExtra(Constants.INTENT_EXTRA_CLIENT, id);
             startActivityForResult(iClient, 1);
         }
     }
 
     private void onClientSelected(Client client) {
         Intent intent = new Intent();
-        intent.putExtra(EditClientActivity.ID_EXTRA, client);
+        intent.putExtra(Constants.INTENT_EXTRA_CLIENT, client);
         intent.putExtra(ListClientsActivity.IS_TO_SELECT_CLIENT, isToSelect);
         setResult(RESULT_OK, intent);
         finish();
@@ -88,7 +85,6 @@ public class ListClientsActivity extends DefaultActivity implements ClientProduc
                         List<Client> clientList = new ArrayList<>();
 
                         for (QueryDocumentSnapshot document : task.getResult()) {
-                            Log.d(TAG, document.getId() + " => " + document.getData());
 
                             Client client = document.toObject(Client.class);
                             client.setId(document.getId());
@@ -108,7 +104,7 @@ public class ListClientsActivity extends DefaultActivity implements ClientProduc
         if (resultCode == RESULT_OK) {
 
             if (isToSelect) {
-                Client newSelectedClient = (Client) data.getSerializableExtra(EditClientActivity.ID_EXTRA);
+                Client newSelectedClient = (Client) data.getSerializableExtra(Constants.INTENT_EXTRA_CLIENT);
                 onClientSelected(newSelectedClient);
             } else {
                 loadClients();

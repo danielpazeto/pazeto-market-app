@@ -31,8 +31,13 @@ public class StockListListActivity extends SaleStockBaseListActivity {
     }
 
     @Override
-    CharSequence getMenuTitle() {
-        return getString(R.string.stock);
+    protected int getTotalLayoutBackground() {
+        return R.drawable.background_rounded_border_red;
+    }
+
+    @Override
+    protected int getHeaderLayoutBackground() {
+        return R.color.red_section_header;
     }
 
 }

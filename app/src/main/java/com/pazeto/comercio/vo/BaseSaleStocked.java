@@ -10,13 +10,11 @@ import java.util.Date;
 /**
  * @author pazeto
  */
-public abstract class BaseSaleStocked implements Serializable {
+public class BaseSaleStocked implements Serializable {
 
     public enum TYPE {
         ALL, SALE, STOCK
     }
-
-    public static final String ID = "_id";
 
     @Exclude
     private String id;
@@ -25,25 +23,26 @@ public abstract class BaseSaleStocked implements Serializable {
 
     private Product product;
     private String idClient;
-    private String date;
+    private Date date;
 
     private boolean isPaid;
 
     private double quantity = 0;
     private double unitPrice = 0;
     private double totalPrice;
+    private TYPE type;
 
 
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public BaseSaleStocked(Product product, double quantity, String date) {
+    public BaseSaleStocked(Product product, double quantity, Date date) {
         this.setProduct(product);
         this.setQuantity(quantity);
         this.setDate(date);
@@ -57,7 +56,7 @@ public abstract class BaseSaleStocked implements Serializable {
         this.setQuantity(quantity);
         this.setIdClient(clientId);
         this.setUnitPrice(unitPrice);
-        this.setDate(Utils.ISO_8601_DATE_FORMAT.format(date));
+        this.setDate(date);
     }
 
     public String getId() {
@@ -108,7 +107,9 @@ public abstract class BaseSaleStocked implements Serializable {
         this.isPaid = isPaid;
     }
 
-    public abstract BaseSaleStocked.TYPE getType();
+    public BaseSaleStocked.TYPE getType(){
+        return type;
+    };
 
     public double getTotalPrice() {
         return getUnitPrice()*getQuantity();

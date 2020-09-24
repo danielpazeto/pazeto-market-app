@@ -1,56 +1,56 @@
 package com.pazeto.comercio.widgets;
 
-import android.util.Log;
+import android.widget.TextView;
 
-import java.text.ParseException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.TimeZone;
+import java.util.Date;
+import java.util.Locale;
+
+import static com.pazeto.comercio.utils.Constants.DATE_FORMAT_STRING;
 
 public class Utils {
 
     public static SimpleDateFormat ISO_8601_DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:sss'Z'");
 
-
-    public static int calendarIntanceToStartSecondsDay(Calendar c) {
-
-        // c.setTimeZone(TimeZone.getTimeZone("America/Brasilia"));
-        // c.set(year, month, day);
-        c.set(c.get(c.YEAR), c.get(c.MONTH), c.get(c.DAY_OF_MONTH), 0, 0, 0);
-
-        Log.d("c calendar", ":" + c.getTime().toString());
-        return (int) (c.getTimeInMillis() / 1000L);
-
+    public static Calendar getCalendarDate(int year, int month, int day) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(year, month, day, 0, 0, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar;
+    }
+    public static Calendar getCalendarDate(Calendar c) {
+        c.set(c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH), 0, 0, 0);
+        c.set(Calendar.MILLISECOND, 0);
+        return c;
     }
 
-    public static int dateToUnixTimeStamp(int year, int month, int day) {
-        SimpleDateFormat dfm = new SimpleDateFormat("yyyyMMddHHmmss");
-        dfm.setTimeZone(TimeZone.getTimeZone("GMT"));
-        String date = String.valueOf(year);
-        date = date.concat(String.valueOf(month));
-        date = date.concat(String.valueOf(day));
-        Log.d("", date);
-
-        try {
-            java.util.Date ddate = new SimpleDateFormat("yyyyMMdd").parse(date);
-            Log.d(" data realemnte", ddate.toString());
-            ddate.getTime();
-            return (int) ddate.getTime();
-        } catch (ParseException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        return 0;
+    public static String formatDateToString(Date date) {
+        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_STRING, Locale.getDefault());
+        return sdf.format(date);
     }
 
-    public static String unixtimeToDate(Long timestamp, String format) {
+    public static void setNumberValueView(TextView et, double value) {
+        DecimalFormat df = new DecimalFormat();
+        String formattedValue = df.format(value);
+        et.setText(formattedValue);
+    }
+
+    public static void setCurrencyValueView(TextView et, double value) {
+        NumberFormat format = NumberFormat.getCurrencyInstance();
+        format.setMaximumFractionDigits(0);
+        String formattedValue = format.format(value);
+        et.setText(formattedValue);
+    }
+
+    public static Date addDateOneDay(Date currentDate) {
         Calendar date = Calendar.getInstance();
-        date.setTimeInMillis(timestamp);
-
-        SimpleDateFormat dfm = new SimpleDateFormat(format);
-        return dfm.format(date.getTime());
+        date.setTime(currentDate);
+        date.add(Calendar.DATE, 1);
+        return date.getTime();
     }
-
 
     // public static void createPDF()
     // {

@@ -13,8 +13,8 @@ public class Client implements Serializable {
     String lastname;
     String description;
     String telephone;
-    String phone1;
-    String phone2;
+    String cellphone;
+    String email;
     String hangar;
     String position;
     String city;
@@ -61,20 +61,12 @@ public class Client implements Serializable {
         this.description = description;
     }
 
-    public String getCellPhone1() {
-        return phone1;
+    public String getCellPhone() {
+        return cellphone;
     }
 
-    public void setCellPhone1(String phone1) {
-        this.phone1 = phone1;
-    }
-
-    public String getCellPhone2() {
-        return phone2;
-    }
-
-    public void setCellPhone2(String phone2) {
-        this.phone2 = phone2;
+    public void setCellPhone(String phone1) {
+        this.cellphone = phone1;
     }
 
     public String getTelephone() {
@@ -83,6 +75,14 @@ public class Client implements Serializable {
 
     public void setTelephone(String tel) {
         this.telephone = tel;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getHangar() {
@@ -155,10 +155,6 @@ public class Client implements Serializable {
 
     public void set_deleted(String _deleted) {
         this._deleted = _deleted;
-    }
-
-    public String getFullname() {
-        return getName() + " " + getLastname();
     }
 
     public static class ClientNameComparator implements Comparator<Client>  {

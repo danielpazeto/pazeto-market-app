@@ -14,19 +14,19 @@ import android.widget.Toast;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.pazeto.comercio.R;
 import com.pazeto.comercio.adapter.SaleStockedListAdapter;
+import com.pazeto.comercio.utils.Constants;
 import com.pazeto.comercio.vo.BaseSaleStocked;
 import com.pazeto.comercio.vo.Client;
+import com.pazeto.comercio.widgets.Utils;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 
-public abstract class SaleStockBaseListActivity extends DefaultActivity {
+public abstract class SaleStockBaseListActivity extends DefaultActivity implements SaleStockedListAdapter.AdapterUpdateNotify {
     private static final String TAG = SaleStockBaseListActivity.class.getName();
 
-    private TextView tvClient, tvCurrentDate;
+    private TextView tvClient, tvCurrentDate, tvTotalAmount;
     SaleStockedListAdapter adapter;
     ListView salesStockedProdListView;
 
@@ -34,15 +34,16 @@ public abstract class SaleStockBaseListActivity extends DefaultActivity {
     Date currentDate;
 
     abstract BaseSaleStocked.TYPE getItemType();
-    abstract CharSequence getMenuTitle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.sale_stocked_prod_list_view);
 
+        setLayoutColors();
+
         tvCurrentDate = findViewById(R.id.tv_date);
-        setCurrenDate(Calendar.getInstance());
+        setCurrenDate(Utils.getCalendarDate(Calendar.getInstance()));
 
         tvClient = findViewById(R.id.OutputClient);
         tvClient.setOnClickListener(new OnClickListener() {
@@ -63,14 +64,27 @@ public abstract class SaleStockBaseListActivity extends DefaultActivity {
 
         });
 
+        tvTotalAmount = findViewById(R.id.sale_stock_total_amount_tv);
+        Utils.setCurrencyValueView(tvTotalAmount, 0);
+
+
         adapter = new SaleStockedListAdapter(this);
-        salesStockedProdListView = findViewById(R.id.sale_ListView);
+        salesStockedProdListView = findViewById(R.id.sale_list_view);
         salesStockedProdListView.setAdapter(adapter);
         salesStockedProdListView.setEmptyView(findViewById(R.id.tv_empty));
 
         FloatingActionButton btnAddNew = findViewById(R.id.btn_add_new);
         btnAddNew.setImageResource(getNewBtnDrawable());
     }
+
+    private void setLayoutColors() {
+        findViewById(R.id.header).setBackground(getDrawable(getHeaderLayoutBackground()));
+        findViewById(R.id.sale_stock_total_layout).setBackground(getDrawable(getTotalLayoutBackground()));
+    }
+
+    protected abstract int getTotalLayoutBackground();
+
+    protected abstract int getHeaderLayoutBackground();
 
     /**
      * Method to return the int resource for the new btn image
@@ -85,9 +99,8 @@ public abstract class SaleStockBaseListActivity extends DefaultActivity {
             Intent intent = new Intent(SaleStockBaseListActivity.this, EditSaleStockActivity.class);
             intent.putExtra(EditSaleStockActivity.SALE_STOCK_EXTRA, getNewItem());
             startActivityForResult(intent, 0);
-
         } else {
-            Toast.makeText(getApplicationContext(), getString(R.string.invalid_client), Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), getString(R.string.choose_client), Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -114,13 +127,7 @@ public abstract class SaleStockBaseListActivity extends DefaultActivity {
         @Override
         public void onDateSet(DatePicker view, int selectedYear,
                               int selectedMonth, int selectedDay) {
-            Calendar myCalendar = Calendar.getInstance();
-            myCalendar.set(Calendar.YEAR, selectedYear);
-            myCalendar.set(Calendar.MONTH, selectedMonth);
-            myCalendar.set(Calendar.DAY_OF_MONTH, selectedDay);
-            myCalendar.set(Calendar.HOUR_OF_DAY, 0);
-            myCalendar.set(Calendar.MINUTE, 0);
-            myCalendar.set(Calendar.SECOND, 0);
+            Calendar myCalendar = Utils.getCalendarDate(selectedYear, selectedMonth, selectedDay);
 
             setCurrenDate(myCalendar);
 
@@ -132,14 +139,8 @@ public abstract class SaleStockBaseListActivity extends DefaultActivity {
     };
 
     private void setCurrenDate(Calendar currentDate) {
-        currentDate.set(Calendar.HOUR_OF_DAY, 0);
-        currentDate.set(Calendar.MINUTE, 0);
-        currentDate.set(Calendar.SECOND, 0);
-
         this.currentDate = currentDate.getTime();
-
-        SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT_STRING, Locale.getDefault());
-        tvCurrentDate.setText(sdf.format(this.currentDate));
+        tvCurrentDate.setText(Utils.formatDateToString(this.currentDate));
     }
 
     private void reloadAllItems() {
@@ -162,7 +163,7 @@ public abstract class SaleStockBaseListActivity extends DefaultActivity {
                 BaseSaleStocked saleStock = (BaseSaleStocked) data.getSerializableExtra(EditSaleStockActivity.SALE_STOCK_EXTRA);
                 adapter.updateItem(saleStock);
             } else if (data.hasExtra(ListClientsActivity.IS_TO_SELECT_CLIENT)) {
-                Client client = (Client) data.getSerializableExtra(EditClientActivity.ID_EXTRA);
+                Client client = (Client) data.getSerializableExtra(Constants.INTENT_EXTRA_CLIENT);
                 setClient(client);
             }
         }
@@ -177,4 +178,9 @@ public abstract class SaleStockBaseListActivity extends DefaultActivity {
         }
     }
 
+    @Override
+    public void adapterNotifyChange() {
+        double total = adapter.getTotalAmout();
+        Utils.setCurrencyValueView(tvTotalAmount, total);
+    }
 }

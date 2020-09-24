@@ -1,6 +1,7 @@
 package com.pazeto.comercio.db;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;

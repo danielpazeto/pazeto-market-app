@@ -4,15 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin"
     tools:context="com.pazeto.comercio.ui.EditClientActivity" >
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/activity_form_padding"
-        android:orientation="vertical" >
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -21,113 +14,70 @@
                 android:layout_weight="1"
                 android:orientation="vertical" >
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/client_supplier"
+                    android:layout_marginBottom="20dp"
+                    android:textStyle="bold"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+
                 <EditText
                     android:id="@+id/etClientName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:hint="Nome" >
-                </EditText>
+                    android:hint="@string/name"
+                    android:layout_marginBottom="10dp"
+                    android:inputType="textPersonName|textCapWords" />
 
                 <EditText
                     android:id="@+id/etClientLastName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:inputType="textPersonName"
-                    android:hint="Sobrenome" />
-            </LinearLayout>
-
-<!--            <LinearLayout-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="match_parent"-->
-<!--                android:layout_weight="1"-->
-<!--                android:orientation="vertical" >-->
-
-<!--            </LinearLayout>-->
-
-        </LinearLayout>
-
-        <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal" >
-
-        <ScrollView
-            android:id="@+id/scrollView1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical" >
-
-                <EditText
-                    android:id="@+id/etClientHangar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Galpão ou Pedra"
-                    android:inputType="textPersonName" />
-
-                <EditText
-                    android:id="@+id/etClientAddress"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Endereço" />
-
-                <EditText
-                    android:id="@+id/etClientCity"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Cidade" />
-            </LinearLayout>
-
-        </ScrollView>
-
-        <ScrollView
-            android:id="@+id/scrollView2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1" >
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical" >
+                    android:hint="@string/last_name"
+                    android:inputType="textPersonName|textCapWords"
+                    android:layout_marginBottom="10dp"/>
 
                 <EditText
                     android:id="@+id/etClientTel"
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Telefone" />
+                    android:hint="@string/telephone"
+                    android:inputType="phone"
+                    android:layout_marginBottom="10dp"/>
 
                 <EditText
-                    android:id="@+id/etClientCellphone1"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/etClientCellphone"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Celular " />
+                    android:hint="@string/cellphone"
+                    android:inputType="phone"
+                    android:layout_marginBottom="10dp"/>
 
                 <EditText
-                    android:id="@+id/etClientCellphone2"
-                    android:layout_width="wrap_content"
+                    android:id="@+id/etClientEmail"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Telefone" />
-            </LinearLayout>
+                    android:hint="@string/email"
+                    android:inputType="textEmailAddress"
+                    android:layout_marginBottom="10dp"/>
 
-        </ScrollView>
+                <EditText
+                    android:id="@+id/etClientCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/city"
+                    android:inputType="textCapWords"
+                    android:layout_marginBottom="10dp"/>
 
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/etClientAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:lines="2"
+                    android:hint="@string/address"
+                    android:layout_marginBottom="10dp"/>
     </LinearLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

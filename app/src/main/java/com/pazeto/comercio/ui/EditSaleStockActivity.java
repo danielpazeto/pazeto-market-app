@@ -2,13 +2,12 @@ package com.pazeto.comercio.ui;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
@@ -22,6 +21,12 @@ import com.pazeto.comercio.R;
 import com.pazeto.comercio.db.FirebaseHandler;
 import com.pazeto.comercio.vo.BaseSaleStocked;
 import com.pazeto.comercio.vo.Product;
+import com.pazeto.comercio.widgets.NumberTextWatcher;
+import com.pazeto.comercio.widgets.Utils;
+
+import java.text.DecimalFormat;
+
+import static com.pazeto.comercio.widgets.Utils.setNumberValueView;
 
 public class EditSaleStockActivity extends DefaultActivity {
 
@@ -33,14 +38,14 @@ public class EditSaleStockActivity extends DefaultActivity {
     private EditText etQuantity;
     private TextInputLayout inputLayoutQuantity;
     private TextInputLayout inputLayoutUnitValue;
-    private Button btnSave, btnCancel;
-    private FloatingActionButton btnChooseProduct;
+    private FloatingActionButton btnChooseProduct, btnSave, btnCancel;;
     public static String SALE_STOCK_EXTRA = "SALE_STOCK_EXTRA";
+    private Button btnPlusQuantity, btnMinusQuantity, btnMinusUnitPrice, btnPlusUnitPrice;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
+        setFinishOnTouchOutside(false);
         setTheme(R.style.PopupTheme);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_salestock_activity);
@@ -61,18 +66,28 @@ public class EditSaleStockActivity extends DefaultActivity {
             inputLayoutQuantity = findViewById(R.id.input_layout_salestock_quantity);
             inputLayoutUnitValue = findViewById(R.id.input_layout_salestock_unit_value);
 
-            etUnitValue = findViewById(R.id.sale_stock_et_unit_value);
-            setUnitPriceTextListeners();
-            etQuantity = findViewById(R.id.sale_stock_et_quantity);
-            setQuantityTextListeners();
-
             tvTotalValue = findViewById(R.id.tv_sale_stock_total_value);
+
+            etUnitValue = findViewById(R.id.sale_stock_et_unit_value);
+            etUnitValue.addTextChangedListener(new UnitPriceTextWatcher(etUnitValue));
+
+            etQuantity = findViewById(R.id.sale_stock_et_quantity);
+            etQuantity.addTextChangedListener(new QuantityTextWatcher(etQuantity));
 
             btnSave = findViewById(R.id.sale_stock_btn_save);
             btnCancel = findViewById(R.id.sale_stock_btn_cancel);
 
             btnSave.setOnClickListener(btnSaveClickListener);
             btnCancel.setOnClickListener(btnCancelClickListener);
+
+            btnMinusQuantity = findViewById(R.id.fltbtn_minus_quantity);
+            btnMinusQuantity.setOnClickListener(minusQuantityClickListener);
+            btnPlusQuantity = findViewById(R.id.fltbtn_plus_quantity);
+            btnPlusQuantity.setOnClickListener(plusQuantityClickListener);
+            btnMinusUnitPrice = findViewById(R.id.fltbtn_minus_unit_price);
+            btnMinusUnitPrice.setOnClickListener(minusUnitPriceClickListener);
+            btnPlusUnitPrice = findViewById(R.id.fltbtn_plus_unit_price);
+            btnPlusUnitPrice.setOnClickListener(plusUnitPriceClickListener);
 
             updateTextViews();
         }
@@ -81,9 +96,10 @@ public class EditSaleStockActivity extends DefaultActivity {
     private void updateTextViews() {
         tvProductName.setText(currentItem.getProduct().getName());
         tvProductDescription.setText(currentItem.getProduct().getDescription());
-        etUnitValue.setText(String.valueOf(currentItem.getUnitPrice()));
-        etQuantity.setText(String.valueOf(currentItem.getQuantity()));
-        tvTotalValue.setText(String.valueOf(currentItem.getTotalPrice()));
+
+        setNumberValueView(etQuantity, currentItem.getQuantity());
+        setNumberValueView(etUnitValue, currentItem.getUnitPrice());
+        setNumberValueView(tvTotalValue, currentItem.getTotalPrice());
     }
 
     View.OnClickListener btnChooseProdClickListener = view -> {
@@ -93,7 +109,11 @@ public class EditSaleStockActivity extends DefaultActivity {
     };
 
     View.OnClickListener btnSaveClickListener = v -> {
-        save(currentItem);
+        if (currentItem.getProduct().getName() != null) {
+            save(currentItem);
+        } else {
+            Toast.makeText(getApplicationContext(), getString(R.string.choose_product), Toast.LENGTH_LONG).show();
+        }
     };
 
     View.OnClickListener btnCancelClickListener = v -> {
@@ -158,64 +178,32 @@ public class EditSaleStockActivity extends DefaultActivity {
         }
     }
 
-    private void setQuantityTextListeners() {
-        etQuantity.addTextChangedListener(new TextWatcher() {
+    class QuantityTextWatcher extends NumberTextWatcher{
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-                try {
-                    currentItem.setQuantity(Double.parseDouble(s.toString()));
-                    currentItem.setTotalPrice(currentItem.getQuantity() * currentItem.getUnitPrice());
-                    etQuantity.removeTextChangedListener(this);
-                    updateTextViews();
-                    etQuantity.addTextChangedListener(this);
-                } catch (NumberFormatException e) {
-                    Log.e(TAG,
-                            "error reading double value: " + s.toString());
-                }
-            }
+        public QuantityTextWatcher(EditText et) {
+            super(et);
+        }
 
-            @Override
-            public void afterTextChanged(Editable arg0) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1,
-                                          int arg2, int arg3) {
-            }
-
-        });
+        @Override
+        protected void textChangedCallback(double number) {
+            currentItem.setQuantity(number);
+            currentItem.setTotalPrice(currentItem.getQuantity() * currentItem.getUnitPrice());
+            setNumberValueView(tvTotalValue, currentItem.getTotalPrice());
+        }
     }
 
-    private void setUnitPriceTextListeners() {
-        etUnitValue.addTextChangedListener(new TextWatcher() {
+    class UnitPriceTextWatcher extends NumberTextWatcher{
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before,
-                                      int count) {
-                try {
-                    currentItem.setUnitPrice(Double.parseDouble(s.toString()));
-                    currentItem.setTotalPrice(currentItem.getQuantity() * currentItem.getUnitPrice());
+        public UnitPriceTextWatcher(EditText et) {
+            super(et);
+        }
 
-                    etUnitValue.removeTextChangedListener(this);
-                    updateTextViews();
-                    etUnitValue.addTextChangedListener(this);
-                } catch (NumberFormatException e) {
-                    Log.e(TAG,
-                            "error reading double value: " + s.toString());
-                }
-            }
-
-            @Override
-            public void afterTextChanged(Editable arg0) {
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {
-            }
-
-        });
+        @Override
+        protected void textChangedCallback(double number) {
+            currentItem.setUnitPrice(number);
+            currentItem.setTotalPrice(currentItem.getQuantity() * currentItem.getUnitPrice());
+            setNumberValueView(tvTotalValue, currentItem.getTotalPrice());
+        }
     }
 
     @Override
@@ -230,5 +218,42 @@ public class EditSaleStockActivity extends DefaultActivity {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    View.OnClickListener minusQuantityClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (currentItem.getQuantity() <= 1.0) {
+                currentItem.setQuantity(0);
+                setNumberValueView(etQuantity,currentItem.getQuantity());
+            } else {
+                setNumberValueView(etQuantity,currentItem.getQuantity() - 1.0);
+            }
+        }
+    };
+
+    View.OnClickListener plusQuantityClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            setNumberValueView(etQuantity,currentItem.getQuantity() + 1.0);
+        }
+    };
+
+    View.OnClickListener minusUnitPriceClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            if (currentItem.getUnitPrice() <= 1.0) {
+                currentItem.setUnitPrice(0);
+                setNumberValueView(etUnitValue,currentItem.getUnitPrice());
+            } else {
+                setNumberValueView(etUnitValue, currentItem.getUnitPrice() - 1.0);
+            }
+        }
+    };
+
+    View.OnClickListener plusUnitPriceClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            setNumberValueView(etUnitValue,currentItem.getUnitPrice() + 1.0);
+        }
+    };
 }
 

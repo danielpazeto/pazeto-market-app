@@ -11,9 +11,10 @@ import android.widget.TextView;
 
 import com.pazeto.comercio.R;
 import com.pazeto.comercio.vo.BaseSaleStocked;
+import com.pazeto.comercio.widgets.Utils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.TreeSet;
@@ -31,7 +32,6 @@ public class SaleStockReportAdapter extends ArrayAdapter<BaseSaleStocked> {
     public SaleStockReportAdapter(Context context, int resource) {
         super(context, resource);
         mInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-//        hmProducts = new Utils.ProductHashMap(new DBFacade(context));
     }
 
 
@@ -83,21 +83,19 @@ public class SaleStockReportAdapter extends ArrayAdapter<BaseSaleStocked> {
         if (convertView == null) {
             holder = new SaleStockHolder();
             holder.sale = mData.get(position);
-            Log.d("GETVIEW", "Positino: " + position + " - type" + rowType);
             switch (rowType) {
                 case TYPE_ITEM:
                     convertView = mInflater.inflate(R.layout.report_sale_list_item, null);
-                    holder.position = (TextView) convertView.findViewById(R.id.pos);
-                    holder.prodName = (TextView) convertView.findViewById(R.id.tv_sale_product);
-                    holder.quantity = (TextView) convertView.findViewById(R.id.sale_quantity);
-                    holder.unitPrice = (TextView) convertView.findViewById(R.id.sale_price_unit);
-                    holder.totalPrice = (TextView) convertView.findViewById(R.id.sale_price_total);
-                    Log.d("GETVIEW", "item: " + holder.sale.getType() + " : " + String.valueOf(holder.sale.getQuantity()) + ": " + holder.sale.getProduct());
+                    convertView.findViewById(R.id.sale_remove).setVisibility(View.GONE);
+                    holder.productName = convertView.findViewById(R.id.tv_sale_product);
+                    holder.productDescription = convertView.findViewById(R.id.tv_sale_product_description);
+                    holder.quantity = convertView.findViewById(R.id.sale_quantity);
+                    holder.unitPrice = convertView.findViewById(R.id.sale_price_unit);
+                    holder.totalPrice = convertView.findViewById(R.id.sale_price_total);
                     break;
                 case TYPE_SEPARATOR:
                     convertView = mInflater.inflate(R.layout.date_section_header_item, null);
                     holder.tvDateHeaderGroup = (TextView) convertView.findViewById(R.id.tv_date_section);
-                    Log.d("GETVIEW", "Date: " + mData.get(position).getDate());
                     break;
             }
             convertView.setTag(holder);
@@ -113,8 +111,8 @@ public class SaleStockReportAdapter extends ArrayAdapter<BaseSaleStocked> {
     private void setupItem(SaleStockHolder holder, int rowType, int position, View convertView) {
         switch (rowType) {
             case TYPE_ITEM:
-                holder.position.setText(String.valueOf(position));
-                holder.prodName.setText(holder.sale.getProduct().getFullname());
+                holder.productName.setText(holder.sale.getProduct().getName());
+                holder.productDescription.setText(holder.sale.getProduct().getDescription());
                 holder.quantity.setText(String.valueOf(holder.sale.getQuantity()));
                 holder.unitPrice.setText(String.valueOf(holder.sale.getUnitPrice()));
                 holder.totalPrice.setText(String.valueOf(holder.sale.getTotalPrice()));
@@ -125,51 +123,37 @@ public class SaleStockReportAdapter extends ArrayAdapter<BaseSaleStocked> {
                 }
                 break;
             case TYPE_SEPARATOR:
-                String dateString = new SimpleDateFormat("dd/MM/yyyy").
-                        format(mData.get(position).getDate());
-                holder.tvDateHeaderGroup.setText(dateString);
+                holder.tvDateHeaderGroup.setText(Utils.formatDateToString(mData.get(position).getDate()));
                 break;
         }
     }
 
-
-    public void addAll(HashMap<Long, List<BaseSaleStocked>> salesPerDateAndClient) {
+    public void addAll(List<BaseSaleStocked> salesPerDateAndClient) {
         clear();
+        Date auxDate = null;
         if (salesPerDateAndClient != null && !salesPerDateAndClient.isEmpty()) {
-            for (Long date : salesPerDateAndClient.keySet()) {
-                Log.d(SaleStockReportAdapter.class.getName(), "Date : " + date);
-                List<BaseSaleStocked> listPerDate = salesPerDateAndClient.get(date);
-                if (listPerDate != null && !listPerDate.isEmpty()) {
-                    addSectionHeaderItem(listPerDate.get(0));
-                    for (BaseSaleStocked item : listPerDate) {
-                        addItem(item);
-                        Log.d(SaleStockReportAdapter.class.getName(), item.getQuantity() + " : "
-                                + item.getProduct().getFullname() + " : " + item.getUnitPrice());
-                    }
-                }
 
+            for (BaseSaleStocked saleStockItem : salesPerDateAndClient) {
+
+                if(auxDate == null || saleStockItem.getDate().compareTo(auxDate) != 0){
+                    auxDate = saleStockItem.getDate();
+                    addSectionHeaderItem(saleStockItem);
+                }
+                addItem(saleStockItem);
             }
         }
-        fullMapData = salesPerDateAndClient;
         notifyDataSetChanged();
-    }
-
-    private HashMap<Long, List<BaseSaleStocked>> fullMapData;
-
-    public HashMap<Long, List<BaseSaleStocked>> getAll() {
-        return fullMapData;
     }
 
     private class SaleStockHolder {
         BaseSaleStocked sale;
 
-        TextView position;
-        TextView prodName;
+        TextView productName;
+        TextView productDescription;
         TextView quantity;
         TextView unitPrice;
         TextView totalPrice;
         CheckBox isPaid;
-        // ImageButton removeSaleButton;
 
         //when it is group header
         public TextView tvDateHeaderGroup;

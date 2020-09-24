@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical">
@@ -15,100 +16,183 @@
             android:layout_height="87dp"
             android:layout_marginBottom="10dp">
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_salestock_choose_prod"
+                android:layout_width="wrap_content"
+                android:layout_height="56dp"
+                android:layout_marginStart="10dp"
+                android:backgroundTint="@color/float_btn_background_color"
+                android:clickable="true"
+                app:backgroundTint="#00FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:maxImageSize="@dimen/float_btn_image_size"
+                app:srcCompat="@drawable/searching_bar" />
+
             <LinearLayout
                 android:id="@+id/sale_product_layout"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/btn_salestock_choose_prod"
                 app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/tv_sale_product"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/product"
-                    android:textSize="25sp"
+                    android:hint="@string/choose_product"
+                    android:textSize="20sp"
+                    android:singleLine="true"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/tv_sale_product_description"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:hint="@string/product_description"
+                    android:layout_height="wrap_content"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 
             </LinearLayout>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/btn_salestock_choose_prod"
-                android:layout_width="wrap_content"
-                android:layout_height="56dp"
-                android:background="#FFFFFF"
-                android:backgroundTint="#80DA82"
-                android:clickable="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:maxImageSize="@dimen/float_btn_image_size"
-                app:rippleColor="#FFFFFF"
-                app:srcCompat="@android:drawable/ic_menu_add" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_salestock_quantity"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/sale_stock_et_quantity"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/quantity"
-                android:imeOptions="actionDone"
-                android:inputType="numberDecimal"
-                android:selectAllOnFocus="true"
-                android:singleLine="true" />
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/input_layout_salestock_unit_value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <EditText
-                android:id="@+id/sale_stock_et_unit_value"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/unit_price"
-                android:imeOptions="actionDone"
-                android:inputType="numberDecimal"
-                android:selectAllOnFocus="true"
-                android:singleLine="true" />
-        </com.google.android.material.textfield.TextInputLayout>
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:id="@+id/fltbtn_minus_quantity"
+                android:drawableEnd="@android:drawable/btn_minus"
+                android:layout_width="50dp"
+                android:layout_height="0dp"
+                android:background="#00FFFFFF"
+                android:clickable="true"
+                android:layout_marginStart="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_salestock_quantity"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/fltbtn_plus_quantity"
+                app:layout_constraintStart_toEndOf="@+id/fltbtn_minus_quantity"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                    android:id="@+id/sale_stock_et_quantity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/quantity"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    android:digits="0123456789,."
+                    tools:text="0" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/fltbtn_plus_quantity"
+                android:drawableStart="@android:drawable/btn_plus"
+                android:layout_width="50dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="10dp"
+                android:background="#00FFFFFF"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp">
+
+            <Button
+                android:id="@+id/fltbtn_minus_unit_price"
+                android:drawableEnd="@android:drawable/btn_minus"
+                android:layout_width="50dp"
+                android:layout_height="0dp"
+                android:background="#00FFFFFF"
+                android:clickable="true"
+                android:layout_marginStart="10dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/input_layout_salestock_unit_value"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/fltbtn_plus_unit_price"
+                app:layout_constraintStart_toEndOf="@+id/fltbtn_minus_unit_price"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <EditText
+                    android:id="@+id/sale_stock_et_unit_value"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/unit_price_reais"
+                    android:imeOptions="actionDone"
+                    android:digits="0123456789,."
+                    android:inputType="numberDecimal"
+                    android:selectAllOnFocus="true"
+                    android:singleLine="true"
+                    tools:text="0" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Button
+                android:id="@+id/fltbtn_plus_unit_price"
+                android:drawableStart="@android:drawable/btn_plus"
+                android:layout_width="50dp"
+                android:layout_height="0dp"
+                android:layout_marginEnd="10dp"
+                android:background="#00FFFFFF"
+                android:clickable="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp">
+            android:layout_margin="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Valor total"
+                android:layout_marginStart="5dp"
+                android:text="@string/total_money"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/tv_sale_stock_total_value"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"
-                android:text="0"
+                android:layout_marginEnd="12dp"
+                android:gravity="end"
+                android:text="999999"
                 android:textSize="18sp"
+                android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -118,22 +202,33 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <Button
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/sale_stock_btn_cancel"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Cancel"
-                app:layout_constraintBaseline_toBaselineOf="@+id/sale_stock_btn_save"
-                app:layout_constraintStart_toStartOf="parent" />
+                android:layout_height="56dp"
+                android:layout_margin="@dimen/float_button_margin_15"
+                android:backgroundTint="@color/float_btn_background_color"
+                android:clickable="true"
+                app:backgroundTint="#00FFFFFF"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:maxImageSize="@dimen/float_btn_image_size_small"
+                app:srcCompat="@drawable/delete" />
 
-            <Button
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
                 android:id="@+id/sale_stock_btn_save"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Save"
+                android:layout_height="56dp"
+                android:layout_margin="@dimen/float_button_margin_15"
+                android:backgroundTint="@color/float_btn_background_color"
+                android:clickable="true"
+                app:backgroundTint="#00FFFFFF"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
-
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:maxImageSize="@dimen/float_btn_image_size_small"
+                app:srcCompat="@drawable/save" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </LinearLayout>
 </LinearLayout>

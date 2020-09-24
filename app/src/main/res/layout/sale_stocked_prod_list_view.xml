@@ -1,28 +1,20 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="@dimen/activity_form_padding"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <LinearLayout
             android:id="@+id/header"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#D2E6DE"
-            android:layout_marginBottom="10dp"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_form_padding"
+            app:layout_constraintTop_toTopOf="parent">
 
                 <TextView
                     android:id="@+id/tv_date"
@@ -34,7 +26,9 @@
                     android:focusable="false"
                     android:gravity="center|left"
                     android:hint="@string/date_hint"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/OutputClient"
@@ -44,83 +38,85 @@
                     android:drawableStart="@mipmap/ic_client"
                     android:gravity="center_vertical"
                     android:hint="@string/client"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/tvHeaderUnit"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:text="Qtd" />
-
-            <TextView
-                android:id="@+id/tvHeaderProduct"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:textStyle="bold"
-                android:text="@string/product" />
-
-            <TextView
-                android:id="@+id/tvHeaderUnitValue"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:text="Valor Unit." />
-
-            <TextView
-                android:id="@+id/tvHeaderTotal"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:text="Valor Total" />
-
-            <TextView
-                android:id="@+id/tvHeaderPaid"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:textStyle="bold"
-                android:text="Pago" />
-
+                    android:textColor="#FFFFFF"
+                    android:textSize="20sp"
+                    android:textStyle="bold" />
 
         </LinearLayout>
 
         <ListView
-            android:id="@+id/sale_ListView"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/sale_list_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        </ListView>
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            tools:listitem="@layout/add_sale_list_item"
+            app:layout_constraintBottom_toTopOf="@id/btn_add_new"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/header" />
 
         <TextView
             android:id="@+id/tv_empty"
-            android:layout_width="match_parent"
-            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:visibility="gone"
             android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
             android:text="@string/without_items"
-            android:visibility="gone" />
-    </LinearLayout>
+            app:layout_constraintEnd_toEndOf="@+id/sale_list_view"
+            app:layout_constraintStart_toStartOf="@+id/sale_list_view"
+            app:layout_constraintTop_toTopOf="@id/sale_list_view" />
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/btn_add_new"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:onClick="addNewSaleStock"
-        app:backgroundTint="@color/float_btn_background_color"
-        app:maxImageSize="@dimen/float_btn_image_size"
-        android:layout_margin="@dimen/float_button_margin"
-        android:src="@mipmap/ic_new_sale" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/sale_stock_total_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/background_rounded_border_green"
+            app:layout_constraintBottom_toBottomOf="@+id/btn_add_new"
+            app:layout_constraintEnd_toStartOf="@+id/btn_add_new"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/btn_add_new">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/total_money"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/sale_stock_total_amount_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="20dp"
+                android:textColor="#FFFFFF"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="129285" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_add_new"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:onClick="addNewSaleStock"
+            android:src="@mipmap/ic_new_sale"
+            app:backgroundTint="@color/float_btn_background_color"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:maxImageSize="@dimen/float_btn_image_size" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

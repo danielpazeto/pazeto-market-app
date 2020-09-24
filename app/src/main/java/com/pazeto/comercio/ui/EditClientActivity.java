@@ -17,35 +17,32 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.pazeto.comercio.R;
 import com.pazeto.comercio.db.FirebaseHandler;
+import com.pazeto.comercio.utils.Constants;
 import com.pazeto.comercio.vo.Client;
 
 public class EditClientActivity extends DefaultActivity {
 
 	protected static final String TAG = EditClientActivity.class.getName();
-	EditText etName, etLastName, etTel, etCellPhone1, etCellPhone2, etAddres,
-			etHangar, etCity, etDescription;
+	EditText etName, etLastName, etTel, etCellPhone, etEmail, etAddress, etCity;
 	FloatingActionButton fltBtnSave;
-
-	public static final String ID_EXTRA = "_id";
 
 	Client currentClient;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.add_client);
-		etName = (EditText) findViewById(R.id.etClientName);
-		etLastName = (EditText) findViewById(R.id.etClientLastName);
-		etHangar = (EditText) findViewById(R.id.etClientHangar);
-		etTel = (EditText) findViewById(R.id.etClientTel);
-		etCellPhone1 = (EditText) findViewById(R.id.etClientCellphone1);
-		etCellPhone2 = (EditText) findViewById(R.id.etClientCellphone2);
-		etAddres = (EditText) findViewById(R.id.etClientAddress);
-		etCity = (EditText) findViewById(R.id.etClientCity);
+		etName = findViewById(R.id.etClientName);
+		etLastName = findViewById(R.id.etClientLastName);
+		etTel = findViewById(R.id.etClientTel);
+		etCellPhone =  findViewById(R.id.etClientCellphone);
+		etEmail = findViewById(R.id.etClientEmail);
+		etCity = findViewById(R.id.etClientCity);
+		etAddress = findViewById(R.id.etClientAddress);
 
 		fltBtnSave = findViewById(R.id.saveButton);
 		fltBtnSave.setOnClickListener(btnSaveClickListener);
 
-		String idClient = getIntent().getStringExtra(ID_EXTRA);
+		String idClient = getIntent().getStringExtra(Constants.INTENT_EXTRA_CLIENT);
 		if (idClient != null) {
 			getClient(idClient);
 		}else{
@@ -58,7 +55,11 @@ public class EditClientActivity extends DefaultActivity {
 		if (client != null) {
 			etName.setText(currentClient.getName());
 			etLastName.setText(currentClient.getLastname());
-			// TODO colocar todos os campos
+			etTel.setText(currentClient.getTelephone());
+			etCellPhone.setText(currentClient.getCellPhone());
+			etCity.setText(currentClient.getCity());
+			etAddress.setText(currentClient.getAddress());
+			etEmail.setText(currentClient.getEmail());
 		}
 	}
 
@@ -68,10 +69,11 @@ public class EditClientActivity extends DefaultActivity {
 		currentClient.setName(etName.getText().toString());
 		currentClient.setLastname(etLastName.getText().toString());
 		currentClient.setCity(etCity.getText().toString());
+		currentClient.setAddress(etAddress.getText().toString());
 		currentClient.setTelephone(etTel.getText().toString());
-		currentClient.setCellPhone1(etCellPhone1.getText().toString());
-		currentClient.setCellPhone2(etCellPhone2.getText().toString());
-		// TODO falta outros atributos aki
+		currentClient.setCellPhone(etCellPhone.getText().toString());
+		currentClient.setEmail(etEmail.getText().toString());
+
 		saveClient(currentClient);
 
 	}
@@ -84,15 +86,15 @@ public class EditClientActivity extends DefaultActivity {
 		if (client.getId() != null){
 			ref = collectionRef.document(client.getId()).set(client);
 		} else {
-			ref = collectionRef.document().set(client);
+			DocumentReference doc = collectionRef.document();
+			client.setId(doc.getId());
+			ref = doc.set(client);
 		}
 		ref.addOnSuccessListener(new OnSuccessListener<Void>() {
 			@Override
 			public void onSuccess(Void aVoid) {
-				Log.d(TAG, "DocumentSnapshot added ");
-
 				Intent intent = new Intent();
-				intent.putExtra(EditClientActivity.ID_EXTRA, client);
+				intent.putExtra(Constants.INTENT_EXTRA_CLIENT, client);
 				setResult(RESULT_OK, intent);
 				finish();
 			}
@@ -101,13 +103,13 @@ public class EditClientActivity extends DefaultActivity {
 		.addOnFailureListener(new OnFailureListener() {
 			@Override
 			public void onFailure(@NonNull Exception e) {
-				Log.d(TAG, "N�o salvou cliente.");
+				Log.e(TAG, "Client not saved.", e);
 				fltBtnSave.setEnabled(true);
 			}
 		});
 	}
 
-	public void getClient(String clientId) {
+	private void getClient(String clientId) {
 		DocumentReference docRef = new FirebaseHandler(getApplicationContext()).getClientsCollectionReference().document(clientId);
 		docRef.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
 			@Override
@@ -116,10 +118,9 @@ public class EditClientActivity extends DefaultActivity {
 					Client client = documentSnapshot.toObject(Client.class);
 					client.setId(documentSnapshot.getId());
 
-					Log.d(TAG, client.getName());
 					loadClient(client);
 				} else {
-					Log.d(TAG, "Not exsits");
+					Log.e(TAG, "Client "+ clientId + " not exists");
 				}
 			}
 		});
