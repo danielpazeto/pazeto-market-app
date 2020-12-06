@@ -31,14 +31,11 @@ import com.pazeto.comercio.db.FirebaseHandler;
 import com.pazeto.comercio.utils.Constants;
 import com.pazeto.comercio.vo.BaseSaleStocked;
 import com.pazeto.comercio.vo.Client;
-import com.pazeto.comercio.vo.Sale;
-import com.pazeto.comercio.vo.Stock;
 import com.pazeto.comercio.widgets.Utils;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -58,7 +55,6 @@ public class ReportActivity extends DefaultActivity {
         INITIAL, FINAL
     }
 
-    private Snackbar snackbar;
     private CoordinatorLayout cdlReport;
 
 
@@ -69,7 +65,7 @@ public class ReportActivity extends DefaultActivity {
 
         tvInitialDate = findViewById(R.id.edt_initial_date);
         tvFinalDate = findViewById(R.id.edt_final_date);
-        tvClient = findViewById(R.id.OutputClient);
+        tvClient = findViewById(R.id.tvSelectClient);
 
         reportTypeSpinner = findViewById(R.id.tv_item_type);
         setupTypeSpinner();

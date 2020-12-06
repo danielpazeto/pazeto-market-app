@@ -45,7 +45,7 @@ public abstract class SaleStockBaseListActivity extends DefaultActivity implemen
         tvCurrentDate = findViewById(R.id.tv_date);
         setCurrenDate(Utils.getCalendarDate(Calendar.getInstance()));
 
-        tvClient = findViewById(R.id.OutputClient);
+        tvClient = findViewById(R.id.tvSelectClient);
         tvClient.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View view) {

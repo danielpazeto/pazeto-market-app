@@ -31,7 +31,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/OutputClient"
+                    android:id="@+id/tvSelectClient"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -80,6 +80,7 @@
             app:layout_constraintTop_toTopOf="@+id/btn_add_new">
 
             <TextView
+                android:id="@+id/sale_stock_total_amount_tv_label"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="20dp"
@@ -87,7 +88,6 @@
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -99,9 +99,26 @@
                 android:textColor="#FFFFFF"
                 android:textSize="20sp"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
+                tools:text="129285" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:text="@string/pending_money_total"
+                android:textColor="#FFFFFF"
+                app:layout_constraintTop_toBottomOf="@+id/sale_stock_total_amount_tv_label"
+                app:layout_constraintStart_toStartOf="sale_stock_total_amount_tv_label" />
+
+            <TextView
+                android:id="@+id/sale_stock_total_pending_amount_tv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                app:layout_constraintStart_toStartOf="@+id/sale_stock_total_amount_tv"
+                app:layout_constraintTop_toBottomOf="@+id/sale_stock_total_amount_tv"
                 tools:text="129285" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,98 +1,177 @@
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:fab="http://schemas.android.com/apk/res-auto"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cdl_report"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <LinearLayout
+        android:id="@+id/header"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintTop_toTopOf="parent">
+
         <LinearLayout
-            android:id="@+id/header"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TextView
-                    android:id="@+id/OutputClient"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:drawableLeft="@mipmap/ic_client"
-                    android:onClick="selectClientClick"
-                    android:layout_gravity="center"
-                    android:gravity="center|left"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:hint="@string/client" />
-
-                <Spinner
-                    android:id="@+id/tv_item_type"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:drawableLeft="@mipmap/ic_report"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-            </LinearLayout>
-
-            <LinearLayout
+            <Spinner
+                android:id="@+id/tv_item_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableLeft="@mipmap/ic_report"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                <TextView
-                    android:id="@+id/edt_initial_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:drawableLeft="@mipmap/ic_calendar"
-                    android:hint="@string/date_hint" />
+            <TextView
+                android:id="@+id/tvSelectClient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:drawableLeft="@mipmap/ic_client"
+                android:gravity="center|left"
+                android:hint="@string/client"
+                android:onClick="selectClientClick"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
-                <TextView
-                    android:id="@+id/edt_final_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:drawableLeft="@mipmap/ic_calendar"
-                    android:hint="@string/date_hint" />
-
-            </LinearLayout>
         </LinearLayout>
 
-        <ListView
-            android:id="@+id/sale_list_view"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/report_sale_list_item"/>
-        <TextView
-            android:id="@+id/tv_empty"
-            android:layout_marginTop="@dimen/activity_form_padding"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
             android:gravity="center"
-            android:text="@string/without_items" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/edt_initial_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/ic_calendar"
+                android:gravity="center"
+                android:hint="@string/date_hint"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/edt_final_date"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableLeft="@mipmap/ic_calendar"
+                android:gravity="center"
+                android:hint="@string/date_hint"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        </LinearLayout>
     </LinearLayout>
+
+    <ListView
+        android:id="@+id/sale_list_view"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toTopOf="@+id/layout_report_totals"
+        app:layout_constraintTop_toBottomOf="@+id/header"
+        tools:listitem="@layout/report_sale_list_item" />
+
+    <TextView
+        android:id="@+id/tv_empty"
+        android:layout_marginTop="@dimen/activity_form_padding"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:gravity="center"
+        app:layout_constraintTop_toTopOf="@+id/sale_list_view"
+        android:text="@string/without_items" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/layout_report_totals"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/float_btn_background_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/fab_generate_report"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total_money_in_sale"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/tv_label_report_total_amount_stock"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_report_total_amount_sale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/tv_report_total_amount_stock"
+            app:layout_constraintStart_toStartOf="@+id/tv_report_total_amount"
+            tools:text="12545454" />
+
+        <TextView
+            android:id="@+id/tv_label_report_total_amount_stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total_money_in_stock"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/textView5"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_report_total_amount_stock"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:textColor="#FFFFFF"
+            app:layout_constraintBottom_toTopOf="@+id/tv_report_total_amount"
+            app:layout_constraintStart_toStartOf="@+id/tv_report_total_amount"
+            tools:text="129285" />
+
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/total_money"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_report_total_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="20dp"
+            android:textColor="#FFFFFF"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:text="129285" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_generate_report"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_margin="@dimen/activity_form_padding"
+        android:backgroundTint="@color/float_btn_background_color"
         android:onClick="onGenerateReport"
         android:src="@mipmap/ic_report"
-        android:backgroundTint="@color/float_btn_background_color"
-        android:layout_margin="@dimen/activity_form_padding"
-        />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

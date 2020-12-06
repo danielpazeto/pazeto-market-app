@@ -70,5 +70,8 @@
     <string name="client_supplier">Cliente/Fornecedor</string>
     <string name="city">Cidade</string>
     <string name="clients_and_suppliers">Clientes e Fornecedores</string>
+    <string name="total_money_in_sale">Total em vendas (R$)</string>
+    <string name="total_money_in_stock">Total em compras (R$)</string>
+    <string name="pending_money_total">Total pendente (R$)</string>
 
 </resources>
